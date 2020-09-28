@@ -1,6 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记</title>
+    <url>/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-level的domain bias很容易通过网络学出来，但在无监督学习下却不行。</li>
+</ul>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>提出exemplar-invariance, camera- invariance and neighborhood-invariance三种不变性约束。</li>
+<li>提出memory module来充分利用整个training set上的样本。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="framework"></p>
+<h2 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h2><p>蓝色支路为baseline，输入为source domain上带标签的图片，用cross entropy loss做约束，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210162135330.png" alt="在这里插入图片描述"><br>$n_{s}$为source domain上图片的数量，$x_{s,i}$为source domain上的第$i$张图片，$y_{s,i}$为其label。</p>
+<h2 id="Exemplar-Memory"><a href="#Exemplar-Memory" class="headerlink" title="Exemplar Memory"></a>Exemplar Memory</h2><p>Exemplar Memory为key-value结构，key存储经过L2正则化之后的4096维特征，value存储label(实际上为index)，value在训练过程中保持不变。<br>key初始化为0，在BP时更新，方法如下：<br><img src="https://img-blog.csdnimg.cn/2019121016300286.png" alt="在这里插入图片描述"><br>$\alpha$在[0, 1]的范围内，控制更新速度，为一个超参数。下面用Exemplar Memory模块来完成三种不变性约束。</p>
+<h3 id="Exemplar-invariance"><a href="#Exemplar-invariance" class="headerlink" title="Exemplar-invariance"></a>Exemplar-invariance</h3><p>每张图的appearence都是独一无二的，就算是相同ID的图片，也会受到pose，illumination，background等因素的影响，所以对于每张图，都应该靠近自己(Exemplar Memory的作用)而远离其它图片，作者视每张图都为不同的id，然后将每张图归于自己的id。实际上就是训练一个$N_t$($N_t$为target domain上图片数目)个类的分类器，概率如下：<br><img src="https://img-blog.csdnimg.cn/20191210164027839.png" alt="在这里插入图片描述"><br>$f(x_{t,i})$为backbone输出的4096维特征，与Exemplar Memory中的每个特征计算余弦距离，$\beta$为smooth项，$\beta$越大输出越均匀。</p>
+<h3 id="Camera-invariance"><a href="#Camera-invariance" class="headerlink" title="Camera-invariance"></a>Camera-invariance</h3><p>用StarGAN来风格迁移，将每一张图片都迁移到其他$C-1$个相机下。迁移过程中保证ID不变，camstyle变成对应camid的style。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210165159127.png" alt="在这里插入图片描述"><br>$\hat{x}<em>{t,i}$为由$x</em>{t,i}$风格迁移得到的图片，这张图片应该与$x_{t,i}$属于相同id。</p>
+<h3 id="Neighborhood-invariance"><a href="#Neighborhood-invariance" class="headerlink" title="Neighborhood-invariance"></a>Neighborhood-invariance</h3><p>对于target domain上的每张图，都存在其他正例，只是在这个问题定义下我们不知道而已。对于每一张图片的输出$f(x_{t,i})$我们可以在key张找到k-nearest近邻，显然最近的是自己。$M(x_{t,i},k)$表示离$f(x_{t,i})$最近的k个近邻的value值。<br>作者认为$M(x_{t,i},k)$中的k张图最有可能与$f(x_{t,i})$拥有相同的id，所以希望在特征空间中拉近彼此之间的距离，但是这种伪标签又是不可信的，所以不能赋予太高的权重。权重如下：<br><img src="https://img-blog.csdnimg.cn/20191210170510387.png" alt="在这里插入图片描述"><br>对$f(x_{t,i})$自身赋予1，其余赋予$\frac{1}{k}$的权重。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210170734221.png" alt="在这里插入图片描述"><br>这个损失函数中为了与exemplar-invariance区别将自身剔除了。</p>
+<h3 id="Overall-loss-of-invariance-learning"><a href="#Overall-loss-of-invariance-learning" class="headerlink" title="Overall loss of invariance learning"></a>Overall loss of invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210170924743.png" alt="在这里插入图片描述"><br>将三种不变性loss合在一起写简单明了。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="beta-的影响"><a href="#beta-的影响" class="headerlink" title="$\beta$的影响"></a>$\beta$的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Memory的影响"><a href="#Memory的影响" class="headerlink" title="Memory的影响"></a>Memory的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171321178.png" alt="在这里插入图片描述"><br>memroy module的计算开销小，效果提升显著，非常值得借鉴。</p>
+<h3 id="Ablation-experiment-on-invariance-learning"><a href="#Ablation-experiment-on-invariance-learning" class="headerlink" title="Ablation experiment on invariance learning"></a>Ablation experiment on invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="SOTA性能"><a href="#SOTA性能" class="headerlink" title="SOTA性能"></a>SOTA性能</h3><p><img src="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>论文笔记</tag>
+        <tag>ReID</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python可迭代对象</title>
+    <url>/2020/09/28/Python%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h3 id="可迭代对象是什么？"><a href="#可迭代对象是什么？" class="headerlink" title="可迭代对象是什么？"></a>可迭代对象是什么？</h3><p>凡是定义了<code>__iter__</code>和<code>__next__</code>方法的类所实例化出来的对象都是可迭代对象。</p>
+<a id="more"></a>
+
+<h3 id="有哪些内置可迭代对象？"><a href="#有哪些内置可迭代对象？" class="headerlink" title="有哪些内置可迭代对象？"></a>有哪些内置可迭代对象？</h3><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">list</span>,dict(<span class="built_in">keys</span>(),<span class="built_in">values</span>(),<span class="built_in">items</span>()),tuple,str,<span class="keyword">set</span>,<span class="built_in">range</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="如何判断一个对象是否是可迭代对象"><a href="#如何判断一个对象是否是可迭代对象" class="headerlink" title="如何判断一个对象是否是可迭代对象"></a>如何判断一个对象是否是可迭代对象</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">&#x27;__iter__&#x27;</span> <span class="keyword">in</span> dir(obj):</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>List逆序的两者方式</title>
+    <url>/2020/09/28/List%E9%80%86%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Python多线程</title>
+    <url>/2020/09/28/Python%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ol>
+<li>进程、线程是什么？为什么要用多线程？</li>
+<li>如何创建多线程？</li>
+<li>主线程、父线程、子线程</li>
+<li>阻塞线程</li>
+<li>线程同步</li>
+</ol>
+<a id="more"></a>
+
+<h3 id="进程、线程是什么？为什么要用多线程？"><a href="#进程、线程是什么？为什么要用多线程？" class="headerlink" title="进程、线程是什么？为什么要用多线程？"></a>进程、线程是什么？为什么要用多线程？</h3><p>官话：<strong>进程是资源分配的最小单位，线程是CPU调度的最小单位</strong></p>
+<h3 id="如何创建多线程？"><a href="#如何创建多线程？" class="headerlink" title="如何创建多线程？"></a>如何创建多线程？</h3><p>Python3实现多线程的是threading模块，首先导入模块</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br></pre></td></tr></table></figure>
+
+<p>Python支持创建多线程：</p>
+<ul>
+<li>通过threading.Thread()创建</li>
+<li>通过继承threading.Thread类创建</li>
+<li>前者直接用Thread类实例化一个线程对象，后者继承Thread类，改写run方法，实现不同的功能</li>
+</ul>
+<h4 id="用threading-Thread-创建"><a href="#用threading-Thread-创建" class="headerlink" title="用threading.Thread()创建"></a>用threading.Thread()创建</h4><p>Thread()语法为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">threading.Thread(group=<span class="literal">None</span>, target=<span class="literal">None</span>, name=<span class="literal">None</span>, args=(), kwargs=(), *, daemon=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>group:一般为None</li>
+<li>target:线程调用的对象，就是目标函数</li>
+<li>name:给线程起名字，默认是Target-x，初始x=1</li>
+<li>args:函数实参，传入元组</li>
+<li>kwargs:为目标函数传入关键字参数，传入字典</li>
+<li>daemin:用来设置线程是否随主线程的退出而退出</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x, y):</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line">thread1 = threading.Thread(name=<span class="string">&#x27;t1&#x27;</span>, target=test, args=(<span class="number">1</span>, <span class="number">10</span>))</span><br><span class="line">thread2 = threading.Thread(name=<span class="string">&#x27;t2&#x27;</span>, target=test, args=(<span class="number">1</span>, <span class="number">20</span>))</span><br><span class="line">thread1.start()</span><br><span class="line">thread2.start()</span><br><span class="line">print(<span class="string">&#x27;线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">线程结束了</span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">24</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">38</span></span><br><span class="line"></span><br><span class="line"><span class="number">49</span></span><br><span class="line"></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">18</span></span><br><span class="line"><span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="继承threading-Thread类创建"><a href="#继承threading-Thread类创建" class="headerlink" title="继承threading.Thread类创建"></a>继承threading.Thread类创建</h4><p>定义一个类继承threading.Thread，然后重写父类的run()方法，会在线程启动(start())时自动执行。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a, b</span>):</span></span><br><span class="line">        super(MyThread, self).__init__()</span><br><span class="line">        self.a = a</span><br><span class="line">        self.b = b</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.a, self.b):</span><br><span class="line">            print(i)</span><br><span class="line"></span><br><span class="line">thread1 = MyThread(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">thread2 = MyThread(<span class="number">1</span>, <span class="number">20</span>)</span><br><span class="line">thread1.start()</span><br><span class="line">thread2.start()</span><br><span class="line">print(<span class="string">&#x27;线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span>线程结束了</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">18</span></span><br><span class="line"><span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="主线程、父线程、子线程"><a href="#主线程、父线程、子线程" class="headerlink" title="主线程、父线程、子线程"></a>主线程、父线程、子线程</h3><ul>
+<li>主线程=父线程</li>
+<li>如果线程A中启动了线程B，那么A是B的父线程，B是A的子线程</li>
+<li>daemon属性，当daemon为True时，主线程结束之后子线程立即停止；当daemon为False时，主线程结束之后，子线程可继续执行</li>
+</ul>
+<h3 id="阻塞线程"><a href="#阻塞线程" class="headerlink" title="阻塞线程"></a>阻塞线程</h3><p>join()方法，可以阻塞线程</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">join(timeout=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>timeout参数指定阻塞时间，如果没有设置就一直等待，直到被调用的线程完成为止，注意join不能与start在循环里连用</p>
+<h3 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h3><p>在访问共享资源的时候，不同线程会冲突，看下面的例子</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">global</span> x</span><br><span class="line">        x += <span class="number">10</span></span><br><span class="line">        print(self.name, x)</span><br><span class="line"></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line">threadList = [MyThread() <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> threadList:</span><br><span class="line">    i.start()</span><br><span class="line">print(<span class="string">&#x27;主线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span>Thread<span class="number">-2</span></span><br><span class="line"> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line"><span class="number">30</span>Thread<span class="number">-5</span> <span class="number">50</span></span><br><span class="line"></span><br><span class="line">主线程结束了</span><br></pre></td></tr></table></figure>
+
+<p>解决方法为加锁</p>
+<h4 id="Lock与Rlock"><a href="#Lock与Rlock" class="headerlink" title="Lock与Rlock"></a>Lock与Rlock</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用Lock加锁</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">global</span> x</span><br><span class="line">        lock.acquire()</span><br><span class="line">        x += <span class="number">10</span></span><br><span class="line">        print(self.name, x)</span><br><span class="line">        lock.release()</span><br><span class="line"></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line">threadList = [MyThread() <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">lock = threading.Lock()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> threadList:</span><br><span class="line">    i.start()</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span></span><br><span class="line">Thread<span class="number">-2</span> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> <span class="number">30</span></span><br><span class="line">Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line">Thread<span class="number">-5</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python字符串前面的u,r,b含义</title>
+    <url>/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/</url>
+    <content><![CDATA[<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
+<li>加r是取消转义，保留原始字符串</li>
+<li>加u是采用Unicode编码</li>
+<li>加b是表示后面的字符串是bytes类型，用于网络编程中收发数据</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>1、字符串前加 u<br>例：u”我是含有中文字符组成的字符串。”<br>作用：后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。 </p>
+<p>2、字符串前加 r<br>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。<br>作用：去掉反斜杠的转义机制。（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）<br>应用：常用于正则表达式，对应着re模块。 </p>
+<p>3、字符串前加 b<br>例: response = b’<h1>Hello World!</h1>‘     # b’ ‘ 表示这是一个 bytes 对象<br>作用：b” “前缀表示：后面字符串是bytes 类型。<br>应用：网络编程中，服务器和浏览器只认bytes 类型数据。如：send 函数的参数和 recv 函数的返回值都是 bytes 类型<br>附：在 Python3 中，bytes 和 str 的互相转换方式是</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python异常处理</title>
+    <url>/2020/09/28/Python%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h3 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h3><ol>
+<li>看懂异常信息</li>
+<li>捕获异常信息</li>
+<li>多重异常处理</li>
+<li>自定义的异常信息</li>
+</ol>
+<a id="more"></a>
+
+<h3 id="看懂异常信息"><a href="#看懂异常信息" class="headerlink" title="看懂异常信息"></a>看懂异常信息</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcnum</span>(<span class="params">li, divnum</span>):</span></span><br><span class="line">    newList = [divnum / one <span class="keyword">for</span>  one <span class="keyword">in</span> li]</span><br><span class="line">    <span class="keyword">return</span> newList</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>():</span></span><br><span class="line">    calcnum([<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">0</span>,<span class="number">2</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span>():</span></span><br><span class="line">    test()</span><br><span class="line"></span><br><span class="line">test2()</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">/Users/shensanjing/opt/anaconda3/envs/python38/bin/python /Users/shensanjing/Documents/pycharm/testfile/main.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;/Users/shensanjing/Documents/pycharm/testfile/main.py&quot;</span>, line <span class="number">11</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    test2()</span><br><span class="line">  File <span class="string">&quot;/Users/shensanjing/Documents/pycharm/testfile/main.py&quot;</span>, line <span class="number">9</span>, <span class="keyword">in</span> test2</span><br><span class="line">    test()</span><br><span class="line">  File <span class="string">&quot;/Users/shensanjing/Documents/pycharm/testfile/main.py&quot;</span>, line <span class="number">6</span>, <span class="keyword">in</span> test</span><br><span class="line">    calcnum([<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">0</span>,<span class="number">2</span>], <span class="number">3</span>)</span><br><span class="line">  File <span class="string">&quot;/Users/shensanjing/Documents/pycharm/testfile/main.py&quot;</span>, line <span class="number">2</span>, <span class="keyword">in</span> calcnum</span><br><span class="line">    newList = [divnum / one <span class="keyword">for</span>  one <span class="keyword">in</span> li]</span><br><span class="line">  File <span class="string">&quot;/Users/shensanjing/Documents/pycharm/testfile/main.py&quot;</span>, line <span class="number">2</span>, <span class="keyword">in</span> &lt;listcomp&gt;</span><br><span class="line">    newList = [divnum / one <span class="keyword">for</span>  one <span class="keyword">in</span> li]</span><br><span class="line">ZeroDivisionError: division by zero</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>信息头</li>
+<li>出错位置：自下而上传播错误信息，直到找到异常处理代码，或传播到顶层，所以如果想要知道哪儿出错了，应该从后往前找</li>
+<li>异常信息：<strong>ZeroDivisionError</strong>除零错</li>
+</ul>
+<h3 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcnum</span>(<span class="params">li, divnum</span>):</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        newList = [divnum / one <span class="keyword">for</span>  one <span class="keyword">in</span> li]</span><br><span class="line">    <span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">        print(<span class="string">&#x27;列表中有0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>():</span></span><br><span class="line">    calcnum([<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">0</span>,<span class="number">2</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span>():</span></span><br><span class="line">    test()</span><br><span class="line"></span><br><span class="line">test2()</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">列表中有<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>不仅可以在calnum函数中捕获异常，还可以在test，test2函数中捕获，因为异常传播方向是calnum-&gt;test-&gt;test2在任何一个地方都能捕获到<strong>ZeroDivisionError</strong></p>
+<h3 id="多重异常处理"><a href="#多重异常处理" class="headerlink" title="多重异常处理"></a>多重异常处理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    statements1</span><br><span class="line"><span class="keyword">except</span> (ExceptionType1, ExceptionType2):</span><br><span class="line">    statements2</span><br><span class="line"><span class="keyword">except</span> (ExceptionType3, ExceptionType4):</span><br><span class="line">    statements3</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    statements4</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>except后面可以接多个异常</li>
+<li>可以有多个except</li>
+<li>except后面可以不接异常，表示如果不满足ExceptionType1…4则执行statements4</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    statements1</span><br><span class="line"><span class="keyword">except</span> (ExceptionType1, ExceptionType2):</span><br><span class="line">    statements2</span><br><span class="line"><span class="keyword">except</span> (ExceptionType3, ExceptionType4):</span><br><span class="line">    statements3</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    statements4</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    statements5</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只有statements1没有异常，才执行statements5</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    statements1</span><br><span class="line"><span class="keyword">except</span> (ExceptionType1, ExceptionType2):</span><br><span class="line">    statements2</span><br><span class="line"><span class="keyword">except</span> (ExceptionType3, ExceptionType4):</span><br><span class="line">    statements3</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    statements4</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    statements5</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>无论statements1有没有异常，都执行statements5</li>
+</ul>
+<h3 id="异常参数处理"><a href="#异常参数处理" class="headerlink" title="异常参数处理"></a>异常参数处理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    statements1</span><br><span class="line"><span class="keyword">except</span> (ExceptionType1, ExceptionType2) <span class="keyword">as</span> e:</span><br><span class="line">    statements2</span><br><span class="line"><span class="keyword">except</span> (ExceptionType3, ExceptionType4):</span><br><span class="line">    statements3</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    statements4</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    statements5</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>e中存有异常信息</li>
+</ul>
+<h3 id="内置异常类型"><a href="#内置异常类型" class="headerlink" title="内置异常类型"></a>内置异常类型</h3><p>比较常用的有：</p>
+<ul>
+<li>IndexError：访问的list元素不存在<img src="en-resource://database/1283:1" alt="1b25589eac20e6966686832075716f37.png"></li>
+<li>KeyError: 访问的字典键不存在</li>
+<li>IOError: 尝试读写一个不存在的文件，或者其他IO错误</li>
+<li>NameError: 访问不存在的变量</li>
+<li>TypeError: 对一个类型使用不支持的操作，比如字符串除法</li>
+<li>AttributeError: 访问一个对象不存在的属性</li>
+<li>ZeroDivisionError: 除0错</li>
+</ul>
+<h3 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h3><ol>
+<li>后接实例化对象<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">raise</span> NameError(<span class="string">&#x27;aa&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+<li>后接类<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">raise</span> NameError()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="自定义异常类型"><a href="#自定义异常类型" class="headerlink" title="自定义异常类型"></a>自定义异常类型</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyError</span>(<span class="params">Exception</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, value</span>):</span></span><br><span class="line">        self.value = value</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> repr(self.value)</span><br><span class="line">        </span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">raise</span> MyError(<span class="number">2</span>*<span class="number">2</span>)</span><br><span class="line"><span class="keyword">except</span> MyError <span class="keyword">as</span> e:</span><br><span class="line">    print(<span class="string">&#x27;My exception occurred, value:&#x27;</span>, e.value)</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">My exception occurred, value: <span class="number">4</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python正则表达式与re模块</title>
+    <url>/2020/09/28/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8Ere%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>正则表达式元字符与语法</li>
+<li>re模块的简单使用</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="正则表达式元字符与语法"><a href="#正则表达式元字符与语法" class="headerlink" title="正则表达式元字符与语法"></a>正则表达式元字符与语法</h3><p>建议google，常用的有……，常用的太多了，还是google吧</p>
+<h3 id="re模块的简单使用"><a href="#re模块的简单使用" class="headerlink" title="re模块的简单使用"></a>re模块的简单使用</h3><h4 id="re-search"><a href="#re-search" class="headerlink" title="re.search"></a>re.search</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = re.search(pattern, str)</span><br><span class="line"></span><br><span class="line">print(type(match.group()), match.group())</span><br></pre></td></tr></table></figure>
+<h4 id="re-compile"><a href="#re-compile" class="headerlink" title="re.compile"></a>re.compile</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.search(str)</span><br><span class="line"></span><br><span class="line">print(type(match.group()), match.group())</span><br></pre></td></tr></table></figure>
+<p>通过编译，返回一个对象模式，能够提高执行效率</p>
+<h4 id="re-findall"><a href="#re-findall" class="headerlink" title="re.findall"></a>re.findall</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.findall(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>
+<p>找到所有匹配的子串</p>
+<h4 id="re-split"><a href="#re-split" class="headerlink" title="re.split"></a>re.split</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;\d+&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcb1ccba3bccc5cb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.split(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
+<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>论文笔记</tag>
+        <tag>ReID</tag>
+        <tag>数据集</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记</title>
     <url>/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
@@ -36,30 +306,26 @@
       </tags>
   </entry>
   <entry>
-    <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记</title>
-    <url>/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
+    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-level的domain bias很容易通过网络学出来，但在无监督学习下却不行。</li>
-</ul>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>提出exemplar-invariance, camera- invariance and neighborhood-invariance三种不变性约束。</li>
-<li>提出memory module来充分利用整个training set上的样本。</li>
+<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种新颖的viewpoint-aware metric learning approach</li>
+<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
 </ul>
 <a id="more"></a>
 
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="framework"></p>
-<h2 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h2><p>蓝色支路为baseline，输入为source domain上带标签的图片，用cross entropy loss做约束，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210162135330.png" alt="在这里插入图片描述"><br>$n_{s}$为source domain上图片的数量，$x_{s,i}$为source domain上的第$i$张图片，$y_{s,i}$为其label。</p>
-<h2 id="Exemplar-Memory"><a href="#Exemplar-Memory" class="headerlink" title="Exemplar Memory"></a>Exemplar Memory</h2><p>Exemplar Memory为key-value结构，key存储经过L2正则化之后的4096维特征，value存储label(实际上为index)，value在训练过程中保持不变。<br>key初始化为0，在BP时更新，方法如下：<br><img src="https://img-blog.csdnimg.cn/2019121016300286.png" alt="在这里插入图片描述"><br>$\alpha$在[0, 1]的范围内，控制更新速度，为一个超参数。下面用Exemplar Memory模块来完成三种不变性约束。</p>
-<h3 id="Exemplar-invariance"><a href="#Exemplar-invariance" class="headerlink" title="Exemplar-invariance"></a>Exemplar-invariance</h3><p>每张图的appearence都是独一无二的，就算是相同ID的图片，也会受到pose，illumination，background等因素的影响，所以对于每张图，都应该靠近自己(Exemplar Memory的作用)而远离其它图片，作者视每张图都为不同的id，然后将每张图归于自己的id。实际上就是训练一个$N_t$($N_t$为target domain上图片数目)个类的分类器，概率如下：<br><img src="https://img-blog.csdnimg.cn/20191210164027839.png" alt="在这里插入图片描述"><br>$f(x_{t,i})$为backbone输出的4096维特征，与Exemplar Memory中的每个特征计算余弦距离，$\beta$为smooth项，$\beta$越大输出越均匀。</p>
-<h3 id="Camera-invariance"><a href="#Camera-invariance" class="headerlink" title="Camera-invariance"></a>Camera-invariance</h3><p>用StarGAN来风格迁移，将每一张图片都迁移到其他$C-1$个相机下。迁移过程中保证ID不变，camstyle变成对应camid的style。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210165159127.png" alt="在这里插入图片描述"><br>$\hat{x}<em>{t,i}$为由$x</em>{t,i}$风格迁移得到的图片，这张图片应该与$x_{t,i}$属于相同id。</p>
-<h3 id="Neighborhood-invariance"><a href="#Neighborhood-invariance" class="headerlink" title="Neighborhood-invariance"></a>Neighborhood-invariance</h3><p>对于target domain上的每张图，都存在其他正例，只是在这个问题定义下我们不知道而已。对于每一张图片的输出$f(x_{t,i})$我们可以在key张找到k-nearest近邻，显然最近的是自己。$M(x_{t,i},k)$表示离$f(x_{t,i})$最近的k个近邻的value值。<br>作者认为$M(x_{t,i},k)$中的k张图最有可能与$f(x_{t,i})$拥有相同的id，所以希望在特征空间中拉近彼此之间的距离，但是这种伪标签又是不可信的，所以不能赋予太高的权重。权重如下：<br><img src="https://img-blog.csdnimg.cn/20191210170510387.png" alt="在这里插入图片描述"><br>对$f(x_{t,i})$自身赋予1，其余赋予$\frac{1}{k}$的权重。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210170734221.png" alt="在这里插入图片描述"><br>这个损失函数中为了与exemplar-invariance区别将自身剔除了。</p>
-<h3 id="Overall-loss-of-invariance-learning"><a href="#Overall-loss-of-invariance-learning" class="headerlink" title="Overall loss of invariance learning"></a>Overall loss of invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210170924743.png" alt="在这里插入图片描述"><br>将三种不变性loss合在一起写简单明了。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="beta-的影响"><a href="#beta-的影响" class="headerlink" title="$\beta$的影响"></a>$\beta$的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Memory的影响"><a href="#Memory的影响" class="headerlink" title="Memory的影响"></a>Memory的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171321178.png" alt="在这里插入图片描述"><br>memroy module的计算开销小，效果提升显著，非常值得借鉴。</p>
-<h3 id="Ablation-experiment-on-invariance-learning"><a href="#Ablation-experiment-on-invariance-learning" class="headerlink" title="Ablation experiment on invariance learning"></a>Ablation experiment on invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="SOTA性能"><a href="#SOTA性能" class="headerlink" title="SOTA性能"></a>SOTA性能</h3><p><img src="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
+<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
+<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
+<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -97,63 +363,93 @@
       </tags>
   </entry>
   <entry>
-    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
-<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
-</ul>
-<a id="more"></a>
+    <title>super()与多重继承</title>
+    <url>/2020/09/28/super-%E4%B8%8E%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF/</url>
+    <content><![CDATA[<a id="more"></a>
 
-<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person1</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name1, age1, **kwargs</span>):</span></span><br><span class="line">        self.name1 = name1</span><br><span class="line">        self.age1 = age1</span><br><span class="line">        super(Person1, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_eat</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;person1 eat...&#x27;</span>)</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person2</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name2, age2, **kwargs</span>):</span></span><br><span class="line">        self.name2 = name2</span><br><span class="line">        self.age2 = age2</span><br><span class="line">        super(Person2, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_eat</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;person2 eat...&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">Person1, Person2</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, id, **kwargs</span>):</span></span><br><span class="line">        super(Student, self).__init__(**kwargs)</span><br><span class="line">        self.id = id</span><br><span class="line"></span><br><span class="line">    <span class="comment"># def _eat(self):</span></span><br><span class="line">    <span class="comment">#     print(1)</span></span><br><span class="line"></span><br><span class="line">stu = Student(<span class="number">1</span>, name1=<span class="string">&#x27;shensj&#x27;</span>, age1=<span class="number">23</span>, name2=<span class="string">&#x27;panjx&#x27;</span>, age2=<span class="number">24</span>)</span><br><span class="line">stu._eat()</span><br><span class="line">print(Student.__mro__)</span><br><span class="line">print(stu.name2)</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">person<span class="number">1</span> eat...</span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Student&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Person1&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Person2&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;)</span><br><span class="line">panjx</span><br></pre></td></tr></table></figure>
+
+<h3 id="更好的例子"><a href="#更好的例子" class="headerlink" title="更好的例子"></a>更好的例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 代码基于python3.8</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;下图中,两根斜线是指往这个方向数的第二个类,O是object</span></span><br><span class="line"><span class="string">O</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line"><span class="string">G</span></span><br><span class="line"><span class="string">| \ \</span></span><br><span class="line"><span class="string">D E  F</span></span><br><span class="line"><span class="string">|/\\/</span></span><br><span class="line"><span class="string">B  C</span></span><br><span class="line"><span class="string">| /</span></span><br><span class="line"><span class="string">A </span></span><br><span class="line"><span class="string">mro=ABCDEFGO</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">G</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, g, **kargs</span>):</span>  <span class="comment"># g是本构造器自身需要的参数,用位置参数将指提取出来,而kargs则是剩余的关键字参</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ G&quot;</span>)  <span class="comment"># 数,用于传递给下一层的__init__()</span></span><br><span class="line">        self.g = g</span><br><span class="line">        super(G, self).__init__(**kargs)  <span class="comment"># 为了和python2的新式类兼容,手动把super的两个参数填上</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, d, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ D&quot;</span>)</span><br><span class="line">        self.d = d</span><br><span class="line">        super(D, self).__init__(**kargs)  <span class="comment"># 调用__init__时,只写**kargs,因为super返回的偏函数自动填充了self参数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">E</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, e=<span class="number">100</span>, **kargs</span>):</span>  <span class="comment"># 给 本类初始化所需要的位置参数 一个默认值,使得传参时可以省掉这个参数</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ E&quot;</span>)</span><br><span class="line">        self.e = e</span><br><span class="line">        super(E, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">F</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, f=None, **kargs</span>):</span>  <span class="comment"># 即使这个参数没有默认值,最好也给它一个默认值None,除非这个参数是必须要给出的</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ F&quot;</span>)</span><br><span class="line">        self.f = f</span><br><span class="line">        super(F, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>(<span class="params">D, E</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, b, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ B&quot;</span>)</span><br><span class="line">        self.b = b</span><br><span class="line">        super(B, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>(<span class="params">D, F</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, c, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ C&quot;</span>)</span><br><span class="line">        self.c = c</span><br><span class="line">        super(C, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>(<span class="params">B, C</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ A&quot;</span>)</span><br><span class="line">        self.a = a</span><br><span class="line">        super(A, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">play</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter play A&quot;</span>)</span><br><span class="line">        print(self.__dict__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aa = A(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>, d=<span class="number">4</span>, e=<span class="number">5</span>, f=<span class="number">6</span>, g=<span class="number">7</span>)  <span class="comment"># 或者A(1,b=2,...)也可以,但是A(1,2,c=3,..)不可以</span></span><br><span class="line">aa.play()  <span class="comment"># 也就是说位置参数可以用位置参数或者关键字参数传递,但是**关键字参数不能用位置参数传递</span></span><br><span class="line"></span><br><span class="line">bb = A(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>, d=<span class="number">4</span>, g=<span class="number">5</span>)</span><br><span class="line">bb.play()  <span class="comment"># out: &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3, &#x27;d&#x27;: 4, &#x27;e&#x27;: 100, &#x27;f&#x27;: None, &#x27;g&#x27;: 5&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight sqf"><table><tr><td class="code"><pre><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;f&#x27;</span>: <span class="number">6</span>, <span class="string">&#x27;g&#x27;</span>: <span class="number">7</span>&#125;</span><br><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">100</span>, <span class="string">&#x27;f&#x27;</span>: None, <span class="string">&#x27;g&#x27;</span>: <span class="number">5</span>&#125;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>论文笔记</tag>
-        <tag>ReID</tag>
-        <tag>数据集</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
-    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一种新颖的viewpoint-aware metric learning approach</li>
-<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
-</ul>
+    <title>reduce函数</title>
+    <url>/2020/09/28/reduce%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>reduce() 函数会对参数序列中元素进行<strong>累积</strong>。<br>函数将一个数据集合（链表，元组等）中的所有数据进行下列操作：用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用 function 函数运算，最后得到一个结果。</p>
 <a id="more"></a>
 
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
-<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
-<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
-<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
-</ul>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># function -- 函数，有两个参数</span></span><br><span class="line"><span class="comment"># iterable -- 可迭代对象</span></span><br><span class="line"><span class="comment"># initializer -- 可选，初始参数</span></span><br><span class="line"><span class="comment"># return -- 数值</span></span><br><span class="line">reduce(function, iterable[, initializer])</span><br></pre></td></tr></table></figure>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjixH.png" alt="例子"><br>使用前务必导入库函数functools</p>
 ]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>论文笔记</tag>
-        <tag>ReID</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>函数形参传递</title>
+    <url>/2020/09/28/%E5%87%BD%E6%95%B0%E5%BD%A2%E5%8F%82%E4%BC%A0%E9%80%92/</url>
+    <content><![CDATA[<h2 id="参数传递类型"><a href="#参数传递类型" class="headerlink" title="参数传递类型"></a>参数传递类型</h2><p>值传递：适用于实参类型为不可变类型（字符串、数字、元组）；<br>引用传递：适用于实参类型为可变类型（列表，字典）；</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内置filter函数</title>
+    <url>/2020/09/28/%E5%86%85%E7%BD%AEfilter%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>filter() 函数用于<strong>过滤序列</strong>，过滤掉不符合条件的元素，返回一个迭代器对象，如果要转换为列表，可以使用 list() 来转换。</p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># function -- 判断函数</span></span><br><span class="line"><span class="comment"># iterable -- 可迭代对象</span></span><br><span class="line"><span class="comment"># return -- 迭代器</span></span><br><span class="line">filter(function, iterable)</span><br></pre></td></tr></table></figure>
+<p>该接收两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判，然后返回 True 或 False，最后将返回 True 的元素放到新列表中。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjMRg.png" alt="例子"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内置map函数</title>
+    <url>/2020/09/28/%E5%86%85%E7%BD%AEmap%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>map() 会根据提供的函数对指定序列做<strong>映射</strong>。</p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># function -- 判断函数</span></span><br><span class="line"><span class="comment"># iterable -- 可迭代对象</span></span><br><span class="line"><span class="comment"># return -- 迭代器</span></span><br><span class="line">map(function, iterable, ...)</span><br></pre></td></tr></table></figure>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjJZq.png" alt="例子"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
     <title>第三方库pathlib</title>
     <url>/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>Path类：from pathlib import Path</p>
+<a id="more"></a>
+
 <h3 id="Path类"><a href="#Path类" class="headerlink" title="Path类"></a>Path类</h3><h4 id="创建Path对象"><a href="#创建Path对象" class="headerlink" title="创建Path对象"></a>创建Path对象</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可以这么使用,相当于os.path.join() </span></span><br><span class="line">p1 = Path(<span class="string">&#x27;D:/python&#x27;</span>) </span><br><span class="line">p2 = p1/<span class="string">&#x27;123&#x27;</span> </span><br><span class="line">print(p2)</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line">D:<span class="symbol">\p</span>ython<span class="symbol">\1</span>23</span><br></pre></td></tr></table></figure>
