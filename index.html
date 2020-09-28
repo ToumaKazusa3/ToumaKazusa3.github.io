@@ -222,7 +222,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -233,7 +233,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -274,6 +274,112 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Misaka Mikoto">
+      <meta itemprop="description" content="君の指先には光が跃る、私はこの世に消えない信仰、唯超电磁炮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Railgun">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/" class="post-title-link" itemprop="url">第三方库pathlib</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-09-28 22:14:16 / 修改时间：22:19:34" itemprop="dateCreated datePublished" datetime="2020-09-28T22:14:16+08:00">2020-09-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>Path类：from pathlib import Path</p>
+<h3 id="Path类"><a href="#Path类" class="headerlink" title="Path类"></a>Path类</h3><h4 id="创建Path对象"><a href="#创建Path对象" class="headerlink" title="创建Path对象"></a>创建Path对象</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可以这么使用,相当于os.path.join() </span></span><br><span class="line">p1 = Path(<span class="string">&#x27;D:/python&#x27;</span>) </span><br><span class="line">p2 = p1/<span class="string">&#x27;123&#x27;</span> </span><br><span class="line">print(p2)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:<span class="symbol">\p</span>ython<span class="symbol">\1</span>23</span><br></pre></td></tr></table></figure>
+
+<h4 id="Path-exists"><a href="#Path-exists" class="headerlink" title="Path.exists()"></a>Path.exists()</h4><p>判断当前路径是否是文件或者文件夹</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Path(<span class="string">&#x27;.&#x27;</span>).exists()</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Path(<span class="string">&#x27;1.py&#x27;</span>).exists()</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Path(<span class="string">&#x27;2.py&#x27;</span>).exists()</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Path-glob-pattern-与Path-rglob-pattern"><a href="#Path-glob-pattern-与Path-rglob-pattern" class="headerlink" title="Path.glob(pattern)与Path.rglob(pattern)"></a>Path.glob(pattern)与Path.rglob(pattern)</h4><p>Path.glob(pattern):获取路径下的所有符合pattern的文件，返回一个generator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[_ <span class="keyword">for</span> _ <span class="keyword">in</span> p.glob(<span class="string">&#x27;*&#x27;</span>)]</span><br><span class="line">Out[<span class="number">12</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/lib&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/tasks&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/pbs&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/script&#x27;</span>)]</span><br></pre></td></tr></table></figure>
+<p>Path.rglob(pattern):与上面类似，只不过是返回路径中所有子文件夹的符合pattern的文件。</p>
+<h4 id="Path-is-dir-与Path-is-file"><a href="#Path-is-dir-与Path-is-file" class="headerlink" title="Path.is_dir()与Path.is_file()"></a>Path.is_dir()与Path.is_file()</h4><p>Path.is_dir()判断该路径是否是文件夹<br>Path.is_file()判断该路径是否是文件</p>
+<h4 id="Path-iterdir"><a href="#Path-iterdir" class="headerlink" title="Path.iterdir()"></a>Path.iterdir()</h4><p>当path为文件夹时，通过yield产生path文件夹下的所有文件、文件夹路径的迭代器</p>
+<h4 id="Path-mkdir-mode-0o777-parents-Fasle"><a href="#Path-mkdir-mode-0o777-parents-Fasle" class="headerlink" title="Path.mkdir(mode=0o777,parents=Fasle)"></a>Path.mkdir(mode=0o777,parents=Fasle)</h4><p>根据路径创建文件夹<br>parents=True时，会依次创建路径中间缺少的文件夹</p>
+<h4 id="Path-open-mode-’r’-buffering-1-encoding-None-errors-None-newline-None"><a href="#Path-open-mode-’r’-buffering-1-encoding-None-errors-None-newline-None" class="headerlink" title="Path.open(mode=’r’, buffering=-1, encoding=None, errors=None, newline=None)"></a>Path.open(mode=’r’, buffering=-1, encoding=None, errors=None, newline=None)</h4><p>类似于open()函数</p>
+<h4 id="Path-match-pattern"><a href="#Path-match-pattern" class="headerlink" title="Path.match(pattern)"></a>Path.match(pattern)</h4><p>判断path是否满足pattern</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -878,13 +984,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">5k</span>
+    <span title="站点总字数">6k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4 分钟</span>
+    <span title="站点阅读时长">5 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

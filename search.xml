@@ -1,40 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记</title>
-    <url>/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-level的domain bias很容易通过网络学出来，但在无监督学习下却不行。</li>
-</ul>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>提出exemplar-invariance, camera- invariance and neighborhood-invariance三种不变性约束。</li>
-<li>提出memory module来充分利用整个training set上的样本。</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="framework"></p>
-<h2 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h2><p>蓝色支路为baseline，输入为source domain上带标签的图片，用cross entropy loss做约束，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210162135330.png" alt="在这里插入图片描述"><br>$n_{s}$为source domain上图片的数量，$x_{s,i}$为source domain上的第$i$张图片，$y_{s,i}$为其label。</p>
-<h2 id="Exemplar-Memory"><a href="#Exemplar-Memory" class="headerlink" title="Exemplar Memory"></a>Exemplar Memory</h2><p>Exemplar Memory为key-value结构，key存储经过L2正则化之后的4096维特征，value存储label(实际上为index)，value在训练过程中保持不变。<br>key初始化为0，在BP时更新，方法如下：<br><img src="https://img-blog.csdnimg.cn/2019121016300286.png" alt="在这里插入图片描述"><br>$\alpha$在[0, 1]的范围内，控制更新速度，为一个超参数。下面用Exemplar Memory模块来完成三种不变性约束。</p>
-<h3 id="Exemplar-invariance"><a href="#Exemplar-invariance" class="headerlink" title="Exemplar-invariance"></a>Exemplar-invariance</h3><p>每张图的appearence都是独一无二的，就算是相同ID的图片，也会受到pose，illumination，background等因素的影响，所以对于每张图，都应该靠近自己(Exemplar Memory的作用)而远离其它图片，作者视每张图都为不同的id，然后将每张图归于自己的id。实际上就是训练一个$N_t$($N_t$为target domain上图片数目)个类的分类器，概率如下：<br><img src="https://img-blog.csdnimg.cn/20191210164027839.png" alt="在这里插入图片描述"><br>$f(x_{t,i})$为backbone输出的4096维特征，与Exemplar Memory中的每个特征计算余弦距离，$\beta$为smooth项，$\beta$越大输出越均匀。</p>
-<h3 id="Camera-invariance"><a href="#Camera-invariance" class="headerlink" title="Camera-invariance"></a>Camera-invariance</h3><p>用StarGAN来风格迁移，将每一张图片都迁移到其他$C-1$个相机下。迁移过程中保证ID不变，camstyle变成对应camid的style。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210165159127.png" alt="在这里插入图片描述"><br>$\hat{x}<em>{t,i}$为由$x</em>{t,i}$风格迁移得到的图片，这张图片应该与$x_{t,i}$属于相同id。</p>
-<h3 id="Neighborhood-invariance"><a href="#Neighborhood-invariance" class="headerlink" title="Neighborhood-invariance"></a>Neighborhood-invariance</h3><p>对于target domain上的每张图，都存在其他正例，只是在这个问题定义下我们不知道而已。对于每一张图片的输出$f(x_{t,i})$我们可以在key张找到k-nearest近邻，显然最近的是自己。$M(x_{t,i},k)$表示离$f(x_{t,i})$最近的k个近邻的value值。<br>作者认为$M(x_{t,i},k)$中的k张图最有可能与$f(x_{t,i})$拥有相同的id，所以希望在特征空间中拉近彼此之间的距离，但是这种伪标签又是不可信的，所以不能赋予太高的权重。权重如下：<br><img src="https://img-blog.csdnimg.cn/20191210170510387.png" alt="在这里插入图片描述"><br>对$f(x_{t,i})$自身赋予1，其余赋予$\frac{1}{k}$的权重。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210170734221.png" alt="在这里插入图片描述"><br>这个损失函数中为了与exemplar-invariance区别将自身剔除了。</p>
-<h3 id="Overall-loss-of-invariance-learning"><a href="#Overall-loss-of-invariance-learning" class="headerlink" title="Overall loss of invariance learning"></a>Overall loss of invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210170924743.png" alt="在这里插入图片描述"><br>将三种不变性loss合在一起写简单明了。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="beta-的影响"><a href="#beta-的影响" class="headerlink" title="$\beta$的影响"></a>$\beta$的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Memory的影响"><a href="#Memory的影响" class="headerlink" title="Memory的影响"></a>Memory的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171321178.png" alt="在这里插入图片描述"><br>memroy module的计算开销小，效果提升显著，非常值得借鉴。</p>
-<h3 id="Ablation-experiment-on-invariance-learning"><a href="#Ablation-experiment-on-invariance-learning" class="headerlink" title="Ablation experiment on invariance learning"></a>Ablation experiment on invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="SOTA性能"><a href="#SOTA性能" class="headerlink" title="SOTA性能"></a>SOTA性能</h3><p><img src="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>论文笔记</tag>
-        <tag>ReID</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记</title>
     <url>/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
@@ -70,26 +36,57 @@
       </tags>
   </entry>
   <entry>
-    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+    <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记</title>
+    <url>/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一种新颖的viewpoint-aware metric learning approach</li>
-<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
+<li>在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-level的domain bias很容易通过网络学出来，但在无监督学习下却不行。</li>
+</ul>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>提出exemplar-invariance, camera- invariance and neighborhood-invariance三种不变性约束。</li>
+<li>提出memory module来充分利用整个training set上的样本。</li>
 </ul>
 <a id="more"></a>
 
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
-<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
-<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
-<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="framework"></p>
+<h2 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h2><p>蓝色支路为baseline，输入为source domain上带标签的图片，用cross entropy loss做约束，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210162135330.png" alt="在这里插入图片描述"><br>$n_{s}$为source domain上图片的数量，$x_{s,i}$为source domain上的第$i$张图片，$y_{s,i}$为其label。</p>
+<h2 id="Exemplar-Memory"><a href="#Exemplar-Memory" class="headerlink" title="Exemplar Memory"></a>Exemplar Memory</h2><p>Exemplar Memory为key-value结构，key存储经过L2正则化之后的4096维特征，value存储label(实际上为index)，value在训练过程中保持不变。<br>key初始化为0，在BP时更新，方法如下：<br><img src="https://img-blog.csdnimg.cn/2019121016300286.png" alt="在这里插入图片描述"><br>$\alpha$在[0, 1]的范围内，控制更新速度，为一个超参数。下面用Exemplar Memory模块来完成三种不变性约束。</p>
+<h3 id="Exemplar-invariance"><a href="#Exemplar-invariance" class="headerlink" title="Exemplar-invariance"></a>Exemplar-invariance</h3><p>每张图的appearence都是独一无二的，就算是相同ID的图片，也会受到pose，illumination，background等因素的影响，所以对于每张图，都应该靠近自己(Exemplar Memory的作用)而远离其它图片，作者视每张图都为不同的id，然后将每张图归于自己的id。实际上就是训练一个$N_t$($N_t$为target domain上图片数目)个类的分类器，概率如下：<br><img src="https://img-blog.csdnimg.cn/20191210164027839.png" alt="在这里插入图片描述"><br>$f(x_{t,i})$为backbone输出的4096维特征，与Exemplar Memory中的每个特征计算余弦距离，$\beta$为smooth项，$\beta$越大输出越均匀。</p>
+<h3 id="Camera-invariance"><a href="#Camera-invariance" class="headerlink" title="Camera-invariance"></a>Camera-invariance</h3><p>用StarGAN来风格迁移，将每一张图片都迁移到其他$C-1$个相机下。迁移过程中保证ID不变，camstyle变成对应camid的style。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210165159127.png" alt="在这里插入图片描述"><br>$\hat{x}<em>{t,i}$为由$x</em>{t,i}$风格迁移得到的图片，这张图片应该与$x_{t,i}$属于相同id。</p>
+<h3 id="Neighborhood-invariance"><a href="#Neighborhood-invariance" class="headerlink" title="Neighborhood-invariance"></a>Neighborhood-invariance</h3><p>对于target domain上的每张图，都存在其他正例，只是在这个问题定义下我们不知道而已。对于每一张图片的输出$f(x_{t,i})$我们可以在key张找到k-nearest近邻，显然最近的是自己。$M(x_{t,i},k)$表示离$f(x_{t,i})$最近的k个近邻的value值。<br>作者认为$M(x_{t,i},k)$中的k张图最有可能与$f(x_{t,i})$拥有相同的id，所以希望在特征空间中拉近彼此之间的距离，但是这种伪标签又是不可信的，所以不能赋予太高的权重。权重如下：<br><img src="https://img-blog.csdnimg.cn/20191210170510387.png" alt="在这里插入图片描述"><br>对$f(x_{t,i})$自身赋予1，其余赋予$\frac{1}{k}$的权重。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210170734221.png" alt="在这里插入图片描述"><br>这个损失函数中为了与exemplar-invariance区别将自身剔除了。</p>
+<h3 id="Overall-loss-of-invariance-learning"><a href="#Overall-loss-of-invariance-learning" class="headerlink" title="Overall loss of invariance learning"></a>Overall loss of invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210170924743.png" alt="在这里插入图片描述"><br>将三种不变性loss合在一起写简单明了。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="beta-的影响"><a href="#beta-的影响" class="headerlink" title="$\beta$的影响"></a>$\beta$的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Memory的影响"><a href="#Memory的影响" class="headerlink" title="Memory的影响"></a>Memory的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171321178.png" alt="在这里插入图片描述"><br>memroy module的计算开销小，效果提升显著，非常值得借鉴。</p>
+<h3 id="Ablation-experiment-on-invariance-learning"><a href="#Ablation-experiment-on-invariance-learning" class="headerlink" title="Ablation experiment on invariance learning"></a>Ablation experiment on invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="SOTA性能"><a href="#SOTA性能" class="headerlink" title="SOTA性能"></a>SOTA性能</h3><p><img src="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>论文笔记</tag>
+        <tag>ReID</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>View Confusion Feature Learning for Person Re-identification论文笔记</title>
+    <url>/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
+<li>用SIFT特征来指导模型训练。</li>
 </ul>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
+<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
+<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
+<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -124,23 +121,26 @@
       </tags>
   </entry>
   <entry>
-    <title>View Confusion Feature Learning for Person Re-identification论文笔记</title>
-    <url>/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
+    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
 <h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
-<li>用SIFT特征来指导模型训练。</li>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种新颖的viewpoint-aware metric learning approach</li>
+<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
 </ul>
 <a id="more"></a>
 
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
-<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
-<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
-<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
+<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
+<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
+<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -148,6 +148,33 @@
       <tags>
         <tag>论文笔记</tag>
         <tag>ReID</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第三方库pathlib</title>
+    <url>/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>Path类：from pathlib import Path</p>
+<h3 id="Path类"><a href="#Path类" class="headerlink" title="Path类"></a>Path类</h3><h4 id="创建Path对象"><a href="#创建Path对象" class="headerlink" title="创建Path对象"></a>创建Path对象</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可以这么使用,相当于os.path.join() </span></span><br><span class="line">p1 = Path(<span class="string">&#x27;D:/python&#x27;</span>) </span><br><span class="line">p2 = p1/<span class="string">&#x27;123&#x27;</span> </span><br><span class="line">print(p2)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line">D:<span class="symbol">\p</span>ython<span class="symbol">\1</span>23</span><br></pre></td></tr></table></figure>
+
+<h4 id="Path-exists"><a href="#Path-exists" class="headerlink" title="Path.exists()"></a>Path.exists()</h4><p>判断当前路径是否是文件或者文件夹</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Path(<span class="string">&#x27;.&#x27;</span>).exists()</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Path(<span class="string">&#x27;1.py&#x27;</span>).exists()</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Path(<span class="string">&#x27;2.py&#x27;</span>).exists()</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Path-glob-pattern-与Path-rglob-pattern"><a href="#Path-glob-pattern-与Path-rglob-pattern" class="headerlink" title="Path.glob(pattern)与Path.rglob(pattern)"></a>Path.glob(pattern)与Path.rglob(pattern)</h4><p>Path.glob(pattern):获取路径下的所有符合pattern的文件，返回一个generator</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[_ <span class="keyword">for</span> _ <span class="keyword">in</span> p.glob(<span class="string">&#x27;*&#x27;</span>)]</span><br><span class="line">Out[<span class="number">12</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/lib&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/tasks&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/pbs&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/home/shensj/code/baseline/script&#x27;</span>)]</span><br></pre></td></tr></table></figure>
+<p>Path.rglob(pattern):与上面类似，只不过是返回路径中所有子文件夹的符合pattern的文件。</p>
+<h4 id="Path-is-dir-与Path-is-file"><a href="#Path-is-dir-与Path-is-file" class="headerlink" title="Path.is_dir()与Path.is_file()"></a>Path.is_dir()与Path.is_file()</h4><p>Path.is_dir()判断该路径是否是文件夹<br>Path.is_file()判断该路径是否是文件</p>
+<h4 id="Path-iterdir"><a href="#Path-iterdir" class="headerlink" title="Path.iterdir()"></a>Path.iterdir()</h4><p>当path为文件夹时，通过yield产生path文件夹下的所有文件、文件夹路径的迭代器</p>
+<h4 id="Path-mkdir-mode-0o777-parents-Fasle"><a href="#Path-mkdir-mode-0o777-parents-Fasle" class="headerlink" title="Path.mkdir(mode=0o777,parents=Fasle)"></a>Path.mkdir(mode=0o777,parents=Fasle)</h4><p>根据路径创建文件夹<br>parents=True时，会依次创建路径中间缺少的文件夹</p>
+<h4 id="Path-open-mode-’r’-buffering-1-encoding-None-errors-None-newline-None"><a href="#Path-open-mode-’r’-buffering-1-encoding-None-errors-None-newline-None" class="headerlink" title="Path.open(mode=’r’, buffering=-1, encoding=None, errors=None, newline=None)"></a>Path.open(mode=’r’, buffering=-1, encoding=None, errors=None, newline=None)</h4><p>类似于open()函数</p>
+<h4 id="Path-match-pattern"><a href="#Path-match-pattern" class="headerlink" title="Path.match(pattern)"></a>Path.match(pattern)</h4><p>判断path是否满足pattern</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
 </search>
