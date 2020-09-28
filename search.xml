@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记</title>
+    <url>/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage，在conservative stage用triplet loss来优化网络参数得到相对可信的标签，在promoting stage用cross entropy loss充分利用全局信息。</li>
+<li>提出一种ranking-based triplet loss，这个loss不依赖聚类产生的伪标签。而是利用特征相似性。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="https://img-blog.csdnimg.cn/20191210222137389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework-Overview"><a href="#Framework-Overview" class="headerlink" title="Framework Overview"></a>Framework Overview</h2><ol>
+<li>首先用source domian上带标签的数据来初始化CNN模型M，用模型M提取target domain上图片特征F。</li>
+<li>在conservative stage用HDBSCAN聚类算法得到相对可信的子类Tu，用CTL(clustering-based triplet loss)和RTL(ranking-based triplet loss)优化网络参数。前者依赖于子类Tu，后者依赖于特征相似性。用优化后的网络提取特征得到Fu。</li>
+<li>在promoting stage用HDBSCAN聚类算法对新的Fu特征聚类，将cluster的个数是为ID个数，用cross entropy loss计算损失，更新网络参数。</li>
+</ol>
+<h2 id="Conservative-Stage"><a href="#Conservative-Stage" class="headerlink" title="Conservative Stage"></a>Conservative Stage</h2><p>主要为两个损失函数CTL和RTL，都很直白。</p>
+<h3 id="CTL"><a href="#CTL" class="headerlink" title="CTL"></a>CTL</h3><p>CTL将每个cluster视为一类，每次取P个cluster，每个cluster取K张图的特征，然后用hard triplet计算loss，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100117776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h3><p>RTL将每张图根据特征相似性(Jaccard 距离)对所有图排序，取$[ 1, \eta]$为positive sample，取$(\eta, 2\eta]$为negative sample(为啥不取的更加远一些-_-)损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100900404.png" alt="在这里插入图片描述"><br>$P_p$和$P_n$分别为$x_p$和$x_n$相对于$x_a$的ranking位置，值得注意的是这个一个soft margin，$x_p$和$x_n$相距越近margin应该越小，符合常理。</p>
+<h2 id="Promoting-Stage"><a href="#Promoting-Stage" class="headerlink" title="Promoting Stage"></a>Promoting Stage</h2><p>只用三元组损失函数容易陷入局部最优解，所以依然需要cross entropy loss来充分利用全局信息。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211152657967.png" alt="在这里插入图片描述"><br>$\hat{y_i}$为$x_i$的伪标签，这个伪标签由HDBSCAN对Fu(模型经过CTL和RTL优化之后重新对target domain上的图像提取特征)聚类得到，C为cluster的数量。值得注意的是$W_c^T$用每一类的特征均值做初始化，因为分类器每一类的参数实际上是这一类的模板，所以这么做可以加快收敛。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Ablation-Study"><a href="#Ablation-Study" class="headerlink" title="Ablation Study"></a>Ablation Study</h3><p><img src="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="不同的聚类方法"><a href="#不同的聚类方法" class="headerlink" title="不同的聚类方法"></a>不同的聚类方法</h3><p><img src="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="SOTA"><a href="#SOTA" class="headerlink" title="SOTA"></a>SOTA</h3><p><img src="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>论文笔记</tag>
+        <tag>ReID</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记</title>
     <url>/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
@@ -35,6 +70,60 @@
       </tags>
   </entry>
   <entry>
+    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
+<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>论文笔记</tag>
+        <tag>ReID</tag>
+        <tag>数据集</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种新颖的viewpoint-aware metric learning approach</li>
+<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
+<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
+<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
+<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>论文笔记</tag>
+        <tag>ReID</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2020/09/28/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -53,6 +142,33 @@
 ]]></content>
       <tags>
         <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>View Confusion Feature Learning for Person Re-identification论文笔记</title>
+    <url>/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
+<li>用SIFT特征来指导模型训练。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
+<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
+<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
+<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>论文笔记</tag>
+        <tag>ReID</tag>
       </tags>
   </entry>
 </search>
