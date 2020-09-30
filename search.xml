@@ -495,4 +495,74 @@
         <tag>Python</tag>
       </tags>
   </entry>
+  <entry>
+    <title>defaultdict用法</title>
+    <url>/2020/09/30/defaultdict%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>当我使用普通的字典时，用法一般是dict={},添加元素的只需要dict[element] =value即，调用的时候也是如此，dict[element] = xxx,但前提是element字典里，如果不在字典里就会报错(可以用get方法设置缺省值)</p>
+<a id="more"></a>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>defaultdict接受一个工厂函数作为参数，如下来构造</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">dict</span> =defaultdict( factory_function)</span><br></pre></td></tr></table></figure>
+
+<p>这个factory_function可以是list、set、str等等，作用是当key不存在时，返回的是工厂函数的默认值，比如list对应[ ]，str对应的是空字符串，set对应set( )，int对应0，如下举例：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections import defaultdict</span><br><span class="line"></span><br><span class="line">dict1 = defaultdict(int)</span><br><span class="line">dict2 = defaultdict(set)</span><br><span class="line">dict3 = defaultdict(str)</span><br><span class="line">dict4 = defaultdict(list)</span><br><span class="line">dict1[2] =<span class="string">&#x27;two&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="builtin-name">print</span>(dict1[1])<span class="builtin-name">print</span>(dict2[1])<span class="builtin-name">print</span>(dict3[1])<span class="builtin-name">print</span>(dict4[1])</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">set</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python自动给数字前面补0</title>
+    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>zfill方法</li>
+<li>格式化</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+<p>也可以用format</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dict类的get方法</title>
+    <url>/2020/09/30/dict%E7%B1%BB%E7%9A%84get%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>Python 字典(Dictionary) get() 函数返回指定键的值，如果值不在字典中返回默认值。</p>
+<a id="more"></a>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>get()方法语法：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">dict.<span class="builtin-name">get</span>(key, <span class="attribute">default</span>=None)</span><br></pre></td></tr></table></figure>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><ul>
+<li>key – 字典中要查找的键。</li>
+<li>default – 如果指定键的值不存在时，返回该默认值。</li>
+</ul>
+<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回指定键的值，如果值不在字典中返回默认值None。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">aa = &#123;<span class="string">&#x27;lab&#x27;</span>:<span class="string">&#x27;mcc&#x27;</span>, <span class="string">&#x27;school&#x27;</span>:<span class="string">&#x27;ustc&#x27;</span>&#125;</span><br><span class="line"><span class="builtin-name">print</span>(aa.<span class="builtin-name">get</span>(<span class="string">&#x27;school&#x27;</span>, <span class="string">&#x27;not find&#x27;</span>))</span><br><span class="line"><span class="builtin-name">print</span>(aa.<span class="builtin-name">get</span>(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;not find&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">ustc</span><br><span class="line"><span class="keyword">not</span> <span class="built_in">find</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h2><ul>
+<li>defaultdict也可以默认设置缺省值</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
 </search>
