@@ -565,4 +565,20 @@
         <tag>Python</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Python可变参数</title>
+    <url>/2020/10/01/Python%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>如果用户在声明参数时不能确定需要使用多少个参数，就使用可变参数，可变参数无需命名。</li>
+<li>加了*号的变量名可以存放所有未命名的变量，比如*args</li>
+<li>加了**号的变量名可以存放一个字典对象，比如**kwargs</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">    print(<span class="string">&#x27;func:&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> arg <span class="keyword">in</span> args:</span><br><span class="line">        print(<span class="string">&#x27;undefined arg:&#x27;</span>, arg)</span><br><span class="line">    print(<span class="string">&#x27;---&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> kwargs:</span><br><span class="line">        print(<span class="string">&#x27;undefined key=&#123;&#125;, value=&#123;&#125;&#x27;</span>.format(k, kwargs[k]))</span><br><span class="line">    print(<span class="string">&#x27;end...&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">func(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;apple&#x27;</span>,worda=<span class="string">&#x27;a&#x27;</span>, wordb=<span class="string">&#x27;b&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
 </search>
