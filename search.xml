@@ -838,13 +838,13 @@
 <li>–shm-size表示交换内存，设置太小会导致dalaloader出问题</li>
 <li>–name为container名称</li>
 <li>-p为端口映射</li>
-<li>-v为挂在系统目录</li>
-</ul>
+<li>-v为挂在系统目录<a id="more"></a>
 <h3 id="进入容器启动SSH"><a href="#进入容器启动SSH" class="headerlink" title="进入容器启动SSH"></a>进入容器启动SSH</h3><h4 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h4><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">docker exec -it shensj_reid <span class="regexp">/bin/</span>bash</span><br></pre></td></tr></table></figure>
 <h4 id="安装SSH"><a href="#安装SSH" class="headerlink" title="安装SSH"></a>安装SSH</h4><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> <span class="keyword">update</span></span><br><span class="line">apt-<span class="keyword">get</span> install openssh-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
-<h4 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h4><p>使用vim打开并修改配置文件，找到PermitRootLogin prohibit-password这一行，修改为PermitRootLogin yes，允许通过ssh远程访问docker</p>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/</span>ssh/sshd_config</span><br></pre></td></tr></table></figure>
+<h4 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h4>使用vim打开并修改配置文件，找到PermitRootLogin prohibit-password这一行，修改为PermitRootLogin yes，允许通过ssh远程访问docker<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/</span>ssh/sshd_config</span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
 <h4 id="修改DOCKER密码"><a href="#修改DOCKER密码" class="headerlink" title="修改DOCKER密码"></a>修改DOCKER密码</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="重启SSH"><a href="#重启SSH" class="headerlink" title="重启SSH"></a>重启SSH</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service ssh restart</span></span><br></pre></td></tr></table></figure>
