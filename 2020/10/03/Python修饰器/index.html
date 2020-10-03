@@ -22,21 +22,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="核心 reverse 切片">
+  <meta name="description" content="作用在原有函数的基础上增加新的功能 实例给函数增加一个统计运行时间的功能">
 <meta property="og:type" content="article">
-<meta property="og:title" content="List逆序的两者方式">
-<meta property="og:url" content="http://example.com/2020/09/28/List%E9%80%86%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:title" content="Python修饰器">
+<meta property="og:url" content="http://example.com/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="核心 reverse 切片">
+<meta property="og:description" content="作用在原有函数的基础上增加新的功能 实例给函数增加一个统计运行时间的功能">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-28T15:24:41.000Z">
-<meta property="article:modified_time" content="2020-09-28T16:03:38.394Z">
+<meta property="article:published_time" content="2020-10-03T04:07:37.000Z">
+<meta property="article:modified_time" content="2020-10-03T04:09:52.601Z">
 <meta property="article:author" content="Misaka Mikoto">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/09/28/List%E9%80%86%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+<link rel="canonical" href="http://example.com/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/">
 
 
 <script class="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>List逆序的两者方式 | Railgun</title>
+  <title>Python修饰器 | Railgun</title>
   
 
 
@@ -210,7 +210,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83"><span class="nav-number">1.</span> <span class="nav-text">核心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F-list-reverse"><span class="nav-number">1.1.</span> <span class="nav-text">第一种方式 list.reverse()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E5%BC%8F-%E4%BD%BF%E7%94%A8%E5%88%87%E7%89%87-1"><span class="nav-number">1.2.</span> <span class="nav-text">第二种方式 使用切片 [::-1]</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E5%81%9A%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">最简单的做法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">用函数的形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E6%94%B9%E5%8F%98%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text">不改变函数调用方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">2.4.</span> <span class="nav-text">语法糖</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -287,7 +287,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/28/List%E9%80%86%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -300,7 +300,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          List逆序的两者方式
+          Python修饰器
         </h1>
 
         <div class="post-meta-container">
@@ -310,16 +310,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-09-28 23:24:41" itemprop="dateCreated datePublished" datetime="2020-09-28T23:24:41+08:00">2020-09-28</time>
+      <time title="创建时间：2020-10-03 12:07:37 / 修改时间：12:09:52" itemprop="dateCreated datePublished" datetime="2020-10-03T12:07:37+08:00">2020-10-03</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-09-29 00:03:38" itemprop="dateModified" datetime="2020-09-29T00:03:38+08:00">2020-09-29</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -345,7 +339,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>285</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -363,14 +357,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>reverse</li>
-<li>切片</li>
-</ul>
+        <h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>给函数增加一个统计运行时间的功能</p>
 <a id="more"></a>
+<h3 id="最简单的做法"><a href="#最简单的做法" class="headerlink" title="最简单的做法"></a>最简单的做法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">startTime = time.time()</span><br><span class="line">myAdd(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">totalTime = time.time() - startTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, totalTime)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0006561279296875</span></span><br></pre></td></tr></table></figure>
+<p>对于每个函数都要写相同的语句，很麻烦，可以用函数的方式来代替</p>
+<h3 id="用函数的形式"><a href="#用函数的形式" class="headerlink" title="用函数的形式"></a>用函数的形式</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    func(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    totalTime = time.time() - startTime</span><br><span class="line">    <span class="keyword">return</span> totalTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, calculateTime(myAdd))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行时间为： <span class="number">2.000053644180298</span></span><br></pre></td></tr></table></figure>
+<p>但是这改变了函数的调用方式，本来调用myAdd，现在调用calculateTime</p>
+<h3 id="不改变函数调用方式"><a href="#不改变函数调用方式" class="headerlink" title="不改变函数调用方式"></a>不改变函数调用方式</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">myAdd = calculateTime(myAdd)</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0000948905944824</span></span><br></pre></td></tr></table></figure>
+<p>需要增加myAdd = calculateTime(myAdd)这行代码，能否用更加简洁的形式代替？语法糖！</p>
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@calculateTime # myAdd = calculateTime(myAdd)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="第一种方式-list-reverse"><a href="#第一种方式-list-reverse" class="headerlink" title="第一种方式 list.reverse()"></a>第一种方式 list.reverse()</h3><p>Python 的 list.reverse() 方法，会直接在原来的列表里面将元素进行逆序排列，<strong>不需要创建新的副本</strong>用于存储结果。调用 list.reverse() 的返回值是 None ，它逆序的结果<strong>直接体现在原来的列表</strong>里面。</p>
-<h3 id="第二种方式-使用切片-1"><a href="#第二种方式-使用切片-1" class="headerlink" title="第二种方式 使用切片 [::-1]"></a>第二种方式 使用切片 [::-1]</h3><p>Python 的列表有一个特性叫做切片，可以将它看作是方括号（ [ ] ）使用的扩展。使用方式为<code>mylist[start:end:step]</code>上面的操作表示取 mylist 的第 start 个（列表索引从 0 开始）到第 end 个元素（不包括第 end 个），其中每隔 step 个（默认 1 ）取一个</p>
 
     </div>
 
@@ -388,7 +393,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/09/28/List%E9%80%86%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/" title="List逆序的两者方式">http://example.com/2020/09/28/List逆序的两种方式/</a>
+      <a href="http://example.com/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/" title="Python修饰器">http://example.com/2020/10/03/Python修饰器/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -404,14 +409,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/09/28/Python%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/" rel="prev" title="Python可迭代对象">
-                  <i class="fa fa-chevron-left"></i> Python可迭代对象
+                <a href="/2020/10/03/Python%E7%94%9F%E6%88%90%E5%99%A8/" rel="prev" title="Python生成器">
+                  <i class="fa fa-chevron-left"></i> Python生成器
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/09/28/Python%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="next" title="Python多线程">
-                  Python多线程 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
