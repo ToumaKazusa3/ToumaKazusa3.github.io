@@ -1367,7 +1367,7 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
   <entry>
     <title>test mathjax</title>
     <url>/2020/10/06/test-mathjax/</url>
-    <content><![CDATA[<p>$a_b$<br>这是一个数学公式$a_b$嗯嗯呢</p>
+    <content><![CDATA[<p>$$a_b$$<br>这是一个数学公式$$a_b$$嗯嗯呢</p>
 ]]></content>
   </entry>
 </search>
