@@ -321,7 +321,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-10-07 15:43:31 / 修改时间：15:51:23" itemprop="dateCreated datePublished" datetime="2020-10-07T15:43:31+08:00">2020-10-07</time>
+      <time title="创建时间：2020-10-07 15:43:31 / 修改时间：16:00:30" itemprop="dateCreated datePublished" datetime="2020-10-07T15:43:31+08:00">2020-10-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -360,19 +360,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很多人会将自己的个人主页挂载在github上，这时就需要创建用户站点，用户站点的仓库名必须是<code>&lt;user&gt;.github.io</code>，做完这一步之后，很多人会和我有一样的想法——搭建多个Github Pages页面。这些页面可以用来实现不同的功能，比如放ACG，放网站导航等等。之前一直以为每个用户只能拥有一个Github Pages（这个就是上文提到的<code>&lt;user&gt;.github.io</code>仓库），现在查阅各种资料之后，发现不是这么一回事，下面讲述我搭建第二个Github Pages时遇到的各种坑~</p>
-<h2 id="Github-Pages分类"><a href="#Github-Pages分类" class="headerlink" title="Github Pages分类"></a>Github Pages分类</h2><p>查阅文档之后发现，Github Pages有三类，分别是用户站点，组织站点和<strong>项目站点</strong>，其中用户/组织站点只能创建一个，同时要发布用户站点，必须创建名为 <code>&lt;user&gt;.github.io</code> 的用户帐户所拥有的仓库。 要发布组织站点，必须创建名为 <code>&lt;organization&gt;.github.io</code> 的组织所拥有的仓库。 除非您使用自定义域，否则用户和组织站点位于 <code>http(s)://&lt;username&gt;.github.io</code> 或  <code>http(s)://&lt;organization&gt;.github.io</code>。而<strong>项目站点</strong>却可以创建多个，比如为这个项目创建一个名为<code>acg</code>的仓库，我们将项目站点源文件传到这个仓库，那么我们就可以用<code>http(s)://&lt;user&gt;.github.io/acg</code>来访问这个项目站点。</p>
-<h2 id="搭建站点"><a href="#搭建站点" class="headerlink" title="搭建站点"></a>搭建站点</h2><h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>我已经搭建了个人博客，地址为：<code>https://blog.shensanjing.site/</code>，现在我要创建一个网站导航项目站点，站点示意图如下：<br><img src="https://s1.ax1x.com/2020/10/07/0aLKMD.png" alt="个人站点"><br><img src="https://s1.ax1x.com/2020/10/07/0aLtRf.png" alt="导航页面"></p>
-<h3 id="搭建导航页面"><a href="#搭建导航页面" class="headerlink" title="搭建导航页面"></a>搭建导航页面</h3><ol>
-<li>创建一个新的仓库，仓库名叫做<code>nav</code></li>
-<li>克隆webstack，地址为：<code>https://github.com/HCLonely/hexo-theme-webstack</code>，因为网站导航是子页面，所以要将_config.yml的URL设置为你的个人站点网址，root设置为你的仓库名，我的设置为<code>url: https://blog.shensanjing.site</code>和<code>root: /nav/</code>，不这么做，会导致没有样式。</li>
-<li>同时还要将webstack的所有图片连接加上<code>/nav/</code>，否则将无法显示图片。</li>
-<li>经过上面三步，已经可以用<code>https://blog.shensanjing.site/nav/</code>来访问网站</li>
-<li>接下来，只要在个人主页项目上加上导航标签即可。</li>
-</ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/183977963">https://zhuanlan.zhihu.com/p/183977963</a></li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/07/%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub-Pages/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
