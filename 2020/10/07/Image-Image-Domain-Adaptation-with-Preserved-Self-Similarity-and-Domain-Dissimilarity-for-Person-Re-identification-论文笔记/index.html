@@ -22,35 +22,33 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="AuthorZhun Zhong, Liang Zheng ConferenceCVPR 2019 Motivation 在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-le">
+  <meta name="description" content="Author Weijian Deng, Liang Zheng ConferenceCVPR 2018 Motivation 直接迁移性能低，考虑用GAN将源域上的图片迁移到目标域上，迁移过程增加约束，保持ID不变。  Contribution 这是ReID任务中第一篇用GAN来解决无监督迁移学习的Paper。 提出了一个跨域迁移的pipeline，先用GAN生成ID相同，风格不同的图片。然后用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记">
-<meta property="og:url" content="http://example.com/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="Image-Image Domain Adaptation with Preserved Self-Similarity and Domain-Dissimilarity for Person Re-identification 论文笔记">
+<meta property="og:url" content="http://example.com/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="AuthorZhun Zhong, Liang Zheng ConferenceCVPR 2019 Motivation 在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-le">
+<meta property="og:description" content="Author Weijian Deng, Liang Zheng ConferenceCVPR 2018 Motivation 直接迁移性能低，考虑用GAN将源域上的图片迁移到目标域上，迁移过程增加约束，保持ID不变。  Contribution 这是ReID任务中第一篇用GAN来解决无监督迁移学习的Paper。 提出了一个跨域迁移的pipeline，先用GAN生成ID相同，风格不同的图片。然后用">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210162135330.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019121016300286.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210164027839.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210165159127.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210170510387.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210170734221.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210170924743.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210171321178.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="article:published_time" content="2020-08-27T06:58:08.000Z">
-<meta property="article:modified_time" content="2020-09-28T13:55:43.564Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0dExv4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0dVXdI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0dZqpT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0dZz7R.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0deuNt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0degER.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0de4gO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0dnZFI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0dn3wj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/07/0dnOc8.png">
+<meta property="article:published_time" content="2020-10-07T10:11:08.000Z">
+<meta property="article:modified_time" content="2020-10-07T10:11:50.309Z">
 <meta property="article:author" content="Misaka Mikoto">
 <meta property="article:tag" content="ReID">
 <meta property="article:tag" content="论文笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/10/07/0dExv4.png">
 
 
-<link rel="canonical" href="http://example.com/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://example.com/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
 
 <script class="page-configurations">
@@ -63,7 +61,7 @@
   };
 </script>
 
-  <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记 | Railgun</title>
+  <title>Image-Image Domain Adaptation with Preserved Self-Similarity and Domain-Dissimilarity for Person Re-identification 论文笔记 | Railgun</title>
   
 
 
@@ -234,7 +232,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Baseline"><span class="nav-number">6.</span> <span class="nav-text">Baseline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exemplar-Memory"><span class="nav-number">7.</span> <span class="nav-text">Exemplar Memory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Exemplar-invariance"><span class="nav-number">7.1.</span> <span class="nav-text">Exemplar-invariance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Camera-invariance"><span class="nav-number">7.2.</span> <span class="nav-text">Camera-invariance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Neighborhood-invariance"><span class="nav-number">7.3.</span> <span class="nav-text">Neighborhood-invariance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overall-loss-of-invariance-learning"><span class="nav-number">7.4.</span> <span class="nav-text">Overall loss of invariance learning</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">8.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#beta-%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">8.1.</span> <span class="nav-text">$\beta$的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">8.2.</span> <span class="nav-text">Memory的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ablation-experiment-on-invariance-learning"><span class="nav-number">8.3.</span> <span class="nav-text">Ablation experiment on invariance learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SOTA%E6%80%A7%E8%83%BD"><span class="nav-number">8.4.</span> <span class="nav-text">SOTA性能</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">5.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SiaNet"><span class="nav-number">5.2.</span> <span class="nav-text">SiaNet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Model%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.2.1.</span> <span class="nav-text">Model模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Loss%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">5.2.2.</span> <span class="nav-text">Loss损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E4%B8%89%E4%B8%AA%E6%A8%A1%E5%9D%97%E7%9A%84%E8%A7%92%E5%BA%A6%E7%9C%8BLoss"><span class="nav-number">5.2.3.</span> <span class="nav-text">从三个模块的角度看Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Train-the-Generator"><span class="nav-number">5.2.3.1.</span> <span class="nav-text">Train the Generator</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Train-the-Siamese-Network"><span class="nav-number">5.2.3.2.</span> <span class="nav-text">Train the Siamese Network</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Train-the-Discriminator"><span class="nav-number">5.2.3.3.</span> <span class="nav-text">Train the Discriminator </span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">6.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E7%BB%93%E6%9E%9C"><span class="nav-number">6.1.</span> <span class="nav-text">迁移结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD"><span class="nav-number">6.2.</span> <span class="nav-text">性能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AFLMP"><span class="nav-number">7.</span> <span class="nav-text">补充：什么是LMP</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -314,7 +312,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -327,7 +325,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记
+          Image-Image Domain Adaptation with Preserved Self-Similarity and Domain-Dissimilarity for Person Re-identification 论文笔记
         </h1>
 
         <div class="post-meta-container">
@@ -337,16 +335,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-08-27 14:58:08" itemprop="dateCreated datePublished" datetime="2020-08-27T14:58:08+08:00">2020-08-27</time>
+      <time title="创建时间：2020-10-07 18:11:08 / 修改时间：18:11:50" itemprop="dateCreated datePublished" datetime="2020-10-07T18:11:08+08:00">2020-10-07</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-09-28 21:55:43" itemprop="dateModified" datetime="2020-09-28T21:55:43+08:00">2020-09-28</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -372,7 +364,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
+      <span>2.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -390,28 +382,46 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
+        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Weijian Deng, Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2018</p>
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-level的domain bias很容易通过网络学出来，但在无监督学习下却不行。</li>
+<li>直接迁移性能低，考虑用GAN将源域上的图片迁移到目标域上，迁移过程增加约束，保持ID不变。</li>
 </ul>
 <h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>提出exemplar-invariance, camera- invariance and neighborhood-invariance三种不变性约束。</li>
-<li>提出memory module来充分利用整个training set上的样本。</li>
+<li>这是ReID任务中第一篇用GAN来解决无监督迁移学习的Paper。</li>
+<li>提出了一个跨域迁移的pipeline，先用GAN生成ID相同，风格不同的图片。然后用生成的图片来训练网络。</li>
 </ul>
-<a id="more"></a>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dExv4.png" alt="pipeline"></p>
+<ul>
+<li>similarity preserving image-to-image translation：先用GAN生成ID相同，风格不同的图片</li>
+<li>feature learning：然后用生成的图片来训练网络</li>
+<li>最后测试用的是feature learning步骤中的re-ID model而不是similarity preserving image-to-image translation步骤中的SiaNet</li>
+</ul>
+<h3 id="SiaNet"><a href="#SiaNet" class="headerlink" title="SiaNet"></a>SiaNet</h3><h4 id="Model模型"><a href="#Model模型" class="headerlink" title="Model模型"></a>Model模型</h4><p><img src="https://s1.ax1x.com/2020/10/07/0dVXdI.png" alt="pipeline"></p>
+<ul>
+<li>本质上是一个CycleGAN，再加了一个Discriminator(SiaNet)</li>
+<li>训练的时候分三个模块训练，分别是$G,F$，$D_S,D_T$和$SiaNet$，其中一个模块训练时，固定其它两个模块</li>
+</ul>
+<h4 id="Loss损失函数"><a href="#Loss损失函数" class="headerlink" title="Loss损失函数"></a>Loss损失函数</h4><p><strong>GAN loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0dZqpT.png" alt="S2T GAN Loss"><br><img src="https://s1.ax1x.com/2020/10/07/0dZz7R.png" alt="T2S GAN Loss"></p>
+<p><strong>cycle-consistent loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0deuNt.png" alt="cycle-consistent loss"></p>
+<p><strong>identity loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0degER.png" alt="identity loss"></p>
+<p>加上这个loss的目的是为了让颜色不要突变，如果只有(1)(2)(3)三个公式，可以把一个白皮肤的人变成黑皮肤，再变回白皮肤，这种变换可以使前三个loss很低，但是不符合保持ID不变的要求。</p>
+<p><strong>SiaNet Contrastive Loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0de4gO.png" alt="SiaNet Contrastive Loss"></p>
+<p>加上这个loss是为了保持ID不变，采样规则如下：</p>
+<ul>
+<li>S域上的一张true image，通过G生成fake image，这两张图片构成正样本对；对T域上的图片同样处理。</li>
+<li>S域上的一张true image，T域上的一张true image，这两种图片构成负样本对。</li>
+</ul>
+<h4 id="从三个模块的角度看Loss"><a href="#从三个模块的角度看Loss" class="headerlink" title="从三个模块的角度看Loss"></a>从三个模块的角度看Loss</h4><h5 id="Train-the-Generator"><a href="#Train-the-Generator" class="headerlink" title="Train the Generator"></a>Train the Generator</h5><p>由四个Loss约束</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Positive Pair</span></span><br><span class="line"><span class="comment">#a是S域上的真图，a2b是T域上的假图，metric的意思是经过SiaNet网络，128-dim</span></span><br><span class="line">loss_pos0 = sia_criterion(a_metric, a2b_metric, <span class="number">0</span>)</span><br><span class="line">loss_pos1 = sia_criterion(b_metric, b2a_metric, <span class="number">0</span>)</span><br><span class="line"><span class="comment">#Negative_Pair</span></span><br><span class="line">loss_neg0 = sia_criterion(a2b_metric, b_metric, <span class="number">1</span>)</span><br><span class="line">loss_neg1 = sia_criterion(b2a_metric, a_metric, <span class="number">1</span>)</span><br><span class="line">loss_neg= sia_criterion(a_metric, b_metric, <span class="number">1</span>)</span><br><span class="line"><span class="comment">#contrastive loss for G</span></span><br><span class="line">m_loss_G = (loss_pos0 + loss_pos1 + <span class="number">0.5</span>*(loss_neg0 + loss_neg1)) / <span class="number">4.0</span></span><br><span class="line">m_loss_M = (loss_pos0 + loss_pos1 + <span class="number">2</span>* loss_neg) / <span class="number">3.0</span></span><br><span class="line"><span class="comment"># identity loss</span></span><br><span class="line">b2b = Gb(b_real)</span><br><span class="line">a2a = Ga(a_real)</span><br><span class="line">idt_loss_b = L1(b2b, b_real)</span><br><span class="line">idt_loss_a = L1(a2a, a_real)</span><br><span class="line">idt_loss = idt_loss_a + idt_loss_b</span><br><span class="line"></span><br><span class="line"><span class="comment"># gen losses</span></span><br><span class="line"><span class="comment"># 假图拉到1</span></span><br><span class="line">a_f_dis = Da(a_fake)</span><br><span class="line">b_f_dis = Db(b_fake)</span><br><span class="line">r_label = torch.ones(a_f_dis.size()).to(device)</span><br><span class="line">a_gen_loss = MSE(a_f_dis, r_label)</span><br><span class="line">b_gen_loss = MSE(b_f_dis, r_label)</span><br><span class="line"></span><br><span class="line"><span class="comment"># rec losses</span></span><br><span class="line">a_rec_loss = L1(a_rec, a_real)</span><br><span class="line">b_rec_loss = L1(b_rec, b_real)</span><br><span class="line">rec_loss = a_rec_loss + b_rec_loss</span><br></pre></td></tr></table></figure>
+<h5 id="Train-the-Siamese-Network"><a href="#Train-the-Siamese-Network" class="headerlink" title="Train the Siamese Network"></a>Train the Siamese Network</h5><p>只有contrastive loss约束</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Positive Pair</span></span><br><span class="line">loss_pos0 = sia_criterion(a_metric, a2b_metric, <span class="number">0</span>)</span><br><span class="line">loss_pos1 = sia_criterion(b_metric, b2a_metric, <span class="number">0</span>)</span><br><span class="line"><span class="comment">#print(loss_pos1, type(loss_pos1))</span></span><br><span class="line"><span class="comment">#Negative_Pair</span></span><br><span class="line">loss_neg= sia_criterion(a_metric, b_metric, <span class="number">1</span>)</span><br><span class="line"><span class="comment">#contrastive loss for Sia</span></span><br><span class="line">m_loss_M = (loss_pos0 + loss_pos1 + <span class="number">2</span>*loss_neg) / <span class="number">3.0</span></span><br></pre></td></tr></table></figure>
+<h5 id="Train-the-Discriminator"><a href="#Train-the-Discriminator" class="headerlink" title="Train the Discriminator "></a>Train the Discriminator </h5><p>只有GAN loss约束</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Training D</span></span><br><span class="line">a_r_dis = Da(a_real)</span><br><span class="line">a_f_dis = Da(a_fake)</span><br><span class="line">b_r_dis = Db(b_real)</span><br><span class="line">b_f_dis = Db(b_fake)</span><br><span class="line">r_label = torch.ones(a_f_dis.size()).to(device)</span><br><span class="line">f_label = torch.zeros(a_f_dis.size()).to(device)</span><br><span class="line"></span><br><span class="line"><span class="comment"># d loss</span></span><br><span class="line"><span class="comment"># 真图拉到1，假图拉到0</span></span><br><span class="line">a_d_r_loss = MSE(a_r_dis, r_label)</span><br><span class="line">a_d_f_loss = MSE(a_f_dis, f_label)</span><br><span class="line">b_d_r_loss = MSE(b_r_dis, r_label)</span><br><span class="line">b_d_f_loss = MSE(b_f_dis, f_label)</span><br><span class="line"></span><br><span class="line">a_d_loss = (a_d_r_loss + a_d_f_loss)*<span class="number">0.5</span></span><br><span class="line">b_d_loss = (b_d_r_loss + b_d_f_loss)*<span class="number">0.5</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="framework"></p>
-<h2 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h2><p>蓝色支路为baseline，输入为source domain上带标签的图片，用cross entropy loss做约束，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210162135330.png" alt="在这里插入图片描述"><br>$n_{s}$为source domain上图片的数量，$x_{s,i}$为source domain上的第$i$张图片，$y_{s,i}$为其label。</p>
-<h2 id="Exemplar-Memory"><a href="#Exemplar-Memory" class="headerlink" title="Exemplar Memory"></a>Exemplar Memory</h2><p>Exemplar Memory为key-value结构，key存储经过L2正则化之后的4096维特征，value存储label(实际上为index)，value在训练过程中保持不变。<br>key初始化为0，在BP时更新，方法如下：<br><img src="https://img-blog.csdnimg.cn/2019121016300286.png" alt="在这里插入图片描述"><br>$\alpha$在[0, 1]的范围内，控制更新速度，为一个超参数。下面用Exemplar Memory模块来完成三种不变性约束。</p>
-<h3 id="Exemplar-invariance"><a href="#Exemplar-invariance" class="headerlink" title="Exemplar-invariance"></a>Exemplar-invariance</h3><p>每张图的appearence都是独一无二的，就算是相同ID的图片，也会受到pose，illumination，background等因素的影响，所以对于每张图，都应该靠近自己(Exemplar Memory的作用)而远离其它图片，作者视每张图都为不同的id，然后将每张图归于自己的id。实际上就是训练一个$N_t$($N_t$为target domain上图片数目)个类的分类器，概率如下：<br><img src="https://img-blog.csdnimg.cn/20191210164027839.png" alt="在这里插入图片描述"><br>$f(x_{t,i})$为backbone输出的4096维特征，与Exemplar Memory中的每个特征计算余弦距离，$\beta$为smooth项，$\beta$越大输出越均匀。</p>
-<h3 id="Camera-invariance"><a href="#Camera-invariance" class="headerlink" title="Camera-invariance"></a>Camera-invariance</h3><p>用StarGAN来风格迁移，将每一张图片都迁移到其他$C-1$个相机下。迁移过程中保证ID不变，camstyle变成对应camid的style。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210165159127.png" alt="在这里插入图片描述"><br>$\hat{x}<em>{t,i}$为由$x</em>{t,i}$风格迁移得到的图片，这张图片应该与$x_{t,i}$属于相同id。</p>
-<h3 id="Neighborhood-invariance"><a href="#Neighborhood-invariance" class="headerlink" title="Neighborhood-invariance"></a>Neighborhood-invariance</h3><p>对于target domain上的每张图，都存在其他正例，只是在这个问题定义下我们不知道而已。对于每一张图片的输出$f(x_{t,i})$我们可以在key张找到k-nearest近邻，显然最近的是自己。$M(x_{t,i},k)$表示离$f(x_{t,i})$最近的k个近邻的value值。<br>作者认为$M(x_{t,i},k)$中的k张图最有可能与$f(x_{t,i})$拥有相同的id，所以希望在特征空间中拉近彼此之间的距离，但是这种伪标签又是不可信的，所以不能赋予太高的权重。权重如下：<br><img src="https://img-blog.csdnimg.cn/20191210170510387.png" alt="在这里插入图片描述"><br>对$f(x_{t,i})$自身赋予1，其余赋予$\frac{1}{k}$的权重。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210170734221.png" alt="在这里插入图片描述"><br>这个损失函数中为了与exemplar-invariance区别将自身剔除了。</p>
-<h3 id="Overall-loss-of-invariance-learning"><a href="#Overall-loss-of-invariance-learning" class="headerlink" title="Overall loss of invariance learning"></a>Overall loss of invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210170924743.png" alt="在这里插入图片描述"><br>将三种不变性loss合在一起写简单明了。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="beta-的影响"><a href="#beta-的影响" class="headerlink" title="$\beta$的影响"></a>$\beta$的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Memory的影响"><a href="#Memory的影响" class="headerlink" title="Memory的影响"></a>Memory的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171321178.png" alt="在这里插入图片描述"><br>memroy module的计算开销小，效果提升显著，非常值得借鉴。</p>
-<h3 id="Ablation-experiment-on-invariance-learning"><a href="#Ablation-experiment-on-invariance-learning" class="headerlink" title="Ablation experiment on invariance learning"></a>Ablation experiment on invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="SOTA性能"><a href="#SOTA性能" class="headerlink" title="SOTA性能"></a>SOTA性能</h3><p><img src="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="迁移结果"><a href="#迁移结果" class="headerlink" title="迁移结果"></a>迁移结果</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dnZFI.png" alt="迁移结果"></p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dn3wj.png" alt="性能"></p>
+<h2 id="补充：什么是LMP"><a href="#补充：什么是LMP" class="headerlink" title="补充：什么是LMP"></a>补充：什么是LMP</h2><p><img src="https://s1.ax1x.com/2020/10/07/0dnOc8.png" alt="性能"></p>
 
     </div>
 
@@ -429,7 +439,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记">http://example.com/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio论文笔记/</a>
+      <a href="http://example.com/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="Image-Image Domain Adaptation with Preserved Self-Similarity and Domain-Dissimilarity for Person Re-identification 论文笔记">http://example.com/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-论文笔记/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -446,11 +456,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2020/10/07/%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub-Pages/" rel="prev" title="创建多个Github Pages">
+                  <i class="fa fa-chevron-left"></i> 创建多个Github Pages
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="next" title="Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记">
-                  Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

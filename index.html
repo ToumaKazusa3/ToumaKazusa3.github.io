@@ -232,7 +232,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -287,6 +287,136 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Misaka Mikoto">
+      <meta itemprop="description" content="君の指先には光が跃る、私はこの世に消えない信仰、唯超电磁炮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Railgun">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Image-Image Domain Adaptation with Preserved Self-Similarity and Domain-Dissimilarity for Person Re-identification 论文笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-10-07 18:11:08 / 修改时间：18:11:50" itemprop="dateCreated datePublished" datetime="2020-10-07T18:11:08+08:00">2020-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Weijian Deng, Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2018</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>直接迁移性能低，考虑用GAN将源域上的图片迁移到目标域上，迁移过程增加约束，保持ID不变。</li>
+</ul>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>这是ReID任务中第一篇用GAN来解决无监督迁移学习的Paper。</li>
+<li>提出了一个跨域迁移的pipeline，先用GAN生成ID相同，风格不同的图片。然后用生成的图片来训练网络。</li>
+</ul>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dExv4.png" alt="pipeline"></p>
+<ul>
+<li>similarity preserving image-to-image translation：先用GAN生成ID相同，风格不同的图片</li>
+<li>feature learning：然后用生成的图片来训练网络</li>
+<li>最后测试用的是feature learning步骤中的re-ID model而不是similarity preserving image-to-image translation步骤中的SiaNet</li>
+</ul>
+<h3 id="SiaNet"><a href="#SiaNet" class="headerlink" title="SiaNet"></a>SiaNet</h3><h4 id="Model模型"><a href="#Model模型" class="headerlink" title="Model模型"></a>Model模型</h4><p><img src="https://s1.ax1x.com/2020/10/07/0dVXdI.png" alt="pipeline"></p>
+<ul>
+<li>本质上是一个CycleGAN，再加了一个Discriminator(SiaNet)</li>
+<li>训练的时候分三个模块训练，分别是$G,F$，$D_S,D_T$和$SiaNet$，其中一个模块训练时，固定其它两个模块</li>
+</ul>
+<h4 id="Loss损失函数"><a href="#Loss损失函数" class="headerlink" title="Loss损失函数"></a>Loss损失函数</h4><p><strong>GAN loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0dZqpT.png" alt="S2T GAN Loss"><br><img src="https://s1.ax1x.com/2020/10/07/0dZz7R.png" alt="T2S GAN Loss"></p>
+<p><strong>cycle-consistent loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0deuNt.png" alt="cycle-consistent loss"></p>
+<p><strong>identity loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0degER.png" alt="identity loss"></p>
+<p>加上这个loss的目的是为了让颜色不要突变，如果只有(1)(2)(3)三个公式，可以把一个白皮肤的人变成黑皮肤，再变回白皮肤，这种变换可以使前三个loss很低，但是不符合保持ID不变的要求。</p>
+<p><strong>SiaNet Contrastive Loss</strong><br><img src="https://s1.ax1x.com/2020/10/07/0de4gO.png" alt="SiaNet Contrastive Loss"></p>
+<p>加上这个loss是为了保持ID不变，采样规则如下：</p>
+<ul>
+<li>S域上的一张true image，通过G生成fake image，这两张图片构成正样本对；对T域上的图片同样处理。</li>
+<li>S域上的一张true image，T域上的一张true image，这两种图片构成负样本对。</li>
+</ul>
+<h4 id="从三个模块的角度看Loss"><a href="#从三个模块的角度看Loss" class="headerlink" title="从三个模块的角度看Loss"></a>从三个模块的角度看Loss</h4><h5 id="Train-the-Generator"><a href="#Train-the-Generator" class="headerlink" title="Train the Generator"></a>Train the Generator</h5><p>由四个Loss约束</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Positive Pair</span></span><br><span class="line"><span class="comment">#a是S域上的真图，a2b是T域上的假图，metric的意思是经过SiaNet网络，128-dim</span></span><br><span class="line">loss_pos0 = sia_criterion(a_metric, a2b_metric, <span class="number">0</span>)</span><br><span class="line">loss_pos1 = sia_criterion(b_metric, b2a_metric, <span class="number">0</span>)</span><br><span class="line"><span class="comment">#Negative_Pair</span></span><br><span class="line">loss_neg0 = sia_criterion(a2b_metric, b_metric, <span class="number">1</span>)</span><br><span class="line">loss_neg1 = sia_criterion(b2a_metric, a_metric, <span class="number">1</span>)</span><br><span class="line">loss_neg= sia_criterion(a_metric, b_metric, <span class="number">1</span>)</span><br><span class="line"><span class="comment">#contrastive loss for G</span></span><br><span class="line">m_loss_G = (loss_pos0 + loss_pos1 + <span class="number">0.5</span>*(loss_neg0 + loss_neg1)) / <span class="number">4.0</span></span><br><span class="line">m_loss_M = (loss_pos0 + loss_pos1 + <span class="number">2</span>* loss_neg) / <span class="number">3.0</span></span><br><span class="line"><span class="comment"># identity loss</span></span><br><span class="line">b2b = Gb(b_real)</span><br><span class="line">a2a = Ga(a_real)</span><br><span class="line">idt_loss_b = L1(b2b, b_real)</span><br><span class="line">idt_loss_a = L1(a2a, a_real)</span><br><span class="line">idt_loss = idt_loss_a + idt_loss_b</span><br><span class="line"></span><br><span class="line"><span class="comment"># gen losses</span></span><br><span class="line"><span class="comment"># 假图拉到1</span></span><br><span class="line">a_f_dis = Da(a_fake)</span><br><span class="line">b_f_dis = Db(b_fake)</span><br><span class="line">r_label = torch.ones(a_f_dis.size()).to(device)</span><br><span class="line">a_gen_loss = MSE(a_f_dis, r_label)</span><br><span class="line">b_gen_loss = MSE(b_f_dis, r_label)</span><br><span class="line"></span><br><span class="line"><span class="comment"># rec losses</span></span><br><span class="line">a_rec_loss = L1(a_rec, a_real)</span><br><span class="line">b_rec_loss = L1(b_rec, b_real)</span><br><span class="line">rec_loss = a_rec_loss + b_rec_loss</span><br></pre></td></tr></table></figure>
+<h5 id="Train-the-Siamese-Network"><a href="#Train-the-Siamese-Network" class="headerlink" title="Train the Siamese Network"></a>Train the Siamese Network</h5><p>只有contrastive loss约束</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Positive Pair</span></span><br><span class="line">loss_pos0 = sia_criterion(a_metric, a2b_metric, <span class="number">0</span>)</span><br><span class="line">loss_pos1 = sia_criterion(b_metric, b2a_metric, <span class="number">0</span>)</span><br><span class="line"><span class="comment">#print(loss_pos1, type(loss_pos1))</span></span><br><span class="line"><span class="comment">#Negative_Pair</span></span><br><span class="line">loss_neg= sia_criterion(a_metric, b_metric, <span class="number">1</span>)</span><br><span class="line"><span class="comment">#contrastive loss for Sia</span></span><br><span class="line">m_loss_M = (loss_pos0 + loss_pos1 + <span class="number">2</span>*loss_neg) / <span class="number">3.0</span></span><br></pre></td></tr></table></figure>
+<h5 id="Train-the-Discriminator"><a href="#Train-the-Discriminator" class="headerlink" title="Train the Discriminator "></a>Train the Discriminator </h5><p>只有GAN loss约束</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Training D</span></span><br><span class="line">a_r_dis = Da(a_real)</span><br><span class="line">a_f_dis = Da(a_fake)</span><br><span class="line">b_r_dis = Db(b_real)</span><br><span class="line">b_f_dis = Db(b_fake)</span><br><span class="line">r_label = torch.ones(a_f_dis.size()).to(device)</span><br><span class="line">f_label = torch.zeros(a_f_dis.size()).to(device)</span><br><span class="line"></span><br><span class="line"><span class="comment"># d loss</span></span><br><span class="line"><span class="comment"># 真图拉到1，假图拉到0</span></span><br><span class="line">a_d_r_loss = MSE(a_r_dis, r_label)</span><br><span class="line">a_d_f_loss = MSE(a_f_dis, f_label)</span><br><span class="line">b_d_r_loss = MSE(b_r_dis, r_label)</span><br><span class="line">b_d_f_loss = MSE(b_f_dis, f_label)</span><br><span class="line"></span><br><span class="line">a_d_loss = (a_d_r_loss + a_d_f_loss)*<span class="number">0.5</span></span><br><span class="line">b_d_loss = (b_d_r_loss + b_d_f_loss)*<span class="number">0.5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="迁移结果"><a href="#迁移结果" class="headerlink" title="迁移结果"></a>迁移结果</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dnZFI.png" alt="迁移结果"></p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dn3wj.png" alt="性能"></p>
+<h2 id="补充：什么是LMP"><a href="#补充：什么是LMP" class="headerlink" title="补充：什么是LMP"></a>补充：什么是LMP</h2><p><img src="https://s1.ax1x.com/2020/10/07/0dnOc8.png" alt="性能"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1162,104 +1292,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Misaka Mikoto">
-      <meta itemprop="description" content="君の指先には光が跃る、私はこの世に消えない信仰、唯超电磁炮">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Railgun">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/" class="post-title-link" itemprop="url">矩阵乘法和对应元素相乘</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-10-05 10:51:33 / 修改时间：10:57:06" itemprop="dateCreated datePublished" datetime="2020-10-05T10:51:33+08:00">2020-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>244</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; = 3.5中）或dot函数或方法执行：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1315,13 +1347,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">42k</span>
+    <span title="站点总字数">45k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">38 分钟</span>
+    <span title="站点阅读时长">41 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
