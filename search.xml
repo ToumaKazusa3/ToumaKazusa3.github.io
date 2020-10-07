@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Generalizing A Person Retrieval Model Hetero- and Homogeneously 论文笔记</title>
+    <url>/2020/10/07/Generalizing-A-Person-Retrieval-Model-Hetero-and-Homogeneously-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Zhun Zhong, Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ECCV 2018</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>以往的做法(SPGAN,PTGAN)都是只考虑源域与目标域之间的bias，没有考虑目标域不同摄像机的bias</li>
+<li>目标域不同相机之间也可以看出是一个跨域任务<a id="more"></a>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出了一种新的跨域学习的pipeline</li>
+</ul>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://s1.ax1x.com/2020/10/07/0dqjt1.png" alt="pipeline"></p>
+<h3 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h3><ul>
+<li>在源域上用CE loss和Triplet loss约束训练</li>
+<li>在目标域上测试</li>
+</ul>
+<h3 id="HHL"><a href="#HHL" class="headerlink" title="HHL"></a>HHL</h3><p>用StarGAN在目标域上不同相机之间迁移图片，在此基础上提出两个不变性</p>
+<h4 id="相机不变性"><a href="#相机不变性" class="headerlink" title="相机不变性"></a>相机不变性</h4><p>迁移前后的图片应该保证ID不变(理想情况，事实上StarGAN根本没法做到这一点)，这样迁移前后的图片就构成了正对，负样本从目标域上的原图中随机选取，严格意义上这并不成立，但是由于原图上正样本很少，所以可以看成是一种近似，作者在最后的实验中也验证了，影响不大。对应的loss为：<br><img src="https://s1.ax1x.com/2020/10/07/0dOzLD.png" alt="pipeline"><br>$t$表示目标域上的真图，$n_t$为目标域真图的所有图片数目，$t^\star$为目标域上的假图，$n_t^\star$为目标域假图的所有图片数目。</p>
+<h4 id="域连通性"><a href="#域连通性" class="headerlink" title="域连通性"></a>域连通性</h4><p>源域目标域图片不重叠，所以构成天然的负对，由于源域带label所以可以找出正对，对饮的loss为：<br><img src="https://s1.ax1x.com/2020/10/07/0djc3q.png" alt="pipeline"><br>$s$表示源域上的真图，$n_s$为源域真图的所有图片数目，$t$表示目标域上的真图，$n_t$为目标域真图的所有图片数目。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="StarGAN迁移结果"><a href="#StarGAN迁移结果" class="headerlink" title="StarGAN迁移结果"></a>StarGAN迁移结果</h3><p><img src="https://s1.ax1x.com/2020/10/07/0djH81.png" alt="pipeline"></p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p><img src="https://s1.ax1x.com/2020/10/07/0djqv6.png" alt="pipeline"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Image-Image Domain Adaptation with Preserved Self-Similarity and Domain-Dissimilarity for Person Re-identification 论文笔记</title>
     <url>/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Weijian Deng, Liang Zheng</p>
@@ -86,36 +116,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python修饰器</title>
-    <url>/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>给函数增加一个统计运行时间的功能</p>
-<a id="more"></a>
-<h3 id="最简单的做法"><a href="#最简单的做法" class="headerlink" title="最简单的做法"></a>最简单的做法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">startTime = time.time()</span><br><span class="line">myAdd(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">totalTime = time.time() - startTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, totalTime)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0006561279296875</span></span><br></pre></td></tr></table></figure>
-<p>对于每个函数都要写相同的语句，很麻烦，可以用函数的方式来代替</p>
-<h3 id="用函数的形式"><a href="#用函数的形式" class="headerlink" title="用函数的形式"></a>用函数的形式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    func(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    totalTime = time.time() - startTime</span><br><span class="line">    <span class="keyword">return</span> totalTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, calculateTime(myAdd))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.000053644180298</span></span><br></pre></td></tr></table></figure>
-<p>但是这改变了函数的调用方式，本来调用myAdd，现在调用calculateTime</p>
-<h3 id="不改变函数调用方式"><a href="#不改变函数调用方式" class="headerlink" title="不改变函数调用方式"></a>不改变函数调用方式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">myAdd = calculateTime(myAdd)</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0000948905944824</span></span><br></pre></td></tr></table></figure>
-<p>需要增加myAdd = calculateTime(myAdd)这行代码，能否用更加简洁的形式代替？语法糖！</p>
-<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@calculateTime # myAdd = calculateTime(myAdd)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>List逆序的两者方式</title>
     <url>/2020/09/28/List%E9%80%86%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -159,6 +159,36 @@
 <li>加了**号的变量名可以存放一个字典对象，比如**kwargs</li>
 </ul>
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">    print(<span class="string">&#x27;func:&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> arg <span class="keyword">in</span> args:</span><br><span class="line">        print(<span class="string">&#x27;undefined arg:&#x27;</span>, arg)</span><br><span class="line">    print(<span class="string">&#x27;---&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> kwargs:</span><br><span class="line">        print(<span class="string">&#x27;undefined key=&#123;&#125;, value=&#123;&#125;&#x27;</span>.format(k, kwargs[k]))</span><br><span class="line">    print(<span class="string">&#x27;end...&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">func(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;apple&#x27;</span>,worda=<span class="string">&#x27;a&#x27;</span>, wordb=<span class="string">&#x27;b&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python修饰器</title>
+    <url>/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>给函数增加一个统计运行时间的功能</p>
+<a id="more"></a>
+<h3 id="最简单的做法"><a href="#最简单的做法" class="headerlink" title="最简单的做法"></a>最简单的做法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">startTime = time.time()</span><br><span class="line">myAdd(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">totalTime = time.time() - startTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, totalTime)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0006561279296875</span></span><br></pre></td></tr></table></figure>
+<p>对于每个函数都要写相同的语句，很麻烦，可以用函数的方式来代替</p>
+<h3 id="用函数的形式"><a href="#用函数的形式" class="headerlink" title="用函数的形式"></a>用函数的形式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    func(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    totalTime = time.time() - startTime</span><br><span class="line">    <span class="keyword">return</span> totalTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, calculateTime(myAdd))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.000053644180298</span></span><br></pre></td></tr></table></figure>
+<p>但是这改变了函数的调用方式，本来调用myAdd，现在调用calculateTime</p>
+<h3 id="不改变函数调用方式"><a href="#不改变函数调用方式" class="headerlink" title="不改变函数调用方式"></a>不改变函数调用方式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">myAdd = calculateTime(myAdd)</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0000948905944824</span></span><br></pre></td></tr></table></figure>
+<p>需要增加myAdd = calculateTime(myAdd)这行代码，能否用更加简洁的形式代替？语法糖！</p>
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@calculateTime # myAdd = calculateTime(myAdd)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -211,6 +241,57 @@
 <h2 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = pickle.load(f)</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
 <p>输出为：</p>
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="number">1</span>: <span class="number">2</span>, <span class="number">2</span>: <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python处理文件</title>
+    <url>/2020/10/03/Python%E5%A4%84%E7%90%86%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>打开关闭文件</li>
+<li>读写文件<a id="more"></a>
+<h2 id="打开关闭文件"><a href="#打开关闭文件" class="headerlink" title="打开关闭文件"></a>打开关闭文件</h2><h3 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(path, mode)</span><br></pre></td></tr></table></figure></li>
+<li>path为文件目录</li>
+<li>mode为打开模式，常用的有’r’,’w’,’rb’,’wb’,’a’,’ab’<h3 id="关闭文件"><a href="#关闭文件" class="headerlink" title="关闭文件"></a>关闭文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<h3 id="with语句"><a href="#with语句" class="headerlink" title="with语句"></a>with语句</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(path, mode) <span class="keyword">as</span> f:</span><br><span class="line">    statement</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="读写文件"><a href="#读写文件" class="headerlink" title="读写文件"></a>读写文件</h2><h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><h4 id="read"><a href="#read" class="headerlink" title="read()"></a>read()</h4><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.read(size)</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">君不见，黄河之水天上来，奔流到海不复回。</span><br><span class="line">君不见，高堂明镜悲白发，朝如青丝暮成雪。</span><br><span class="line">人生得意须尽欢，莫使金樽空对月。</span><br><span class="line">天生我材必有用，千金散尽还复来。</span><br><span class="line">烹羊宰牛且为乐，会须一饮三百杯。</span><br><span class="line">岑夫子，丹丘生，将进酒，杯莫停。</span><br><span class="line">与君歌一曲，请君为我倾耳听。</span><br><span class="line">钟鼓馔玉不足贵，但愿长醉不复醒。</span><br><span class="line">古来圣贤皆寂寞，惟有饮者留其名。</span><br><span class="line">陈王昔时宴平乐，斗酒十千恣欢谑。</span><br><span class="line">主人何为言少钱，径须沽取对君酌。</span><br><span class="line">五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。</span><br></pre></td></tr></table></figure>
+<h4 id="readline"><a href="#readline" class="headerlink" title="readline()"></a>readline()</h4><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.readline(size)</span><br></pre></td></tr></table></figure>
+<p>说明：<br>按行读文件，返回为文件的一行内容<br>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.readline()</span><br><span class="line">    print(data)</span><br><span class="line">    data = f.readline()</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">君不见，黄河之水天上来，奔流到海不复回。</span><br><span class="line"></span><br><span class="line">君不见，高堂明镜悲白发，朝如青丝暮成雪。</span><br></pre></td></tr></table></figure>
+<h4 id="readlines"><a href="#readlines" class="headerlink" title="readlines()"></a>readlines()</h4><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.readline(size)</span><br></pre></td></tr></table></figure>
+<p>说明：<br>按行读整个文件，返回为一个list，这个list包含所有内容<br>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">        print(line.strip())</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">君不见，黄河之水天上来，奔流到海不复回。</span><br><span class="line">君不见，高堂明镜悲白发，朝如青丝暮成雪。</span><br><span class="line">人生得意须尽欢，莫使金樽空对月。</span><br><span class="line">天生我材必有用，千金散尽还复来。</span><br><span class="line">烹羊宰牛且为乐，会须一饮三百杯。</span><br><span class="line">岑夫子，丹丘生，将进酒，杯莫停。</span><br><span class="line">与君歌一曲，请君为我倾耳听。</span><br><span class="line">钟鼓馔玉不足贵，但愿长醉不复醒。</span><br><span class="line">古来圣贤皆寂寞，惟有饮者留其名。</span><br><span class="line">陈王昔时宴平乐，斗酒十千恣欢谑。</span><br><span class="line">主人何为言少钱，径须沽取对君酌。</span><br><span class="line">五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。</span><br></pre></td></tr></table></figure>
+
+<h3 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h3><h4 id="write"><a href="#write" class="headerlink" title="write()"></a>write()</h4><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.write(str)</span><br></pre></td></tr></table></figure>
+<p>说明：<br>写文件，参数必须时字符串，不能为list或者tuple<br>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ss = <span class="string">&#x27;春花秋月何时了？往事知多少。&#x27;</span></span><br><span class="line">    f.write(ss)</span><br></pre></td></tr></table></figure>
+<p>file文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">春花秋月何时了？往事知多少。</span><br></pre></td></tr></table></figure>
+<h4 id="writelines"><a href="#writelines" class="headerlink" title="writelines()"></a>writelines()</h4><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.writelines([str])</span><br></pre></td></tr></table></figure>
+<p>说明：<br>写文件，参数为list或者tuple，注意需要手动换行<br>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ss = <span class="string">&#x27;春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。\n&#x27;</span>,<span class="string">&#x27;雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。\n&#x27;</span></span><br><span class="line">    f.writelines(ss)</span><br></pre></td></tr></table></figure>
+<p>file文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。</span><br><span class="line">雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -282,57 +363,6 @@
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span></span><br><span class="line">Thread<span class="number">-2</span> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> <span class="number">30</span></span><br><span class="line">Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line">Thread<span class="number">-5</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python处理文件</title>
-    <url>/2020/10/03/Python%E5%A4%84%E7%90%86%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>打开关闭文件</li>
-<li>读写文件<a id="more"></a>
-<h2 id="打开关闭文件"><a href="#打开关闭文件" class="headerlink" title="打开关闭文件"></a>打开关闭文件</h2><h3 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(path, mode)</span><br></pre></td></tr></table></figure></li>
-<li>path为文件目录</li>
-<li>mode为打开模式，常用的有’r’,’w’,’rb’,’wb’,’a’,’ab’<h3 id="关闭文件"><a href="#关闭文件" class="headerlink" title="关闭文件"></a>关闭文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f.close()</span><br></pre></td></tr></table></figure>
-<h3 id="with语句"><a href="#with语句" class="headerlink" title="with语句"></a>with语句</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(path, mode) <span class="keyword">as</span> f:</span><br><span class="line">    statement</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="读写文件"><a href="#读写文件" class="headerlink" title="读写文件"></a>读写文件</h2><h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><h4 id="read"><a href="#read" class="headerlink" title="read()"></a>read()</h4><p>语法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.read(size)</span><br></pre></td></tr></table></figure>
-<p>实例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">君不见，黄河之水天上来，奔流到海不复回。</span><br><span class="line">君不见，高堂明镜悲白发，朝如青丝暮成雪。</span><br><span class="line">人生得意须尽欢，莫使金樽空对月。</span><br><span class="line">天生我材必有用，千金散尽还复来。</span><br><span class="line">烹羊宰牛且为乐，会须一饮三百杯。</span><br><span class="line">岑夫子，丹丘生，将进酒，杯莫停。</span><br><span class="line">与君歌一曲，请君为我倾耳听。</span><br><span class="line">钟鼓馔玉不足贵，但愿长醉不复醒。</span><br><span class="line">古来圣贤皆寂寞，惟有饮者留其名。</span><br><span class="line">陈王昔时宴平乐，斗酒十千恣欢谑。</span><br><span class="line">主人何为言少钱，径须沽取对君酌。</span><br><span class="line">五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。</span><br></pre></td></tr></table></figure>
-<h4 id="readline"><a href="#readline" class="headerlink" title="readline()"></a>readline()</h4><p>语法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.readline(size)</span><br></pre></td></tr></table></figure>
-<p>说明：<br>按行读文件，返回为文件的一行内容<br>实例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.readline()</span><br><span class="line">    print(data)</span><br><span class="line">    data = f.readline()</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">君不见，黄河之水天上来，奔流到海不复回。</span><br><span class="line"></span><br><span class="line">君不见，高堂明镜悲白发，朝如青丝暮成雪。</span><br></pre></td></tr></table></figure>
-<h4 id="readlines"><a href="#readlines" class="headerlink" title="readlines()"></a>readlines()</h4><p>语法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.readline(size)</span><br></pre></td></tr></table></figure>
-<p>说明：<br>按行读整个文件，返回为一个list，这个list包含所有内容<br>实例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">        print(line.strip())</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">君不见，黄河之水天上来，奔流到海不复回。</span><br><span class="line">君不见，高堂明镜悲白发，朝如青丝暮成雪。</span><br><span class="line">人生得意须尽欢，莫使金樽空对月。</span><br><span class="line">天生我材必有用，千金散尽还复来。</span><br><span class="line">烹羊宰牛且为乐，会须一饮三百杯。</span><br><span class="line">岑夫子，丹丘生，将进酒，杯莫停。</span><br><span class="line">与君歌一曲，请君为我倾耳听。</span><br><span class="line">钟鼓馔玉不足贵，但愿长醉不复醒。</span><br><span class="line">古来圣贤皆寂寞，惟有饮者留其名。</span><br><span class="line">陈王昔时宴平乐，斗酒十千恣欢谑。</span><br><span class="line">主人何为言少钱，径须沽取对君酌。</span><br><span class="line">五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。</span><br></pre></td></tr></table></figure>
-
-<h3 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h3><h4 id="write"><a href="#write" class="headerlink" title="write()"></a>write()</h4><p>语法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.write(str)</span><br></pre></td></tr></table></figure>
-<p>说明：<br>写文件，参数必须时字符串，不能为list或者tuple<br>实例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ss = <span class="string">&#x27;春花秋月何时了？往事知多少。&#x27;</span></span><br><span class="line">    f.write(ss)</span><br></pre></td></tr></table></figure>
-<p>file文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">春花秋月何时了？往事知多少。</span><br></pre></td></tr></table></figure>
-<h4 id="writelines"><a href="#writelines" class="headerlink" title="writelines()"></a>writelines()</h4><p>语法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fileObject.writelines([str])</span><br></pre></td></tr></table></figure>
-<p>说明：<br>写文件，参数为list或者tuple，注意需要手动换行<br>实例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ss = <span class="string">&#x27;春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。\n&#x27;</span>,<span class="string">&#x27;雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。\n&#x27;</span></span><br><span class="line">    f.writelines(ss)</span><br></pre></td></tr></table></figure>
-<p>file文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。</span><br><span class="line">雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -569,30 +599,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
-<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-        <tag>数据集</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
     <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
@@ -623,23 +629,19 @@
       </tags>
   </entry>
   <entry>
-    <title>View Confusion Feature Learning for Person Re-identification论文笔记</title>
-    <url>/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
+    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
 <h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
-<li>用SIFT特征来指导模型训练。</li>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
+<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
 </ul>
 <a id="more"></a>
 
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
-<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
-<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
-<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -647,6 +649,7 @@
       <tags>
         <tag>ReID</tag>
         <tag>论文笔记</tag>
+        <tag>数据集</tag>
       </tags>
   </entry>
   <entry>
@@ -683,6 +686,33 @@
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>View Confusion Feature Learning for Person Re-identification论文笔记</title>
+    <url>/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
+<li>用SIFT特征来指导模型训练。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
+<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
+<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
+<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -848,6 +878,23 @@
       </tags>
   </entry>
   <entry>
+    <title>__getitem__</title>
+    <url>/2020/10/02/getitem/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>下标索引时调用</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReverseNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, num</span>):</span></span><br><span class="line">        self.rangeList = list(range(num))</span><br><span class="line">        self.num = num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.rangeList[self.num - item - <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">reverseNum = ReverseNum(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(reverseNum[i])</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>np.linspace()和np.arange()</title>
     <url>/2020/10/05/np-linspace-%E5%92%8Cnp-arange/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>两者都是通过规定起始start和结束end来产生numpy数组，不同的是np.linspace()通过指定产生的数据num数目来产生numpy数组，而np.arange()是指定步长step</p>
@@ -893,20 +940,17 @@
       </tags>
   </entry>
   <entry>
-    <title>__getitem__</title>
-    <url>/2020/10/02/getitem/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>下标索引时调用</li>
-</ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReverseNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, num</span>):</span></span><br><span class="line">        self.rangeList = list(range(num))</span><br><span class="line">        self.num = num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.rangeList[self.num - item - <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">reverseNum = ReverseNum(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(reverseNum[i])</span><br></pre></td></tr></table></figure>
+    <title>numpy数组增加一个新的轴</title>
+    <url>/2020/10/05/numpy%E6%95%B0%E7%BB%84%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E8%BD%B4/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>np.newaxis可以给一个数组增加一个新的轴。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.empty((<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">aa = aa[:, np.newaxis, ...]</span><br><span class="line">print(aa.shape)</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>Numpy</tag>
       </tags>
   </entry>
   <entry>
@@ -937,6 +981,34 @@
 <li>np.empty_like()</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>numpy数组的视图与拷贝</title>
+    <url>/2020/10/05/numpy%E6%95%B0%E7%BB%84%E7%9A%84%E8%A7%86%E5%9B%BE%E4%B8%8E%E6%8B%B7%E8%B4%9D/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>当计算和操作数组时，有时会将数据复制到新数组中，有时则不会。这通常是我们混淆的根源。有三种情况：</p>
+<ul>
+<li>完全不复制</li>
+<li>视图或浅拷贝</li>
+<li>深拷贝<a id="more"></a>
+<h2 id="完全不复制"><a href="#完全不复制" class="headerlink" title="完全不复制"></a>完全不复制</h2>简单的分配不会复制数组对象<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line">bb = aa</span><br><span class="line">print(id(aa))</span><br><span class="line">print(id(bb))</span><br></pre></td></tr></table></figure>
+输出：<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2176928950088</span></span><br><span class="line"><span class="number">2176928950088</span></span><br></pre></td></tr></table></figure>
+numpy数组是可变对象，所以函数传递时，是引用传递，在函数内部修改会影响数组本身<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">aa</span>):</span></span><br><span class="line">    aa[<span class="number">0</span>] = <span class="number">111</span></span><br><span class="line"></span><br><span class="line">func(aa)</span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
+输出：<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">111</span>   <span class="number">2</span>   <span class="number">3</span>   <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="视图或浅拷贝"><a href="#视图或浅拷贝" class="headerlink" title="视图或浅拷贝"></a>视图或浅拷贝</h2>不同的数组对象可以共享相同的数据。该view方法创建一个查看相同数据的新数组对象。同时切片数组会返回一个视图。<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line">bb = aa[:<span class="number">2</span>]</span><br><span class="line">bb[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
+输出：<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">11</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="深复制"><a href="#深复制" class="headerlink" title="深复制"></a>深复制</h2><p>该<strong>copy</strong>方法生成数组及其数据的完整副本。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line">bb = aa.copy()</span><br><span class="line">bb[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -988,48 +1060,6 @@
 <li><a href="https://www.numpy.org.cn/user/quickstart.html">https://www.numpy.org.cn/user/quickstart.html</a></li>
 </ul>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>numpy数组增加一个新的轴</title>
-    <url>/2020/10/05/numpy%E6%95%B0%E7%BB%84%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E8%BD%B4/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>np.newaxis可以给一个数组增加一个新的轴。</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.empty((<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">aa = aa[:, np.newaxis, ...]</span><br><span class="line">print(aa.shape)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>numpy数组的视图与拷贝</title>
-    <url>/2020/10/05/numpy%E6%95%B0%E7%BB%84%E7%9A%84%E8%A7%86%E5%9B%BE%E4%B8%8E%E6%8B%B7%E8%B4%9D/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>当计算和操作数组时，有时会将数据复制到新数组中，有时则不会。这通常是我们混淆的根源。有三种情况：</p>
-<ul>
-<li>完全不复制</li>
-<li>视图或浅拷贝</li>
-<li>深拷贝<a id="more"></a>
-<h2 id="完全不复制"><a href="#完全不复制" class="headerlink" title="完全不复制"></a>完全不复制</h2>简单的分配不会复制数组对象<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line">bb = aa</span><br><span class="line">print(id(aa))</span><br><span class="line">print(id(bb))</span><br></pre></td></tr></table></figure>
-输出：<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2176928950088</span></span><br><span class="line"><span class="number">2176928950088</span></span><br></pre></td></tr></table></figure>
-numpy数组是可变对象，所以函数传递时，是引用传递，在函数内部修改会影响数组本身<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">aa</span>):</span></span><br><span class="line">    aa[<span class="number">0</span>] = <span class="number">111</span></span><br><span class="line"></span><br><span class="line">func(aa)</span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
-输出：<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">111</span>   <span class="number">2</span>   <span class="number">3</span>   <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
-<h2 id="视图或浅拷贝"><a href="#视图或浅拷贝" class="headerlink" title="视图或浅拷贝"></a>视图或浅拷贝</h2>不同的数组对象可以共享相同的数据。该view方法创建一个查看相同数据的新数组对象。同时切片数组会返回一个视图。<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line">bb = aa[:<span class="number">2</span>]</span><br><span class="line">bb[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
-输出：<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">11</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="深复制"><a href="#深复制" class="headerlink" title="深复制"></a>深复制</h2><p>该<strong>copy</strong>方法生成数组及其数据的完整副本。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],dtype=np.int32)</span><br><span class="line">bb = aa.copy()</span><br><span class="line">bb[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">print(aa)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1093,6 +1123,23 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>reduce函数</title>
+    <url>/2020/09/28/reduce%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>reduce() 函数会对参数序列中元素进行<strong>累积</strong>。<br>函数将一个数据集合（链表，元组等）中的所有数据进行下列操作：用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用 function 函数运算，最后得到一个结果。</p>
+<a id="more"></a>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># function -- 函数，有两个参数</span></span><br><span class="line"><span class="comment"># iterable -- 可迭代对象</span></span><br><span class="line"><span class="comment"># initializer -- 可选，初始参数</span></span><br><span class="line"><span class="comment"># return -- 数值</span></span><br><span class="line">reduce(function, iterable[, initializer])</span><br></pre></td></tr></table></figure>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjixH.png" alt="例子"><br>使用前务必导入库函数functools</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>__setattr__</title>
     <url>/2020/10/02/setattr/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
@@ -1108,23 +1155,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <p>输出：</p>
 <figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">running __setattr__ meathod</span><br><span class="line">key = <span class="type">name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">running __setattr__ meathod</span><br><span class="line">key = <span class="type">name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> last):</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">20</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    stu1 = Student(<span class="string">&#x27;alex&#x27;</span>)</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">6</span>, <span class="keyword">in</span> __init__</span><br><span class="line">    self.name = <span class="type">name</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  [Previous <span class="type">line</span> repeated <span class="number">991</span> more times]</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">12</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    print(<span class="string">&#x27;running __setattr__ meathod&#x27;</span>)</span><br><span class="line">RecursionError: maximum recursion depth exceeded <span class="keyword">while</span> calling a Python <span class="keyword">object</span></span><br></pre></td></tr></table></figure>
 <p>这是因为无线循环调用了__setattr__方法</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>reduce函数</title>
-    <url>/2020/09/28/reduce%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>reduce() 函数会对参数序列中元素进行<strong>累积</strong>。<br>函数将一个数据集合（链表，元组等）中的所有数据进行下列操作：用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用 function 函数运算，最后得到一个结果。</p>
-<a id="more"></a>
-
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># function -- 函数，有两个参数</span></span><br><span class="line"><span class="comment"># iterable -- 可迭代对象</span></span><br><span class="line"><span class="comment"># initializer -- 可选，初始参数</span></span><br><span class="line"><span class="comment"># return -- 数值</span></span><br><span class="line">reduce(function, iterable[, initializer])</span><br></pre></td></tr></table></figure>
-
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjixH.png" alt="例子"><br>使用前务必导入库函数functools</p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1299,6 +1329,21 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>多维数组的迭代</title>
+    <url>/2020/10/05/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%AD%E4%BB%A3/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>通常我们需要对一个numpy数组进行迭代操作，比如for循环，但直接对数组本身进行循环，实际上是对第一个轴进行操作，如果要对数组中的每个值进行操作，可以使用<strong>flat</strong>属性</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa:</span><br><span class="line">    print(a)</span><br><span class="line">print(<span class="string">&#x27;------------&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa.flat:</span><br><span class="line">    print(a)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">[<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">[<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">[<span class="number">6</span> <span class="number">7</span>]</span><br><span class="line">------------</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数组堆叠</title>
     <url>/2020/10/05/%E6%95%B0%E7%BB%84%E5%A0%86%E5%8F%A0/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>有时候需要把两个或多个数组按照某一个axis进行堆叠</p>
@@ -1361,21 +1406,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <li>x[4,…,5,:] 等效于 x[4,:,:,5,:]</li>
 </ul>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>多维数组的迭代</title>
-    <url>/2020/10/05/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%AD%E4%BB%A3/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>通常我们需要对一个numpy数组进行迭代操作，比如for循环，但直接对数组本身进行循环，实际上是对第一个轴进行操作，如果要对数组中的每个值进行操作，可以使用<strong>flat</strong>属性</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa:</span><br><span class="line">    print(a)</span><br><span class="line">print(<span class="string">&#x27;------------&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa.flat:</span><br><span class="line">    print(a)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">[<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">[<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">[<span class="number">6</span> <span class="number">7</span>]</span><br><span class="line">------------</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
