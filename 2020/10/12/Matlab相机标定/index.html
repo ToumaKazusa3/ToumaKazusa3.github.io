@@ -22,21 +22,37 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="docker启动 1docker run -itd --gpus &amp;#x27;&quot;device&#x3D;0,1,2,3&quot;&amp;#x27; --shm-size 16 --name shensj_test -p 3333:22 -p 3334:6006 -p 3335:8888  -v &#x2F;home&#x2F;shensj:&#x2F;home&#x2F;shensj -v &#x2F;data&#x2F;shensj:&#x2F;data&#x2F;shensj">
+  <meta name="description" content="实验目的 得到相机的内参矩阵A、外参矩阵[R|T]、畸变系数[k1,k2,k3,,p1,p2,]。 通过内外参数矩阵可以得到2维像素坐标与3维空间坐标的对应关系。（可以用来做无线大数据）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker使用指南">
-<meta property="og:url" content="http://example.com/2020/10/02/docker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:title" content="Matlab相机标定">
+<meta property="og:url" content="http://example.com/2020/10/12/Matlab%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="docker启动 1docker run -itd --gpus &amp;#x27;&quot;device&#x3D;0,1,2,3&quot;&amp;#x27; --shm-size 16 --name shensj_test -p 3333:22 -p 3334:6006 -p 3335:8888  -v &#x2F;home&#x2F;shensj:&#x2F;home&#x2F;shensj -v &#x2F;data&#x2F;shensj:&#x2F;data&#x2F;shensj">
+<meta property="og:description" content="实验目的 得到相机的内参矩阵A、外参矩阵[R|T]、畸变系数[k1,k2,k3,,p1,p2,]。 通过内外参数矩阵可以得到2维像素坐标与3维空间坐标的对应关系。（可以用来做无线大数据）">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-02T08:11:58.000Z">
-<meta property="article:modified_time" content="2020-10-02T08:29:34.049Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02Y2zn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02Y7i4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tSoD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tPWd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tew8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tuFg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tYwT.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tUkF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tdfJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02t0p9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tTnP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tv1s.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/12/02tzXq.png">
+<meta property="article:published_time" content="2020-10-12T02:56:13.000Z">
+<meta property="article:modified_time" content="2020-10-12T02:59:01.935Z">
 <meta property="article:author" content="Misaka Mikoto">
-<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Matlab">
+<meta property="article:tag" content="SLAM">
+<meta property="article:tag" content="无线大数据">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/10/12/02Y2zn.png">
 
 
-<link rel="canonical" href="http://example.com/2020/10/02/docker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+<link rel="canonical" href="http://example.com/2020/10/12/Matlab%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/">
 
 
 <script class="page-configurations">
@@ -49,7 +65,7 @@
   };
 </script>
 
-  <title>docker使用指南 | Railgun</title>
+  <title>Matlab相机标定 | Railgun</title>
   
 
 
@@ -208,7 +224,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -220,6 +236,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">实验目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">实验原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E4%B8%AA%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">2.1.</span> <span class="nav-text">四个坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87%E5%88%B0%E7%9B%B8%E6%9C%BA%E5%9D%90%E6%A0%87%EF%BC%883D-gt-3D%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">从世界坐标到相机坐标（3D-&gt;3D）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E7%9B%B8%E6%9C%BA%E5%9D%90%E6%A0%87%E5%88%B0%E5%9B%BE%E5%83%8F%E5%9D%90%E6%A0%87%EF%BC%883D-gt-2D%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">从相机坐标到图像坐标（3D-&gt;2D）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E5%9B%BE%E5%83%8F%E5%9D%90%E6%A0%87%E5%88%B0%E5%83%8F%E7%B4%A0%E5%9D%90%E6%A0%87%EF%BC%882D-gt-2D%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">从图像坐标到像素坐标（2D-&gt;2D）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">实验步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E6%A3%8B%E7%9B%98%E6%A0%BC"><span class="nav-number">3.1.</span> <span class="nav-text">制作棋盘格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5matlab"><span class="nav-number">3.2.</span> <span class="nav-text">导入matlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%AE%9A"><span class="nav-number">3.3.</span> <span class="nav-text">标定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%8B%E7%9B%98%E6%A0%BC%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-number">4.</span> <span class="nav-text">棋盘格文件下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -299,7 +316,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/02/docker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/12/Matlab%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -312,7 +329,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          docker使用指南
+          Matlab相机标定
         </h1>
 
         <div class="post-meta-container">
@@ -324,7 +341,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-10-02 16:11:58 / 修改时间：16:29:34" itemprop="dateCreated datePublished" datetime="2020-10-02T16:11:58+08:00">2020-10-02</time>
+      <time title="创建时间：2020-10-12 10:56:13 / 修改时间：10:59:01" itemprop="dateCreated datePublished" datetime="2020-10-12T10:56:13+08:00">2020-10-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -351,7 +368,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>386</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -369,22 +386,36 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>docker启动</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker</span> run -itd --gpus &#x27;<span class="string">&quot;device=0,1,2,3&quot;</span>&#x27; --shm-size <span class="number">16</span> --name shensj_test -p <span class="number">3333</span>:<span class="number">22</span> -p <span class="number">3334</span>:<span class="number">6006</span> -p <span class="number">3335</span>:<span class="number">8888</span>  -v /home/shensj:/home/shensj -v /data/shensj:/data/shensj yolomax/pytorch:<span class="number">1</span>.<span class="number">6</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>docker进入</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker</span> exec -it bc<span class="number">3</span>b<span class="number">72</span>e<span class="number">199</span>e<span class="number">2</span> /bin/bash</span><br></pre></td></tr></table></figure>
-<p>docker退出</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">exit</span></span><br></pre></td></tr></table></figure>
-<p>docker停止</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">stop</span> <span class="keyword">id</span></span><br></pre></td></tr></table></figure>
-<p>删除container</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker</span> rm -f <span class="number">1</span>e<span class="number">560</span>fca<span class="number">3906</span></span><br></pre></td></tr></table></figure>
-<p>删除image</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker rmi REPOSITORY</span></span><br></pre></td></tr></table></figure>
-<p>查看所有image</p>
-<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">image</span> <span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
-<p>查看所有container</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker ps -a</span></span><br></pre></td></tr></table></figure>
+        <h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><ol>
+<li>得到相机的内参矩阵A、外参矩阵[R|T]、畸变系数[k1,k2,k3,<del>,p1,p2,</del>]。</li>
+<li>通过内外参数矩阵可以得到2维像素坐标与3维空间坐标的对应关系。（可以用来做无线大数据）<a id="more"></a>
+<h2 id="实验原理"><a href="#实验原理" class="headerlink" title="实验原理"></a>实验原理</h2><h3 id="四个坐标系"><a href="#四个坐标系" class="headerlink" title="四个坐标系"></a>四个坐标系</h3></li>
+</ol>
+<ul>
+<li>世界坐标系(world coordinate system)：用户定义的三维世界的坐标系，为了描述目标物在真实世界里的位置而被引入，比如经纬度就可以作为世界坐标系。</li>
+<li>相机坐标系(camera coordinate system)：在相机上建立的坐标系，为了从相机的角度描述物体位置而定义，作为沟通世界坐标系和图像/像素坐标系的中间一环。</li>
+<li>图像坐标系(image coordinate system)：为了描述成像过程中物体从相机坐标系到图像坐标系的投影透射关系而引入，方便进一步得到像素坐标系下的坐标。</li>
+<li>像素坐标系(pixel coordinate system)：为了描述物体成像后的像点在数字图像上（相片）的坐标而引入，是我们真正从相机内读取到的信息所在的坐标系。</li>
+</ul>
+<h3 id="从世界坐标到相机坐标（3D-gt-3D）"><a href="#从世界坐标到相机坐标（3D-gt-3D）" class="headerlink" title="从世界坐标到相机坐标（3D-&gt;3D）"></a>从世界坐标到相机坐标（3D-&gt;3D）</h3><p>世界坐标$(X_w, Y_w, Z_w)$到相机坐标$(X_c, Y_c, Z_c)$为刚体变换，可以用旋转矩阵$R_{3{\times}3}$和平移向量$T_{3{\times}1}$来表示。两者之间的关系为<br><img src="https://s1.ax1x.com/2020/10/12/02Y2zn.png"></p>
+<h3 id="从相机坐标到图像坐标（3D-gt-2D）"><a href="#从相机坐标到图像坐标（3D-gt-2D）" class="headerlink" title="从相机坐标到图像坐标（3D-&gt;2D）"></a>从相机坐标到图像坐标（3D-&gt;2D）</h3><p>相机坐标$(X_c, Y_c, Z_c)$到图像坐标$(x, y)$为透视投影过程，进行了从三维坐标到二维坐标的转换，可以采用小孔成像模型也可以用鱼眼模型。<br><img src="https://s1.ax1x.com/2020/10/12/02Y7i4.png"></p>
+<p>坐标关系为<br><img src="https://s1.ax1x.com/2020/10/12/02tSoD.png"></p>
+<h3 id="从图像坐标到像素坐标（2D-gt-2D）"><a href="#从图像坐标到像素坐标（2D-gt-2D）" class="headerlink" title="从图像坐标到像素坐标（2D-&gt;2D）"></a>从图像坐标到像素坐标（2D-&gt;2D）</h3><p>相机坐标$(x, y)$到图像坐标$(u, v)$为空间离散化和原点平移。两者关系为<br><img src="https://s1.ax1x.com/2020/10/12/02tPWd.png"></p>
+<p>由于定义的像素坐标系原点与图像坐标系原点不重合，假设像素坐标系原点在图像坐标系下的坐标为$(u_0, v_0)$，每个像素点在图像坐标系x轴、y轴方向的尺寸为：$d_x, d_y$（假设传感器长宽为$a{\times}b$，图像分辨率为$m{\times}n$，则$d_x=\frac{a}{m}, d_y=\frac{b}{n}$）且像点在实际图像坐标系下的坐标为$(x, y)$，于是可得到像点在像素坐标系下的坐标为：<br><img src="https://s1.ax1x.com/2020/10/12/02tew8.png"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="https://s1.ax1x.com/2020/10/12/02tuFg.png"></p>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、打印一张棋盘格，把它贴在一个平面上，作为标定物。<br>2、通过调整标定物或摄像机的方向，为标定物拍摄一些不同方向的照片。<br>3、从照片中提取棋盘格角点。<br>4、估算理想无畸变的情况下，五个内参和六个外参。<br>5、应用最小二乘法估算实际存在径向畸变下的畸变系数。<br>6、极大似然法，优化估计，提升估计精度</p>
+<h3 id="制作棋盘格"><a href="#制作棋盘格" class="headerlink" title="制作棋盘格"></a>制作棋盘格</h3><p><img src="https://s1.ax1x.com/2020/10/12/02tYwT.jpg"></p>
+<h3 id="导入matlab"><a href="#导入matlab" class="headerlink" title="导入matlab"></a>导入matlab</h3><p>选择红框中的app<br><img src="https://s1.ax1x.com/2020/10/12/02tUkF.png"><br>点击红框中的add images导入预先拍摄好的图片<br><img src="https://s1.ax1x.com/2020/10/12/02tdfJ.png"><br>输入棋盘格的间距，我的棋盘格是25mm<br><img src="https://s1.ax1x.com/2020/10/12/02t0p9.png"></p>
+<h3 id="标定"><a href="#标定" class="headerlink" title="标定"></a>标定</h3><p>查看标定结果<br><img src="https://s1.ax1x.com/2020/10/12/02tTnP.png"></p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p><img src="https://s1.ax1x.com/2020/10/12/02tv1s.png"></p>
+<p><img src="https://s1.ax1x.com/2020/10/12/02tzXq.png"></p>
+<h2 id="棋盘格文件下载"><a href="#棋盘格文件下载" class="headerlink" title="棋盘格文件下载"></a>棋盘格文件下载</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://download.csdn.net/download/weixin_41349117/11846674">https://download.csdn.net/download/weixin_41349117/11846674</a></li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV18J411U7DS">https://www.bilibili.com/video/BV18J411U7DS</a></li>
+</ul>
+
     </div>
 
     
@@ -401,7 +432,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/10/02/docker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" title="docker使用指南">http://example.com/2020/10/02/docker使用指南/</a>
+      <a href="http://example.com/2020/10/12/Matlab%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" title="Matlab相机标定">http://example.com/2020/10/12/Matlab相机标定/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -410,21 +441,20 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+              <a href="/tags/Matlab/" rel="tag"><i class="fa fa-tag"></i> Matlab</a>
+              <a href="/tags/SLAM/" rel="tag"><i class="fa fa-tag"></i> SLAM</a>
+              <a href="/tags/%E6%97%A0%E7%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"><i class="fa fa-tag"></i> 无线大数据</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/10/02/pycharm%E4%B8%AD%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8Bdocker%E8%A7%A3%E9%87%8A%E5%99%A8/" rel="prev" title="pycharm中配置远程docker解释器">
-                  <i class="fa fa-chevron-left"></i> pycharm中配置远程docker解释器
+                <a href="/2020/10/12/C-%E5%89%8D%E5%90%91%E5%BC%95%E7%94%A8%E5%A3%B0%E6%98%8E/" rel="prev" title="C++前向引用声明">
+                  <i class="fa fa-chevron-left"></i> C++前向引用声明
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/02/raise%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8/" rel="next" title="raise抛出异常">
-                  raise抛出异常 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

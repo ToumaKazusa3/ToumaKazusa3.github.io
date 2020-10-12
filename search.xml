@@ -185,6 +185,48 @@
       </tags>
   </entry>
   <entry>
+    <title>Matlab相机标定</title>
+    <url>/2020/10/12/Matlab%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/</url>
+    <content><![CDATA[<h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><ol>
+<li>得到相机的内参矩阵A、外参矩阵[R|T]、畸变系数[k1,k2,k3,<del>,p1,p2,</del>]。</li>
+<li>通过内外参数矩阵可以得到2维像素坐标与3维空间坐标的对应关系。（可以用来做无线大数据）<a id="more"></a>
+<h2 id="实验原理"><a href="#实验原理" class="headerlink" title="实验原理"></a>实验原理</h2><h3 id="四个坐标系"><a href="#四个坐标系" class="headerlink" title="四个坐标系"></a>四个坐标系</h3></li>
+</ol>
+<ul>
+<li>世界坐标系(world coordinate system)：用户定义的三维世界的坐标系，为了描述目标物在真实世界里的位置而被引入，比如经纬度就可以作为世界坐标系。</li>
+<li>相机坐标系(camera coordinate system)：在相机上建立的坐标系，为了从相机的角度描述物体位置而定义，作为沟通世界坐标系和图像/像素坐标系的中间一环。</li>
+<li>图像坐标系(image coordinate system)：为了描述成像过程中物体从相机坐标系到图像坐标系的投影透射关系而引入，方便进一步得到像素坐标系下的坐标。</li>
+<li>像素坐标系(pixel coordinate system)：为了描述物体成像后的像点在数字图像上（相片）的坐标而引入，是我们真正从相机内读取到的信息所在的坐标系。</li>
+</ul>
+<h3 id="从世界坐标到相机坐标（3D-gt-3D）"><a href="#从世界坐标到相机坐标（3D-gt-3D）" class="headerlink" title="从世界坐标到相机坐标（3D-&gt;3D）"></a>从世界坐标到相机坐标（3D-&gt;3D）</h3><p>世界坐标$(X_w, Y_w, Z_w)$到相机坐标$(X_c, Y_c, Z_c)$为刚体变换，可以用旋转矩阵$R_{3{\times}3}$和平移向量$T_{3{\times}1}$来表示。两者之间的关系为<br><img src="https://s1.ax1x.com/2020/10/12/02Y2zn.png"></p>
+<h3 id="从相机坐标到图像坐标（3D-gt-2D）"><a href="#从相机坐标到图像坐标（3D-gt-2D）" class="headerlink" title="从相机坐标到图像坐标（3D-&gt;2D）"></a>从相机坐标到图像坐标（3D-&gt;2D）</h3><p>相机坐标$(X_c, Y_c, Z_c)$到图像坐标$(x, y)$为透视投影过程，进行了从三维坐标到二维坐标的转换，可以采用小孔成像模型也可以用鱼眼模型。<br><img src="https://s1.ax1x.com/2020/10/12/02Y7i4.png"></p>
+<p>坐标关系为<br><img src="https://s1.ax1x.com/2020/10/12/02tSoD.png"></p>
+<h3 id="从图像坐标到像素坐标（2D-gt-2D）"><a href="#从图像坐标到像素坐标（2D-gt-2D）" class="headerlink" title="从图像坐标到像素坐标（2D-&gt;2D）"></a>从图像坐标到像素坐标（2D-&gt;2D）</h3><p>相机坐标$(x, y)$到图像坐标$(u, v)$为空间离散化和原点平移。两者关系为<br><img src="https://s1.ax1x.com/2020/10/12/02tPWd.png"></p>
+<p>由于定义的像素坐标系原点与图像坐标系原点不重合，假设像素坐标系原点在图像坐标系下的坐标为$(u_0, v_0)$，每个像素点在图像坐标系x轴、y轴方向的尺寸为：$d_x, d_y$（假设传感器长宽为$a{\times}b$，图像分辨率为$m{\times}n$，则$d_x=\frac{a}{m}, d_y=\frac{b}{n}$）且像点在实际图像坐标系下的坐标为$(x, y)$，于是可得到像点在像素坐标系下的坐标为：<br><img src="https://s1.ax1x.com/2020/10/12/02tew8.png"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="https://s1.ax1x.com/2020/10/12/02tuFg.png"></p>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、打印一张棋盘格，把它贴在一个平面上，作为标定物。<br>2、通过调整标定物或摄像机的方向，为标定物拍摄一些不同方向的照片。<br>3、从照片中提取棋盘格角点。<br>4、估算理想无畸变的情况下，五个内参和六个外参。<br>5、应用最小二乘法估算实际存在径向畸变下的畸变系数。<br>6、极大似然法，优化估计，提升估计精度</p>
+<h3 id="制作棋盘格"><a href="#制作棋盘格" class="headerlink" title="制作棋盘格"></a>制作棋盘格</h3><p><img src="https://s1.ax1x.com/2020/10/12/02tYwT.jpg"></p>
+<h3 id="导入matlab"><a href="#导入matlab" class="headerlink" title="导入matlab"></a>导入matlab</h3><p>选择红框中的app<br><img src="https://s1.ax1x.com/2020/10/12/02tUkF.png"><br>点击红框中的add images导入预先拍摄好的图片<br><img src="https://s1.ax1x.com/2020/10/12/02tdfJ.png"><br>输入棋盘格的间距，我的棋盘格是25mm<br><img src="https://s1.ax1x.com/2020/10/12/02t0p9.png"></p>
+<h3 id="标定"><a href="#标定" class="headerlink" title="标定"></a>标定</h3><p>查看标定结果<br><img src="https://s1.ax1x.com/2020/10/12/02tTnP.png"></p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p><img src="https://s1.ax1x.com/2020/10/12/02tv1s.png"></p>
+<p><img src="https://s1.ax1x.com/2020/10/12/02tzXq.png"></p>
+<h2 id="棋盘格文件下载"><a href="#棋盘格文件下载" class="headerlink" title="棋盘格文件下载"></a>棋盘格文件下载</h2><ul>
+<li><a href="https://download.csdn.net/download/weixin_41349117/11846674">https://download.csdn.net/download/weixin_41349117/11846674</a></li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.bilibili.com/video/BV18J411U7DS">https://www.bilibili.com/video/BV18J411U7DS</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>SLAM</tag>
+        <tag>无线大数据</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>List逆序的两者方式</title>
     <url>/2020/09/28/List%E9%80%86%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -204,52 +246,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python修饰器</title>
-    <url>/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>给函数增加一个统计运行时间的功能</p>
-<a id="more"></a>
-<h3 id="最简单的做法"><a href="#最简单的做法" class="headerlink" title="最简单的做法"></a>最简单的做法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">startTime = time.time()</span><br><span class="line">myAdd(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">totalTime = time.time() - startTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, totalTime)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0006561279296875</span></span><br></pre></td></tr></table></figure>
-<p>对于每个函数都要写相同的语句，很麻烦，可以用函数的方式来代替</p>
-<h3 id="用函数的形式"><a href="#用函数的形式" class="headerlink" title="用函数的形式"></a>用函数的形式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    func(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    totalTime = time.time() - startTime</span><br><span class="line">    <span class="keyword">return</span> totalTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, calculateTime(myAdd))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.000053644180298</span></span><br></pre></td></tr></table></figure>
-<p>但是这改变了函数的调用方式，本来调用myAdd，现在调用calculateTime</p>
-<h3 id="不改变函数调用方式"><a href="#不改变函数调用方式" class="headerlink" title="不改变函数调用方式"></a>不改变函数调用方式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">myAdd = calculateTime(myAdd)</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0000948905944824</span></span><br></pre></td></tr></table></figure>
-<p>需要增加myAdd = calculateTime(myAdd)这行代码，能否用更加简洁的形式代替？语法糖！</p>
-<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@calculateTime # myAdd = calculateTime(myAdd)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python偏函数</title>
-    <url>/2020/10/01/Python%E5%81%8F%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>functools.partial的作用就是把一个函数的某些参数给固定住（设置默认值），返回一个新函数，调用这个函数会更加简单</li>
-</ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mod</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x % y</span><br><span class="line"></span><br><span class="line">mod100 = partial(mod, <span class="number">100</span>)</span><br><span class="line">print(mod100(<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">int2 = partial(int,base=<span class="number">2</span>)</span><br><span class="line">print(int2(<span class="string">&#x27;0101010010101&#x27;</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2709</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python可变参数</title>
     <url>/2020/10/01/Python%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
@@ -258,22 +254,6 @@
 <li>加了**号的变量名可以存放一个字典对象，比如**kwargs</li>
 </ul>
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">    print(<span class="string">&#x27;func:&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> arg <span class="keyword">in</span> args:</span><br><span class="line">        print(<span class="string">&#x27;undefined arg:&#x27;</span>, arg)</span><br><span class="line">    print(<span class="string">&#x27;---&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> kwargs:</span><br><span class="line">        print(<span class="string">&#x27;undefined key=&#123;&#125;, value=&#123;&#125;&#x27;</span>.format(k, kwargs[k]))</span><br><span class="line">    print(<span class="string">&#x27;end...&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">func(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;apple&#x27;</span>,worda=<span class="string">&#x27;a&#x27;</span>, wordb=<span class="string">&#x27;b&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python可迭代对象</title>
-    <url>/2020/09/28/Python%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h3 id="可迭代对象是什么？"><a href="#可迭代对象是什么？" class="headerlink" title="可迭代对象是什么？"></a>可迭代对象是什么？</h3><p>凡是定义了<code>__iter__</code>和<code>__next__</code>方法的类所实例化出来的对象都是可迭代对象。</p>
-<a id="more"></a>
-
-<h3 id="有哪些内置可迭代对象？"><a href="#有哪些内置可迭代对象？" class="headerlink" title="有哪些内置可迭代对象？"></a>有哪些内置可迭代对象？</h3><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">list</span>,dict(<span class="built_in">keys</span>(),<span class="built_in">values</span>(),<span class="built_in">items</span>()),tuple,str,<span class="keyword">set</span>,<span class="built_in">range</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="如何判断一个对象是否是可迭代对象"><a href="#如何判断一个对象是否是可迭代对象" class="headerlink" title="如何判断一个对象是否是可迭代对象"></a>如何判断一个对象是否是可迭代对象</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">&#x27;__iter__&#x27;</span> <span class="keyword">in</span> dir(obj):</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -369,6 +349,22 @@
       </tags>
   </entry>
   <entry>
+    <title>Python可迭代对象</title>
+    <url>/2020/09/28/Python%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h3 id="可迭代对象是什么？"><a href="#可迭代对象是什么？" class="headerlink" title="可迭代对象是什么？"></a>可迭代对象是什么？</h3><p>凡是定义了<code>__iter__</code>和<code>__next__</code>方法的类所实例化出来的对象都是可迭代对象。</p>
+<a id="more"></a>
+
+<h3 id="有哪些内置可迭代对象？"><a href="#有哪些内置可迭代对象？" class="headerlink" title="有哪些内置可迭代对象？"></a>有哪些内置可迭代对象？</h3><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">list</span>,dict(<span class="built_in">keys</span>(),<span class="built_in">values</span>(),<span class="built_in">items</span>()),tuple,str,<span class="keyword">set</span>,<span class="built_in">range</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="如何判断一个对象是否是可迭代对象"><a href="#如何判断一个对象是否是可迭代对象" class="headerlink" title="如何判断一个对象是否是可迭代对象"></a>如何判断一个对象是否是可迭代对象</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">&#x27;__iter__&#x27;</span> <span class="keyword">in</span> dir(obj):</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python多线程</title>
     <url>/2020/09/28/Python%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ol>
@@ -432,27 +428,6 @@
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span></span><br><span class="line">Thread<span class="number">-2</span> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> <span class="number">30</span></span><br><span class="line">Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line">Thread<span class="number">-5</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python字符串前面的u,r,b含义</title>
-    <url>/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/</url>
-    <content><![CDATA[<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
-<li>加r是取消转义，保留原始字符串</li>
-<li>加u是采用Unicode编码</li>
-<li>加b是表示后面的字符串是bytes类型，用于网络编程中收发数据</li>
-</ul>
-<a id="more"></a>
-
-<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>1、字符串前加 u<br>例：u”我是含有中文字符组成的字符串。”<br>作用：后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。 </p>
-<p>2、字符串前加 r<br>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。<br>作用：去掉反斜杠的转义机制。（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）<br>应用：常用于正则表达式，对应着re模块。 </p>
-<p>3、字符串前加 b<br>例: response = b’<h1>Hello World!</h1>‘     # b’ ‘ 表示这是一个 bytes 对象<br>作用：b” “前缀表示：后面字符串是bytes 类型。<br>应用：网络编程中，服务器和浏览器只认bytes 类型数据。如：send 函数的参数和 recv 函数的返回值都是 bytes 类型<br>附：在 Python3 中，bytes 和 str 的互相转换方式是</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -552,6 +527,27 @@
 <h4 id="re-findall"><a href="#re-findall" class="headerlink" title="re.findall"></a>re.findall</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.findall(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>
 <p>找到所有匹配的子串</p>
 <h4 id="re-split"><a href="#re-split" class="headerlink" title="re.split"></a>re.split</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;\d+&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcb1ccba3bccc5cb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.split(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python字符串前面的u,r,b含义</title>
+    <url>/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/</url>
+    <content><![CDATA[<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
+<li>加r是取消转义，保留原始字符串</li>
+<li>加u是采用Unicode编码</li>
+<li>加b是表示后面的字符串是bytes类型，用于网络编程中收发数据</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>1、字符串前加 u<br>例：u”我是含有中文字符组成的字符串。”<br>作用：后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。 </p>
+<p>2、字符串前加 r<br>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。<br>作用：去掉反斜杠的转义机制。（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）<br>应用：常用于正则表达式，对应着re模块。 </p>
+<p>3、字符串前加 b<br>例: response = b’<h1>Hello World!</h1>‘     # b’ ‘ 表示这是一个 bytes 对象<br>作用：b” “前缀表示：后面字符串是bytes 类型。<br>应用：网络编程中，服务器和浏览器只认bytes 类型数据。如：send 函数的参数和 recv 函数的返回值都是 bytes 类型<br>附：在 Python3 中，bytes 和 str 的互相转换方式是</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -749,42 +745,6 @@
       </tags>
   </entry>
   <entry>
-    <title>__add__与__iadd__</title>
-    <url>/2020/10/02/add-%E4%B8%8E-iadd/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>__add__(self, other)</li>
-<li>__iadd__(self, other)</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="add"><a href="#add" class="headerlink" title="__add__"></a>__add__</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>该方法计算self+other的值，重载+运算符</p>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AlgNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a</span>):</span></span><br><span class="line">        self.a = a</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span>(<span class="params">self, other</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.a * <span class="number">10</span> + other</span><br><span class="line"></span><br><span class="line">algNum = AlgNum(<span class="number">5</span>)</span><br><span class="line">print(algNum + <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">53</span></span><br></pre></td></tr></table></figure>
-<h2 id="iadd-self-other"><a href="#iadd-self-other" class="headerlink" title="__iadd__(self, other)"></a>__iadd__(self, other)</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>重载 += 运算符</p>
-<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AlgNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a</span>):</span></span><br><span class="line">        self.a = a</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span>(<span class="params">self, other</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.a * <span class="number">10</span> + other</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iadd__</span>(<span class="params">self, other</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.a * <span class="number">10</span> + other</span><br><span class="line"></span><br><span class="line">algNum = AlgNum(<span class="number">5</span>)</span><br><span class="line">algNum += <span class="number">9</span></span><br><span class="line">print(algNum)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">59</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ul>
-<li>__sub__(self, other) 重载a-b</li>
-<li>__isub__(self, other) 重载a-=b</li>
-<li>__mul_(self, other) 重载a*b</li>
-<li>__imul_(self, other) 重载a*=b</li>
-<li>__mod_(self, other) 重载a%b</li>
-<li>__imod_(self, other) 重载a%=b</li>
-<li>__neg_(self) 重载-a</li>
-<li>__pos(self) 重载+b</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>assert断言</title>
     <url>/2020/10/02/assert%E6%96%AD%E8%A8%80/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>Python assert（断言）用于判断一个表达式，在表达式条件为 false 的时候触发异常。<br>断言可以在条件不满足程序运行的情况下直接返回错误，而不必等待程序运行后出现崩溃的情况，例如我们的代码只能在 Linux 系统下运行，可以先判断当前系统是否符合条件。</p>
@@ -930,6 +890,42 @@
       </tags>
   </entry>
   <entry>
+    <title>__add__与__iadd__</title>
+    <url>/2020/10/02/add-%E4%B8%8E-iadd/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>__add__(self, other)</li>
+<li>__iadd__(self, other)</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="add"><a href="#add" class="headerlink" title="__add__"></a>__add__</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>该方法计算self+other的值，重载+运算符</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AlgNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a</span>):</span></span><br><span class="line">        self.a = a</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span>(<span class="params">self, other</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.a * <span class="number">10</span> + other</span><br><span class="line"></span><br><span class="line">algNum = AlgNum(<span class="number">5</span>)</span><br><span class="line">print(algNum + <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">53</span></span><br></pre></td></tr></table></figure>
+<h2 id="iadd-self-other"><a href="#iadd-self-other" class="headerlink" title="__iadd__(self, other)"></a>__iadd__(self, other)</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>重载 += 运算符</p>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AlgNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a</span>):</span></span><br><span class="line">        self.a = a</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span>(<span class="params">self, other</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.a * <span class="number">10</span> + other</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iadd__</span>(<span class="params">self, other</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.a * <span class="number">10</span> + other</span><br><span class="line"></span><br><span class="line">algNum = AlgNum(<span class="number">5</span>)</span><br><span class="line">algNum += <span class="number">9</span></span><br><span class="line">print(algNum)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">59</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ul>
+<li>__sub__(self, other) 重载a-b</li>
+<li>__isub__(self, other) 重载a-=b</li>
+<li>__mul_(self, other) 重载a*b</li>
+<li>__imul_(self, other) 重载a*=b</li>
+<li>__mod_(self, other) 重载a%b</li>
+<li>__imod_(self, other) 重载a%=b</li>
+<li>__neg_(self) 重载-a</li>
+<li>__pos(self) 重载+b</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>__getattr__</title>
     <url>/2020/10/02/getattr/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
@@ -939,23 +935,6 @@
 
 <p>输出：</p>
 <figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lab</span> is not defined</span><br><span class="line"><span class="keyword">lab</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>__getitem__</title>
-    <url>/2020/10/02/getitem/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>下标索引时调用</li>
-</ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReverseNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, num</span>):</span></span><br><span class="line">        self.rangeList = list(range(num))</span><br><span class="line">        self.num = num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.rangeList[self.num - item - <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">reverseNum = ReverseNum(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(reverseNum[i])</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
-]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1009,6 +988,25 @@
       </tags>
   </entry>
   <entry>
+    <title>np.where的用法</title>
+    <url>/2020/10/09/np-where%E7%9A%84%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>第一种用法np.where(condition, x, y)</li>
+<li>第二种用法np.where(condition)<a id="more"></a>
+<h2 id="np-where-condition-x-y"><a href="#np-where-condition-x-y" class="headerlink" title="np.where(condition, x, y)"></a>np.where(condition, x, y)</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3>满足条件(condition)，输出x，不满足输出y。<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>aa = np.arange(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])  <span class="comment"># 0为False，所以第一个输出-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa &gt; <span class="number">5</span>,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="literal">True</span>,<span class="literal">False</span>], [<span class="literal">True</span>,<span class="literal">True</span>]],    <span class="comment"># 官网上的例子</span></span><br><span class="line">             [[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]],</span><br><span class="line">             [[<span class="number">9</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">6</span>]])</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">8</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="np-where-condition"><a href="#np-where-condition" class="headerlink" title="np.where(condition)"></a>np.where(condition)</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>只有条件 (condition)，没有x和y，则输出满足条件 (即非0) 元素的坐标 (等价于numpy.nonzero)。这里的坐标以tuple的形式给出，通常原数组有多少维，输出的tuple中就包含几个数组，分别对应符合条件元素的各维坐标。</p>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(a &gt; <span class="number">5</span>)             <span class="comment"># 返回索引</span></span><br><span class="line">(array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]),)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[np.where(a &gt; <span class="number">5</span>)]              <span class="comment"># 等价于 a[a&gt;5]，因为花式索引有两种，一种是下标，另一种是true false数组</span></span><br><span class="line">array([ <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">1</span>]), array([<span class="number">1</span>, <span class="number">0</span>]))</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>np.zeros()和np.zeros_like()</title>
     <url>/2020/10/05/np-zeros-%E5%92%8Cnp-zeros-like/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>产生一个数值为0的numpy数组，不同的是np.zeros()通过显示指定shape的方式，而np.zeros_like()通过传入一个已经有的numpy数组，来创建和这个数组一样形状的新的全0数组。</p>
@@ -1036,25 +1034,6 @@
 <li>np.empty_like()</li>
 </ul>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>np.where的用法</title>
-    <url>/2020/10/09/np-where%E7%9A%84%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>第一种用法np.where(condition, x, y)</li>
-<li>第二种用法np.where(condition)<a id="more"></a>
-<h2 id="np-where-condition-x-y"><a href="#np-where-condition-x-y" class="headerlink" title="np.where(condition, x, y)"></a>np.where(condition, x, y)</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3>满足条件(condition)，输出x，不满足输出y。<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>aa = np.arange(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])  <span class="comment"># 0为False，所以第一个输出-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa &gt; <span class="number">5</span>,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="literal">True</span>,<span class="literal">False</span>], [<span class="literal">True</span>,<span class="literal">True</span>]],    <span class="comment"># 官网上的例子</span></span><br><span class="line">             [[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]],</span><br><span class="line">             [[<span class="number">9</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">6</span>]])</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">8</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="np-where-condition"><a href="#np-where-condition" class="headerlink" title="np.where(condition)"></a>np.where(condition)</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>只有条件 (condition)，没有x和y，则输出满足条件 (即非0) 元素的坐标 (等价于numpy.nonzero)。这里的坐标以tuple的形式给出，通常原数组有多少维，输出的tuple中就包含几个数组，分别对应符合条件元素的各维坐标。</p>
-<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(a &gt; <span class="number">5</span>)             <span class="comment"># 返回索引</span></span><br><span class="line">(array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]),)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[np.where(a &gt; <span class="number">5</span>)]              <span class="comment"># 等价于 a[a&gt;5]，因为花式索引有两种，一种是下标，另一种是true false数组</span></span><br><span class="line">array([ <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">1</span>]), array([<span class="number">1</span>, <span class="number">0</span>]))</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1156,38 +1135,20 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>pycharm中配置远程docker解释器</title>
-    <url>/2020/10/02/pycharm%E4%B8%AD%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8Bdocker%E8%A7%A3%E9%87%8A%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="远程服务器配置"><a href="#远程服务器配置" class="headerlink" title="远程服务器配置"></a>远程服务器配置</h2><h3 id="启动一个新容器"><a href="#启动一个新容器" class="headerlink" title="启动一个新容器"></a>启动一个新容器</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -itd --gpus all --user $(id -u $&#123;USER&#125;):$(id -g $&#123;USER&#125;) --shm-size 16G --name shensj_reid -p 3333:22 -p 3334:6006 -p 3335:8888 -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /etc/shadow:/etc/shadow:ro -v /home/shensj:/home/shensj -v /data/shensj:/data/shensj yolomax/pytorch:1.6.0</span><br></pre></td></tr></table></figure>
-<ul>
-<li>-itd表示以交互命令的方式打开docker，并且后台运行</li>
-<li>–gpus表示用使用哪几块GPU卡</li>
-<li>–shm-size表示交换内存，设置太小会导致dalaloader出问题</li>
-<li>–name为container名称</li>
-<li>-p为端口映射</li>
-<li>-v为挂在系统目录<a id="more"></a>
-<h3 id="进入容器启动SSH"><a href="#进入容器启动SSH" class="headerlink" title="进入容器启动SSH"></a>进入容器启动SSH</h3><h4 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h4><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">docker exec -it shensj_reid <span class="regexp">/bin/</span>bash</span><br></pre></td></tr></table></figure>
-<h4 id="安装SSH"><a href="#安装SSH" class="headerlink" title="安装SSH"></a>安装SSH</h4><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> <span class="keyword">update</span></span><br><span class="line">apt-<span class="keyword">get</span> install openssh-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
-<h4 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h4>使用vim打开并修改配置文件，找到PermitRootLogin prohibit-password这一行，修改为PermitRootLogin yes，允许通过ssh远程访问docker<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/</span>ssh/sshd_config</span><br></pre></td></tr></table></figure>
-
-</li>
+    <title>__getitem__</title>
+    <url>/2020/10/02/getitem/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>下标索引时调用</li>
 </ul>
-<h4 id="修改DOCKER密码"><a href="#修改DOCKER密码" class="headerlink" title="修改DOCKER密码"></a>修改DOCKER密码</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="重启SSH"><a href="#重启SSH" class="headerlink" title="重启SSH"></a>重启SSH</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service ssh restart</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>测试docker container中ssh服务端口在远程服务器上的映射</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 此操作在远程服务器 </span></span><br><span class="line">$ docker<span class="built_in"> port </span>&lt;your container name&gt; 22 </span><br><span class="line"><span class="comment"># 此操作将查看docker container中端口22，在远程服务器上端口的映射 </span></span><br><span class="line"><span class="comment"># 输出结果如下所示 </span></span><br><span class="line">22/tcp -&gt; 0.0.0.0:3333</span><br><span class="line"><span class="comment"># 表明只要ssh链接远程服务器的8022端口，实际是链接docker container中的22端口。</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Pycharm客户端配置"><a href="#Pycharm客户端配置" class="headerlink" title="Pycharm客户端配置"></a>Pycharm客户端配置</h2><h3 id="代码同步"><a href="#代码同步" class="headerlink" title="代码同步"></a>代码同步</h3><p>在导航栏中 Tools&gt;Depolyment&gt;Configuration中添加配置SFTP。<br><img src="https://s1.ax1x.com/2020/10/02/0ll3Ss.png" alt="添加SFTP"></p>
-<h3 id="配置远程解释器"><a href="#配置远程解释器" class="headerlink" title="配置远程解释器"></a>配置远程解释器</h3><p><img src="https://s1.ax1x.com/2020/10/02/0ll8ln.png" alt="配置远程解释器"><br><img src="https://s1.ax1x.com/2020/10/02/0llGyq.png" alt="配置远程解释器"></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReverseNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, num</span>):</span></span><br><span class="line">        self.rangeList = list(range(num))</span><br><span class="line">        self.num = num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.rangeList[self.num - item - <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">reverseNum = ReverseNum(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(reverseNum[i])</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>Pycharm</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -1252,27 +1213,65 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>__str__和__repr__</title>
-    <url>/2020/10/02/str-%E5%92%8C-repr/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>__str__</li>
-<li>__repr__</li>
-</ul>
-<h2 id="str"><a href="#str" class="headerlink" title="__str__"></a>__str__</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>该方法被内置函数str()和print函数调用，用来设置对象以字符串类型出现时如何显示。返回值是一个字符串对象</p>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;repr: &#x27;</span> + self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(stu1)</span><br><span class="line">print(stu2)</span><br><span class="line">print(stu3)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">alex</span></span><br><span class="line"><span class="attribute">jinxin</span></span><br><span class="line"><span class="attribute">Egon</span></span><br></pre></td></tr></table></figure>
-<h2 id="repr"><a href="#repr" class="headerlink" title="__repr__"></a>__repr__</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>被repr函数调用，一般输出的是可悲编译器理解的字符串，用于程序员调试使用</p>
-<a id="more"></a>
-<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">now = datetime.datetime.now()</span><br><span class="line"></span><br><span class="line">print(repr(now))</span><br><span class="line">print(now)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">datetime.datetime(<span class="number">2020</span>, <span class="number">10</span>, <span class="number">2</span>, <span class="number">14</span>, <span class="number">41</span>, <span class="number">6</span>, <span class="number">902936</span>)</span><br><span class="line"><span class="number">2020</span><span class="number">-10</span><span class="number">-02</span> <span class="number">14</span>:<span class="number">41</span>:<span class="number">06.902936</span></span><br></pre></td></tr></table></figure>
-<p>再看另一个例子</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;repr: &#x27;</span> + self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(repr(stu1))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">repr:</span> alex</span><br></pre></td></tr></table></figure>
+    <title>pycharm中配置远程docker解释器</title>
+    <url>/2020/10/02/pycharm%E4%B8%AD%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8Bdocker%E8%A7%A3%E9%87%8A%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="远程服务器配置"><a href="#远程服务器配置" class="headerlink" title="远程服务器配置"></a>远程服务器配置</h2><h3 id="启动一个新容器"><a href="#启动一个新容器" class="headerlink" title="启动一个新容器"></a>启动一个新容器</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -itd --gpus all --user $(id -u $&#123;USER&#125;):$(id -g $&#123;USER&#125;) --shm-size 16G --name shensj_reid -p 3333:22 -p 3334:6006 -p 3335:8888 -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /etc/shadow:/etc/shadow:ro -v /home/shensj:/home/shensj -v /data/shensj:/data/shensj yolomax/pytorch:1.6.0</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-itd表示以交互命令的方式打开docker，并且后台运行</li>
+<li>–gpus表示用使用哪几块GPU卡</li>
+<li>–shm-size表示交换内存，设置太小会导致dalaloader出问题</li>
+<li>–name为container名称</li>
+<li>-p为端口映射</li>
+<li>-v为挂在系统目录<a id="more"></a>
+<h3 id="进入容器启动SSH"><a href="#进入容器启动SSH" class="headerlink" title="进入容器启动SSH"></a>进入容器启动SSH</h3><h4 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h4><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">docker exec -it shensj_reid <span class="regexp">/bin/</span>bash</span><br></pre></td></tr></table></figure>
+<h4 id="安装SSH"><a href="#安装SSH" class="headerlink" title="安装SSH"></a>安装SSH</h4><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> <span class="keyword">update</span></span><br><span class="line">apt-<span class="keyword">get</span> install openssh-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h4>使用vim打开并修改配置文件，找到PermitRootLogin prohibit-password这一行，修改为PermitRootLogin yes，允许通过ssh远程访问docker<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/</span>ssh/sshd_config</span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
+<h4 id="修改DOCKER密码"><a href="#修改DOCKER密码" class="headerlink" title="修改DOCKER密码"></a>修改DOCKER密码</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="重启SSH"><a href="#重启SSH" class="headerlink" title="重启SSH"></a>重启SSH</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service ssh restart</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>测试docker container中ssh服务端口在远程服务器上的映射</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 此操作在远程服务器 </span></span><br><span class="line">$ docker<span class="built_in"> port </span>&lt;your container name&gt; 22 </span><br><span class="line"><span class="comment"># 此操作将查看docker container中端口22，在远程服务器上端口的映射 </span></span><br><span class="line"><span class="comment"># 输出结果如下所示 </span></span><br><span class="line">22/tcp -&gt; 0.0.0.0:3333</span><br><span class="line"><span class="comment"># 表明只要ssh链接远程服务器的8022端口，实际是链接docker container中的22端口。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Pycharm客户端配置"><a href="#Pycharm客户端配置" class="headerlink" title="Pycharm客户端配置"></a>Pycharm客户端配置</h2><h3 id="代码同步"><a href="#代码同步" class="headerlink" title="代码同步"></a>代码同步</h3><p>在导航栏中 Tools&gt;Depolyment&gt;Configuration中添加配置SFTP。<br><img src="https://s1.ax1x.com/2020/10/02/0ll3Ss.png" alt="添加SFTP"></p>
+<h3 id="配置远程解释器"><a href="#配置远程解释器" class="headerlink" title="配置远程解释器"></a>配置远程解释器</h3><p><img src="https://s1.ax1x.com/2020/10/02/0ll8ln.png" alt="配置远程解释器"><br><img src="https://s1.ax1x.com/2020/10/02/0llGyq.png" alt="配置远程解释器"></p>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>Pycharm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python偏函数</title>
+    <url>/2020/10/01/Python%E5%81%8F%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>functools.partial的作用就是把一个函数的某些参数给固定住（设置默认值），返回一个新函数，调用这个函数会更加简单</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mod</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x % y</span><br><span class="line"></span><br><span class="line">mod100 = partial(mod, <span class="number">100</span>)</span><br><span class="line">print(mod100(<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">int2 = partial(int,base=<span class="number">2</span>)</span><br><span class="line">print(int2(<span class="string">&#x27;0101010010101&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2709</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python迭代器</title>
+    <url>/2020/10/03/%E2%80%9CPython%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>迭代器是一个可以记住遍历的位置的对象。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>凡是定义了__iter__和__next__方法的对象都是可迭代对象</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRange</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, start, end, step</span>):</span></span><br><span class="line">        self.start = start</span><br><span class="line">        self.end = end</span><br><span class="line">        self.step = step</span><br><span class="line">        self.cur = start</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.cur &lt; self.end:</span><br><span class="line">            x = self.cur</span><br><span class="line">            self.cur += self.step</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">myRange = MyRange(<span class="number">0</span>,<span class="number">10</span>,<span class="number">2</span>)</span><br><span class="line">myRange = iter(myRange)</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line"></span><br><span class="line"><span class="comment"># for i in MyRange(0,10,3):</span></span><br><span class="line"><span class="comment">#     print(i)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># print(&#x27;end.....&#x27;)</span></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">0</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">6</span><br><span class="line">8</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> <span class="keyword">last</span>):</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">26</span>, <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;</span><br><span class="line">    print(<span class="keyword">next</span>(myRange))</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">16</span>, <span class="keyword">in</span> __next__</span><br><span class="line">    <span class="keyword">raise</span> StopIteration</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1300,22 +1299,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <figure class="highlight sqf"><table><tr><td class="code"><pre><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;f&#x27;</span>: <span class="number">6</span>, <span class="string">&#x27;g&#x27;</span>: <span class="number">7</span>&#125;</span><br><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">100</span>, <span class="string">&#x27;f&#x27;</span>: None, <span class="string">&#x27;g&#x27;</span>: <span class="number">5</span>&#125;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python迭代器</title>
-    <url>/2020/10/03/%E2%80%9CPython%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>迭代器是一个可以记住遍历的位置的对象。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>凡是定义了__iter__和__next__方法的对象都是可迭代对象</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRange</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, start, end, step</span>):</span></span><br><span class="line">        self.start = start</span><br><span class="line">        self.end = end</span><br><span class="line">        self.step = step</span><br><span class="line">        self.cur = start</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.cur &lt; self.end:</span><br><span class="line">            x = self.cur</span><br><span class="line">            self.cur += self.step</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">myRange = MyRange(<span class="number">0</span>,<span class="number">10</span>,<span class="number">2</span>)</span><br><span class="line">myRange = iter(myRange)</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line"></span><br><span class="line"><span class="comment"># for i in MyRange(0,10,3):</span></span><br><span class="line"><span class="comment">#     print(i)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># print(&#x27;end.....&#x27;)</span></span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">0</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">6</span><br><span class="line">8</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> <span class="keyword">last</span>):</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">26</span>, <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;</span><br><span class="line">    print(<span class="keyword">next</span>(myRange))</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">16</span>, <span class="keyword">in</span> __next__</span><br><span class="line">    <span class="keyword">raise</span> StopIteration</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1358,18 +1341,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>函数形参传递</title>
-    <url>/2020/09/28/%E5%87%BD%E6%95%B0%E5%BD%A2%E5%8F%82%E4%BC%A0%E9%80%92/</url>
-    <content><![CDATA[<h2 id="参数传递类型"><a href="#参数传递类型" class="headerlink" title="参数传递类型"></a>参数传递类型</h2><p>值传递：适用于实参类型为不可变类型（字符串、数字、元组）；<br>引用传递：适用于实参类型为可变类型（列表，字典）；</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>创建numpy数组的几种常用方式</title>
     <url>/2020/10/05/%E5%88%9B%E5%BB%BAnumpy%E6%95%B0%E7%BB%84%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="常用方式"><a href="#常用方式" class="headerlink" title="常用方式"></a>常用方式</h2><ul>
@@ -1389,6 +1360,18 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </categories>
       <tags>
         <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>函数形参传递</title>
+    <url>/2020/09/28/%E5%87%BD%E6%95%B0%E5%BD%A2%E5%8F%82%E4%BC%A0%E9%80%92/</url>
+    <content><![CDATA[<h2 id="参数传递类型"><a href="#参数传递类型" class="headerlink" title="参数传递类型"></a>参数传递类型</h2><p>值传递：适用于实参类型为不可变类型（字符串、数字、元组）；<br>引用传递：适用于实参类型为可变类型（列表，字典）；</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -1517,6 +1500,78 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>自定义异常</title>
+    <url>/2020/10/02/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>实际开发中，有时候系统提供的异常类型不能满足开发的需求。这时候你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承。</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#1.用户自定义异常类型，只要该类继承了Exception类即可，至于类的主题内容用户自定义，可参考官方异常类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TooLongExceptin</span>(<span class="params">Exception</span>):</span></span><br><span class="line">    <span class="string">&quot;this is user&#x27;s Exception for check the length of name &quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,leng</span>):</span></span><br><span class="line">        self.leng = leng</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;姓名长度是&quot;</span>+str(self.leng)+<span class="string">&quot;，超过长度了&quot;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>__str__和__repr__</title>
+    <url>/2020/10/02/str-%E5%92%8C-repr/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>__str__</li>
+<li>__repr__</li>
+</ul>
+<h2 id="str"><a href="#str" class="headerlink" title="__str__"></a>__str__</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>该方法被内置函数str()和print函数调用，用来设置对象以字符串类型出现时如何显示。返回值是一个字符串对象</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;repr: &#x27;</span> + self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(stu1)</span><br><span class="line">print(stu2)</span><br><span class="line">print(stu3)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">alex</span></span><br><span class="line"><span class="attribute">jinxin</span></span><br><span class="line"><span class="attribute">Egon</span></span><br></pre></td></tr></table></figure>
+<h2 id="repr"><a href="#repr" class="headerlink" title="__repr__"></a>__repr__</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>被repr函数调用，一般输出的是可悲编译器理解的字符串，用于程序员调试使用</p>
+<a id="more"></a>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">now = datetime.datetime.now()</span><br><span class="line"></span><br><span class="line">print(repr(now))</span><br><span class="line">print(now)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">datetime.datetime(<span class="number">2020</span>, <span class="number">10</span>, <span class="number">2</span>, <span class="number">14</span>, <span class="number">41</span>, <span class="number">6</span>, <span class="number">902936</span>)</span><br><span class="line"><span class="number">2020</span><span class="number">-10</span><span class="number">-02</span> <span class="number">14</span>:<span class="number">41</span>:<span class="number">06.902936</span></span><br></pre></td></tr></table></figure>
+<p>再看另一个例子</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;repr: &#x27;</span> + self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(repr(stu1))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">repr:</span> alex</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python修饰器</title>
+    <url>/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>给函数增加一个统计运行时间的功能</p>
+<a id="more"></a>
+<h3 id="最简单的做法"><a href="#最简单的做法" class="headerlink" title="最简单的做法"></a>最简单的做法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">startTime = time.time()</span><br><span class="line">myAdd(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">totalTime = time.time() - startTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, totalTime)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0006561279296875</span></span><br></pre></td></tr></table></figure>
+<p>对于每个函数都要写相同的语句，很麻烦，可以用函数的方式来代替</p>
+<h3 id="用函数的形式"><a href="#用函数的形式" class="headerlink" title="用函数的形式"></a>用函数的形式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    func(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    totalTime = time.time() - startTime</span><br><span class="line">    <span class="keyword">return</span> totalTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, calculateTime(myAdd))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.000053644180298</span></span><br></pre></td></tr></table></figure>
+<p>但是这改变了函数的调用方式，本来调用myAdd，现在调用calculateTime</p>
+<h3 id="不改变函数调用方式"><a href="#不改变函数调用方式" class="headerlink" title="不改变函数调用方式"></a>不改变函数调用方式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">myAdd = calculateTime(myAdd)</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0000948905944824</span></span><br></pre></td></tr></table></figure>
+<p>需要增加myAdd = calculateTime(myAdd)这行代码，能否用更加简洁的形式代替？语法糖！</p>
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@calculateTime # myAdd = calculateTime(myAdd)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第三方库pathlib</title>
     <url>/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>Path类：from pathlib import Path</p>
@@ -1538,19 +1593,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <h4 id="Path-open-mode-’r’-buffering-1-encoding-None-errors-None-newline-None"><a href="#Path-open-mode-’r’-buffering-1-encoding-None-errors-None-newline-None" class="headerlink" title="Path.open(mode=’r’, buffering=-1, encoding=None, errors=None, newline=None)"></a>Path.open(mode=’r’, buffering=-1, encoding=None, errors=None, newline=None)</h4><p>类似于open()函数</p>
 <h4 id="Path-match-pattern"><a href="#Path-match-pattern" class="headerlink" title="Path.match(pattern)"></a>Path.match(pattern)</h4><p>判断path是否满足pattern</p>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自定义异常</title>
-    <url>/2020/10/02/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>实际开发中，有时候系统提供的异常类型不能满足开发的需求。这时候你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承。</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#1.用户自定义异常类型，只要该类继承了Exception类即可，至于类的主题内容用户自定义，可参考官方异常类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TooLongExceptin</span>(<span class="params">Exception</span>):</span></span><br><span class="line">    <span class="string">&quot;this is user&#x27;s Exception for check the length of name &quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,leng</span>):</span></span><br><span class="line">        self.leng = leng</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;姓名长度是&quot;</span>+str(self.leng)+<span class="string">&quot;，超过长度了&quot;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
