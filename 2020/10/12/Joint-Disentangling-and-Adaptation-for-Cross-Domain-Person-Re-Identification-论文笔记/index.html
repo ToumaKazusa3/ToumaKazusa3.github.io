@@ -22,31 +22,33 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="AuthorXinyu Zhang Jiewei Cao ConferenceICCV 2019 Motivation 现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。Contribution 提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage">
+  <meta name="description" content="AuthorYang Zou ConferenceCVPR 2020 Motivation将源域和目标域上图片的appearance信息（就是和id相关的信息）编码到相同的特征空间。区别与之前的SPGAN、PTGAN、HHL等方法，此类方法都是通过GAN生成一个新的数据集，然后在这个新的数据集上训练模型；而这篇论文生成图片的目的是为了训练更好的$E_{app}$（appearance编码器）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记">
-<meta property="og:url" content="http://example.com/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="Joint Disentangling and Adaptation for Cross-Domain Person Re-Identification 论文笔记">
+<meta property="og:url" content="http://example.com/2020/10/12/Joint-Disentangling-and-Adaptation-for-Cross-Domain-Person-Re-Identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="AuthorXinyu Zhang Jiewei Cao ConferenceICCV 2019 Motivation 现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。Contribution 提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage">
+<meta property="og:description" content="AuthorYang Zou ConferenceCVPR 2020 Motivation将源域和目标域上图片的appearance信息（就是和id相关的信息）编码到相同的特征空间。区别与之前的SPGAN、PTGAN、HHL等方法，此类方法都是通过GAN生成一个新的数据集，然后在这个新的数据集上训练模型；而这篇论文生成图片的目的是为了训练更好的$E_{app}$（appearance编码器）">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191210222137389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211100117776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211100900404.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211152657967.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="article:published_time" content="2020-08-27T07:24:49.000Z">
-<meta property="article:modified_time" content="2020-09-28T14:01:54.171Z">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012033231.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012035308.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012042630.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012042807.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012042946.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043016.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043047.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043113.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043155.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043402.png">
+<meta property="article:published_time" content="2020-10-12T08:35:24.000Z">
+<meta property="article:modified_time" content="2020-10-12T08:36:06.101Z">
 <meta property="article:author" content="Misaka Mikoto">
 <meta property="article:tag" content="ReID">
 <meta property="article:tag" content="论文笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
+<meta name="twitter:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012033231.png">
 
 
-<link rel="canonical" href="http://example.com/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://example.com/2020/10/12/Joint-Disentangling-and-Adaptation-for-Cross-Domain-Person-Re-Identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
 
 <script class="page-configurations">
@@ -59,7 +61,7 @@
   };
 </script>
 
-  <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记 | Railgun</title>
+  <title>Joint Disentangling and Adaptation for Cross-Domain Person Re-Identification 论文笔记 | Railgun</title>
   
 
 
@@ -230,7 +232,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">6.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework-Overview"><span class="nav-number">7.</span> <span class="nav-text">Framework Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conservative-Stage"><span class="nav-number">8.</span> <span class="nav-text">Conservative Stage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CTL"><span class="nav-number">8.1.</span> <span class="nav-text">CTL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RTL"><span class="nav-number">8.2.</span> <span class="nav-text">RTL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promoting-Stage"><span class="nav-number">9.</span> <span class="nav-text">Promoting Stage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">10.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ablation-Study"><span class="nav-number">10.1.</span> <span class="nav-text">Ablation Study</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%9A%84%E8%81%9A%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="nav-number">10.2.</span> <span class="nav-text">不同的聚类方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SOTA"><span class="nav-number">10.3.</span> <span class="nav-text">SOTA</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">5.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline"><span class="nav-number">5.2.</span> <span class="nav-text">Pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Loss"><span class="nav-number">5.3.</span> <span class="nav-text">Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E4%B8%80%E8%87%B4%E6%80%A7loss"><span class="nav-number">5.3.1.</span> <span class="nav-text">循环一致性loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BA%90%E5%9F%9F%E5%9B%BE%E7%89%87CE-loss"><span class="nav-number">5.3.2.</span> <span class="nav-text">源域图片CE loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%9B%BE%E7%89%87%E6%98%AF%E7%9C%9F%E8%BF%98%E6%98%AF%E5%81%87"><span class="nav-number">5.3.3.</span> <span class="nav-text">判断图片是真还是假</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%9B%BE%E7%89%87%E6%98%AF%E5%B1%9E%E4%BA%8E%E5%93%AA%E4%B8%AA%E5%9F%9F"><span class="nav-number">5.3.4.</span> <span class="nav-text">判断图片是属于哪个域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E5%9F%9F%E5%9B%BE%E7%89%87CE-loss"><span class="nav-number">5.3.5.</span> <span class="nav-text">目标域图片CE loss</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">6.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -310,7 +312,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/12/Joint-Disentangling-and-Adaptation-for-Cross-Domain-Person-Re-Identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -323,7 +325,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记
+          Joint Disentangling and Adaptation for Cross-Domain Person Re-Identification 论文笔记
         </h1>
 
         <div class="post-meta-container">
@@ -333,16 +335,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-08-27 15:24:49" itemprop="dateCreated datePublished" datetime="2020-08-27T15:24:49+08:00">2020-08-27</time>
+      <time title="创建时间：2020-10-12 16:35:24 / 修改时间：16:36:06" itemprop="dateCreated datePublished" datetime="2020-10-12T16:35:24+08:00">2020-10-12</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-09-28 22:01:54" itemprop="dateModified" datetime="2020-09-28T22:01:54+08:00">2020-09-28</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -368,14 +364,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -386,29 +382,21 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage，在conservative stage用triplet loss来优化网络参数得到相对可信的标签，在promoting stage用cross entropy loss充分利用全局信息。</li>
-<li>提出一种ranking-based triplet loss，这个loss不依赖聚类产生的伪标签。而是利用特征相似性。</li>
-</ul>
+        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Yang Zou</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2020</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>将源域和目标域上图片的appearance信息（就是和id相关的信息）编码到相同的特征空间。区别与之前的SPGAN、PTGAN、HHL等方法，此类方法都是通过GAN生成一个新的数据集，然后在这个新的数据集上训练模型；而这篇论文生成图片的目的是为了训练更好的$E_{app}$（appearance编码器）</p>
 <a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="https://img-blog.csdnimg.cn/20191210222137389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Framework-Overview"><a href="#Framework-Overview" class="headerlink" title="Framework Overview"></a>Framework Overview</h2><ol>
-<li>首先用source domian上带标签的数据来初始化CNN模型M，用模型M提取target domain上图片特征F。</li>
-<li>在conservative stage用HDBSCAN聚类算法得到相对可信的子类Tu，用CTL(clustering-based triplet loss)和RTL(ranking-based triplet loss)优化网络参数。前者依赖于子类Tu，后者依赖于特征相似性。用优化后的网络提取特征得到Fu。</li>
-<li>在promoting stage用HDBSCAN聚类算法对新的Fu特征聚类，将cluster的个数是为ID个数，用cross entropy loss计算损失，更新网络参数。</li>
-</ol>
-<h2 id="Conservative-Stage"><a href="#Conservative-Stage" class="headerlink" title="Conservative Stage"></a>Conservative Stage</h2><p>主要为两个损失函数CTL和RTL，都很直白。</p>
-<h3 id="CTL"><a href="#CTL" class="headerlink" title="CTL"></a>CTL</h3><p>CTL将每个cluster视为一类，每次取P个cluster，每个cluster取K张图的特征，然后用hard triplet计算loss，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100117776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h3><p>RTL将每张图根据特征相似性(Jaccard 距离)对所有图排序，取$[ 1, \eta]$为positive sample，取$(\eta, 2\eta]$为negative sample(为啥不取的更加远一些-_-)损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100900404.png" alt="在这里插入图片描述"><br>$P_p$和$P_n$分别为$x_p$和$x_n$相对于$x_a$的ranking位置，值得注意的是这个一个soft margin，$x_p$和$x_n$相距越近margin应该越小，符合常理。</p>
-<h2 id="Promoting-Stage"><a href="#Promoting-Stage" class="headerlink" title="Promoting Stage"></a>Promoting Stage</h2><p>只用三元组损失函数容易陷入局部最优解，所以依然需要cross entropy loss来充分利用全局信息。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211152657967.png" alt="在这里插入图片描述"><br>$\hat{y_i}$为$x_i$的伪标签，这个伪标签由HDBSCAN对Fu(模型经过CTL和RTL优化之后重新对target domain上的图像提取特征)聚类得到，C为cluster的数量。值得注意的是$W_c^T$用每一类的特征均值做初始化，因为分类器每一类的参数实际上是这一类的模板，所以这么做可以加快收敛。</p>
-<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Ablation-Study"><a href="#Ablation-Study" class="headerlink" title="Ablation Study"></a>Ablation Study</h3><p><img src="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="不同的聚类方法"><a href="#不同的聚类方法" class="headerlink" title="不同的聚类方法"></a>不同的聚类方法</h3><p><img src="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="SOTA"><a href="#SOTA" class="headerlink" title="SOTA"></a>SOTA</h3><p><img src="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li> we propose a joint learning framework for unsupervised cross-domain person re-id to disentangle id-related/unrelated factors so that adaptation can be more effectively performed on the id-related space.<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012033231.png"><br>从这张图中我们可以得到作者的意图：将图片的structure和appearance解耦合。最终我们需要的模型是编码appearance space的编码器，用这个模型来做测试.<br>那么什么是structure，什么是appearance呢？作者给出的解释是 The latent spaces incorporate a shared appearance space that captures id-related features (i.e., appearance and other semantics), a source structure space and a target structure space that contain id-unrelated features (i.e., pose, position,viewpoint, background and other variations). 实际上看网络结构，structure用了浅层网络提取，最终的feature map大小是128x64x32，而appearance由ResNet50提取，最终的feature map大小是2048x4x1。也就是说，structure代表的是底层信息，而appearance代表的是高层的语义信息。</li>
+</ul>
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012035308.png"><br>总体上来看是cyclegan的结果，采用这种结构应该是为了更好的利用自监督信息。<br>将源域、目标域上的图片$x_{s(i)}$和$x_{t(j)}$用共同的$E_{app}$提取高层语义信息，这些信息与id相关，用$E_{str}^s$编码源域上图片的结构信息，用$E_{str}^t$编码目标域上图片的结构信息。然后将源域上的appearance信息$v_{s(i)}$和目标域上的structure信息$t_{t(j)}$结合经过$D^{t}$得到假图$x_{t(j)}^{s(i)}(上标表示app哪里来，下标表示str哪里来)，这张图的语义信息应该接近$x_{s(i)}$而结构信息应该接近$x_{t(j)}$，对目标域上的appearance信息$v_{s(i)}$和源域上的structure信息$t_{t(j)}$做同样操作，然后再将假图的appearance和structure分离，再交换，变换回输入的图，然后就可以用pixel-level的L1 loss约束训练。</p>
+<h3 id="Loss"><a href="#Loss" class="headerlink" title="Loss"></a>Loss</h3><p>我们希望$E_{app}$提取到的特征$v_{s(i)}$是id相关的特征，所以用CE loss来约束（注意目标域上的图片没有id，但是可以用聚类得到），同时为了解耦合，所以用$D_{dom}$来判断$v_{s(i)}$是来自于哪个域。对于生成的假图$x_{t(j)}^{s(i)}，用$D_{img}$来判断是真图还是假图（常规的GAN loss）,将这张假图输入到$E_{app}$提取到的特征应该和$x_{s(i)}$输入到$E_{app}$提取到的特征同属一个类别，也用CE loss约束训练，通过再次交换appearance和structure可以变换回原图，用pixel-level的L1 loss约束训练。各loss形式如下：</p>
+<h4 id="循环一致性loss"><a href="#循环一致性loss" class="headerlink" title="循环一致性loss"></a>循环一致性loss</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012042630.png"></p>
+<h4 id="源域图片CE-loss"><a href="#源域图片CE-loss" class="headerlink" title="源域图片CE loss"></a>源域图片CE loss</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012042807.png"><br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012042946.png"></p>
+<h4 id="判断图片是真还是假"><a href="#判断图片是真还是假" class="headerlink" title="判断图片是真还是假"></a>判断图片是真还是假</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043016.png"></p>
+<h4 id="判断图片是属于哪个域"><a href="#判断图片是属于哪个域" class="headerlink" title="判断图片是属于哪个域"></a>判断图片是属于哪个域</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043047.png"></p>
+<h4 id="目标域图片CE-loss"><a href="#目标域图片CE-loss" class="headerlink" title="目标域图片CE loss"></a>目标域图片CE loss</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043113.png"><br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043155.png"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012043402.png"><br>性能真高~</p>
 
     </div>
 
@@ -426,7 +414,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记">http://example.com/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification论文笔记/</a>
+      <a href="http://example.com/2020/10/12/Joint-Disentangling-and-Adaptation-for-Cross-Domain-Person-Re-Identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="Joint Disentangling and Adaptation for Cross-Domain Person Re-Identification 论文笔记">http://example.com/2020/10/12/Joint-Disentangling-and-Adaptation-for-Cross-Domain-Person-Re-Identification-论文笔记/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -443,14 +431,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="prev" title="Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记">
-                  <i class="fa fa-chevron-left"></i> Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记
+                <a href="/2020/10/12/Joint-Discriminative-and-Generative-Learning-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="prev" title="Joint Discriminative and Generative Learning for Person Re-identification 论文笔记">
+                  <i class="fa fa-chevron-left"></i> Joint Discriminative and Generative Learning for Person Re-identification 论文笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="next" title="Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记">
-                  Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
