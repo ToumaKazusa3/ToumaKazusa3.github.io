@@ -22,21 +22,26 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="核心与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; &#x3D; 3.5中）或dot函数或方法执行：">
+  <meta name="description" content="Author Keni Bernardin and Rainer Stiefelhagen ConferenceEURASIP Journal on Image and Video Processing Motivation 给出一种tracking结果到GT的映射 提出两种评价MOT tracker的指标MOTP和MOTA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="矩阵乘法和对应元素相乘">
-<meta property="og:url" content="http://example.com/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/index.html">
+<meta property="og:title" content="Evaluating Multiple Object Tracking Performance:The CLEAR MOT Metrics 论文笔记">
+<meta property="og:url" content="http://example.com/2020/10/13/Evaluating-Multiple-Object-Tracking-Performance-The-CLEAR-MOT-Metrics-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="核心与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; &#x3D; 3.5中）或dot函数或方法执行：">
+<meta property="og:description" content="Author Keni Bernardin and Rainer Stiefelhagen ConferenceEURASIP Journal on Image and Video Processing Motivation 给出一种tracking结果到GT的映射 提出两种评价MOT tracker的指标MOTP和MOTA">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-05T02:51:33.000Z">
-<meta property="article:modified_time" content="2020-10-05T02:57:06.888Z">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201013055832.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201013060906.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201013061315.png">
+<meta property="article:published_time" content="2020-10-13T10:28:50.000Z">
+<meta property="article:modified_time" content="2020-10-13T10:33:30.408Z">
 <meta property="article:author" content="Misaka Mikoto">
-<meta property="article:tag" content="Numpy">
+<meta property="article:tag" content="论文笔记">
+<meta property="article:tag" content="MOT">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201013055832.png">
 
 
-<link rel="canonical" href="http://example.com/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/">
+<link rel="canonical" href="http://example.com/2020/10/13/Evaluating-Multiple-Object-Tracking-Performance-The-CLEAR-MOT-Metrics-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
 
 <script class="page-configurations">
@@ -49,7 +54,7 @@
   };
 </script>
 
-  <title>矩阵乘法和对应元素相乘 | Railgun</title>
+  <title>Evaluating Multiple Object Tracking Performance:The CLEAR MOT Metrics 论文笔记 | Railgun</title>
   
 
 
@@ -220,7 +225,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83"><span class="nav-number">1.</span> <span class="nav-text">核心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#metric"><span class="nav-number">4.</span> <span class="nav-text">metric</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%B7%E6%8C%87%E6%A0%87%E5%BA%94%E8%AF%A5%E6%BB%A1%E8%B6%B3%E7%9A%84%E8%A6%81%E6%B1%82"><span class="nav-number">4.1.</span> <span class="nav-text">价指标应该满足的要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7%E8%BF%87%E7%A8%8B"><span class="nav-number">4.2.</span> <span class="nav-text">评价过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E7%9B%AE%E6%A0%87%E5%92%8C%E5%81%87%E8%AE%BE%E9%97%B4%E7%9A%84%E6%9C%80%E4%BC%98%E4%B8%80%E4%B8%80%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB"><span class="nav-number">4.2.1.</span> <span class="nav-text">建立目标和假设间的最优一一对应关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E6%8C%87%E6%A0%87"><span class="nav-number">4.3.</span> <span class="nav-text">两个指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MOTA"><span class="nav-number">4.3.1.</span> <span class="nav-text">MOTA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MOPT"><span class="nav-number">4.3.2.</span> <span class="nav-text">MOPT</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">reference</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -300,7 +305,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/13/Evaluating-Multiple-Object-Tracking-Performance-The-CLEAR-MOT-Metrics-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -313,7 +318,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          矩阵乘法和对应元素相乘
+          Evaluating Multiple Object Tracking Performance:The CLEAR MOT Metrics 论文笔记
         </h1>
 
         <div class="post-meta-container">
@@ -325,7 +330,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-10-05 10:51:33 / 修改时间：10:57:06" itemprop="dateCreated datePublished" datetime="2020-10-05T10:51:33+08:00">2020-10-05</time>
+      <time title="创建时间：2020-10-13 18:28:50 / 修改时间：18:33:30" itemprop="dateCreated datePublished" datetime="2020-10-13T18:28:50+08:00">2020-10-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -352,14 +357,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>244</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -370,11 +375,46 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; = 3.5中）或dot函数或方法执行：</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">bb = np.array([[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"></span><br><span class="line">print(aa*bb)</span><br><span class="line">print(aa@bb)</span><br><span class="line">print(aa.dot(bb))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[[ <span class="number">4</span> <span class="number">10</span>]</span><br><span class="line"> [<span class="number">18</span> <span class="number">28</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br></pre></td></tr></table></figure>
+        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Keni Bernardin and Rainer Stiefelhagen</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>EURASIP Journal on Image and Video Processing</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>给出一种tracking结果到GT的映射</li>
+<li>提出两种评价MOT tracker的指标<strong>MOTP</strong>和<strong>MOTA</strong><a id="more"></a>
+<h2 id="metric"><a href="#metric" class="headerlink" title="metric"></a>metric</h2><h3 id="价指标应该满足的要求"><a href="#价指标应该满足的要求" class="headerlink" title="价指标应该满足的要求"></a>价指标应该满足的要求</h3></li>
+</ul>
+<ol>
+<li>所有出现的目标都要能够及时找到</li>
+<li>找到目标位置要尽可能可真实目标位置一致</li>
+<li>保持追踪一致性，避免跟踪目标的跳变</li>
+</ol>
+<h3 id="评价过程"><a href="#评价过程" class="headerlink" title="评价过程"></a>评价过程</h3><ol>
+<li>建立目标和假设间的最优一一对应关系，称之为correspondence</li>
+<li>对所有的correspondence，</li>
+<li>计算位置偏移误差(the error in the object’s position estimation)累积结构误差(object configuration error)<br>a. 计算漏检数，objects for which no hypothesis was output<br>b. 计算虚警数，hypothesis for which no real objects exists<br>c. 跟踪目标发生跳变的次数，the number of occurrences where the tracking hypothesis for an object changed compared to previous frames</li>
+</ol>
+<h4 id="建立目标和假设间的最优一一对应关系"><a href="#建立目标和假设间的最优一一对应关系" class="headerlink" title="建立目标和假设间的最优一一对应关系"></a>建立目标和假设间的最优一一对应关系</h4><p>$M$表示从GT到tracking结果的映射，$o_i$表示GT中的第$i$个行人的轨迹，$h_j$表示tracking结果中第$j$条tracklet，在计算目标和假设间的最优对应关系时，需要统计跳变数、漏检数、虚警数。</p>
+<ol>
+<li>对于第$t$帧，考虑<strong>直到</strong>$t-1$时刻的映射$M_{t-1}$，判断其中的每一个对应$(o_i,h_j)$是否有效</li>
+<li>对于那些上一步没有找到对应假设的目标，在新的假设集中寻找最佳匹配，具体匹配算法是用匈牙利匹配算法，此时新出现的$(o_i,h_k)$不在$M_{t-1}$中，那么更新映射表，在$M_{t}$中将新的$(o_i,h_k)$取代$o_i$以前的对应$(o_i,h_j)$，同时使用${mmr}_t$记录$t$时刻出现的跳变次数。</li>
+<li>经过之前两步，可以找到所有的correspondence，所有的correspondence个数记为$c_t$,计算每一个correspondence计算目标和假设建的距离$d_t^i$，这两个数据用来算最终的metric</li>
+<li>剩下的未找到correspondence的目标和假设个数分别记为$m_{t}$和${fp}<em>{t}$，分别是第$t$帧的false negative和false positive，使用$g</em>{t}$表示$t$时刻GT中的目标数</li>
+<li>对于初始的第1帧$M_{1}$而言，把$M_{0}$是空的，第1帧出现的所有$o$与$h$都用匈牙利匹配算法，并且认为所有匹配都是正确的，没有发生跳变。</li>
+</ol>
+<p><strong>值得注意的一点是这里说直至$t$时刻的目标-假设映射表而不是$t$时刻的映射表是因为有时correspondence出现丢失时，之前的对应关系应该得到保留</strong>。如下图所示：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201013055832.png"><br>$t+1$时刻的映射$M_{t+1}$，目标$o_i$没有对应的假设$h_j$与之对应，也就是false negative的情况，但$t$时刻的目标$o_i$与对应的$h_j$，所以在$t+2$时刻虽然$d_{(1,1) }&gt;d_{(1,2) }$，但任选择$(o_1,h_1)$</p>
+<h3 id="两个指标"><a href="#两个指标" class="headerlink" title="两个指标"></a>两个指标</h3><h4 id="MOTA"><a href="#MOTA" class="headerlink" title="MOTA"></a>MOTA</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201013060906.png"></p>
+<ul>
+<li>$m_{t}$为MOT tracking的detection过程总体的漏检率</li>
+<li>${fp}_{t}$为MOT tracking的detection过程总体的虚警率</li>
+<li>${mmr}_t$为MOT tracking中所有目标ID发生跳变的机率</li>
+</ul>
+<p>这个指标比较关注detection的结果。</p>
+<h4 id="MOPT"><a href="#MOPT" class="headerlink" title="MOPT"></a>MOPT</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201013061315.png"></p>
+<p>这个指标用来衡量假设与对应目标的平均偏差，也就是bbox的偏差。</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/YiXiaoZhou/p/5937980.html">https://www.cnblogs.com/YiXiaoZhou/p/5937980.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36342854/article/details/102984622">https://blog.csdn.net/qq_36342854/article/details/102984622</a></li>
+</ul>
+
     </div>
 
     
@@ -391,7 +431,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/" title="矩阵乘法和对应元素相乘">http://example.com/2020/10/05/矩阵乘法和对应元素相乘/</a>
+      <a href="http://example.com/2020/10/13/Evaluating-Multiple-Object-Tracking-Performance-The-CLEAR-MOT-Metrics-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="Evaluating Multiple Object Tracking Performance:The CLEAR MOT Metrics 论文笔记">http://example.com/2020/10/13/Evaluating-Multiple-Object-Tracking-Performance-The-CLEAR-MOT-Metrics-论文笔记/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -400,21 +440,19 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Numpy/" rel="tag"><i class="fa fa-tag"></i> Numpy</a>
+              <a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 论文笔记</a>
+              <a href="/tags/MOT/" rel="tag"><i class="fa fa-tag"></i> MOT</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/10/05/np-zeros-%E5%92%8Cnp-zeros-like/" rel="prev" title="np.zeros()和np.zeros_like()">
-                  <i class="fa fa-chevron-left"></i> np.zeros()和np.zeros_like()
+                <a href="/2020/10/12/AD-Cluster-Augmented-Discriminative-Clustering-for-Domain-Adaptive-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="prev" title="AD-Cluster: Augmented Discriminative Clustering for Domain Adaptive Person Re-identification 论文笔记">
+                  <i class="fa fa-chevron-left"></i> AD-Cluster: Augmented Discriminative Clustering for Domain Adaptive Person Re-identification 论文笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/05/%E6%98%AF%E4%B8%AA%E5%95%A5/" rel="next" title="...是个啥">
-                  ...是个啥 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
