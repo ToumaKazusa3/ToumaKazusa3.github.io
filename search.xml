@@ -24,37 +24,20 @@
       </tags>
   </entry>
   <entry>
-    <title>AP聚类</title>
-    <url>/2020/10/19/AP%E8%81%9A%E7%B1%BB/</url>
-    <content><![CDATA[<h2 id="sklearn包中的AP算法"><a href="#sklearn包中的AP算法" class="headerlink" title="sklearn包中的AP算法"></a>sklearn包中的AP算法</h2><h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">cluster</span>.<span class="title">AffinityPropagation</span>(<span class="params">*, damping=<span class="number">0.5</span>, max_iter=<span class="number">200</span>, convergence_iter=<span class="number">15</span>, copy=True, preference=None, affinity=<span class="string">&#x27;euclidean&#x27;</span>, verbose=False, random_state=<span class="string">&#x27;warn&#x27;</span></span>)</span></span><br></pre></td></tr></table></figure>
-<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
-<li>preference: 参考度或称为偏好参数：是相似度矩阵中横轴纵轴索引相同的点，如s(i,i)，若按欧氏距离计算其值应为0，但在AP聚类中其表示数据点i作为聚类中心的程度，因此不能为0。迭代开始前假设所有点成为聚类中心的能力相同，因此参考度一般设为相似度矩阵中所有值得最小值或者中位数，但是参考度越大则说明个数据点成为聚类中心的能力越强，则最终聚类中心的个数则越多，如果不指定，则都设为相似度矩阵中的中位数；</li>
-<li>damping=0.5: 阻尼因子,用于减少吸引信息和归属信息以防止更新减少吸引度和归属度信息时数据振荡，设置为 0.5 到 1 之间。</li>
-<li>max_iter=200： 最大迭代次数；</li>
-<li>convergence_iter=15： 聚类个数连续 convergence_iter 次迭代都不再改变，就停止迭代；</li>
-<li>copy=True： 在 scikit-learn 很多接口中都会有这个参数的，就是是否对输入数据进行 copy 操作，以便不修改用户的输入数据；</li>
-<li>affinity=’euclidean’： string，“precomputed” 或者 “euclidean”，“euclidean” 采用负的欧几里得距离（class中的参数）</li>
-<li>verbose=False： int 类型，是否输出详细信息<a id="more"></a>
-<h3 id="函数返回结果"><a href="#函数返回结果" class="headerlink" title="函数返回结果"></a>函数返回结果</h3></li>
-<li>cluster_centers_indices : array, shape (n_clusters,) 聚类中心在所有数据中的索引，聚类中心是已有数据点。</li>
-<li>labels : array, shape (n_samples,) 聚类标签，每个记录对应的种类，默认是从0开始的数字</li>
-<li>n_iter : int 运行的迭代次数，只有 return_n_iter参数设置维True时才返回。</li>
-</ul>
-<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
-<li>不需要指定最终聚类族的个数</li>
-<li>已有的数据点作为最终的聚类中心，而不是新生成一个族中心</li>
-<li>模型对数据的初始值不敏感</li>
-<li>对初始相似度矩阵数据的对称性没有要求</li>
-<li>相比于k-centers聚类方法，其结果的平方差误差较小</li>
-</ul>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h4 id="affinity-’euclidean’"><a href="#affinity-’euclidean’" class="headerlink" title="affinity=’euclidean’"></a>affinity=’euclidean’</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> AffinityPropagation</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成的测试数据的中心点</span></span><br><span class="line">centers = [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">1</span>, <span class="number">-1</span>]]</span><br><span class="line"><span class="comment">##生成数据</span></span><br><span class="line">Xn, labels_true = make_blobs(n_samples=<span class="number">150</span>, centers=centers, cluster_std=<span class="number">0.5</span>,</span><br><span class="line">                            random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">simi = []</span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> Xn:</span><br><span class="line">    <span class="comment">##每个数字与所有数字的相似度列表，即矩阵中的一行</span></span><br><span class="line">    temp = []</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> Xn:</span><br><span class="line">         <span class="comment">##采用负的欧式距离计算相似度</span></span><br><span class="line">        s =-np.sqrt((m[<span class="number">0</span>]-n[<span class="number">0</span>])**<span class="number">2</span> + (m[<span class="number">1</span>]-n[<span class="number">1</span>])**<span class="number">2</span>)</span><br><span class="line">        temp.append(s)</span><br><span class="line">    simi.append(temp)</span><br><span class="line"></span><br><span class="line">p=<span class="number">-50</span>   <span class="comment">##3个中心</span></span><br><span class="line"><span class="comment">#p = np.min(simi)  ##9个中心，</span></span><br><span class="line"><span class="comment">#p = np.median(simi)  ##13个中心    </span></span><br><span class="line"></span><br><span class="line">ap = AffinityPropagation(damping=<span class="number">0.5</span>,max_iter=<span class="number">500</span>,convergence_iter=<span class="number">30</span>,</span><br><span class="line">                         preference=p).fit(Xn)</span><br><span class="line">cluster_centers_indices = ap.cluster_centers_indices_</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> cluster_centers_indices:</span><br><span class="line">    print(Xn[idx])</span><br></pre></td></tr></table></figure>
-
-<h4 id="affinity-’precomputed’"><a href="#affinity-’precomputed’" class="headerlink" title="affinity=’precomputed’"></a>affinity=’precomputed’</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> AffinityPropagation</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="comment"># 计算欧氏距离</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caldist</span>(<span class="params">qf, gf</span>):</span></span><br><span class="line">    m, n = qf.shape[<span class="number">0</span>], gf.shape[<span class="number">0</span>]</span><br><span class="line">    distmat = torch.pow(qf, <span class="number">2</span>).sum(dim=<span class="number">1</span>, keepdim=<span class="literal">True</span>).expand(m, n) + \</span><br><span class="line">              torch.pow(gf, <span class="number">2</span>).sum(dim=<span class="number">1</span>, keepdim=<span class="literal">True</span>).expand(n, m).t()</span><br><span class="line">    distmat.addmm_(<span class="number">1</span>, <span class="number">-2</span>, qf, gf.t())</span><br><span class="line">    <span class="keyword">return</span> -distmat<span class="comment"># 取负值</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成测试数据</span></span><br><span class="line">centers = [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">1</span>, <span class="number">-1</span>]]</span><br><span class="line"><span class="comment"># 生成实际中心为centers的测试样本300个，X是包含300个(x,y)点的二维数组，labels_true为其对应的真是类别标签</span></span><br><span class="line">X, labels_true = make_blobs(n_samples=<span class="number">300</span>, centers=centers, cluster_std=<span class="number">0.5</span>,</span><br><span class="line">                            random_state=<span class="number">0</span>)</span><br><span class="line">distMat = caldist(torch.from_numpy(X), torch.from_numpy(X)).numpy()</span><br><span class="line"><span class="comment"># 计算AP</span></span><br><span class="line">ap = AffinityPropagation(preference=<span class="number">-50</span>, affinity=<span class="string">&#x27;precomputed&#x27;</span>).fit(distMat)</span><br><span class="line">cluster_centers_indices = ap.cluster_centers_indices_    <span class="comment"># 预测出的中心点的索引，如[123,23,34]</span></span><br><span class="line">labels = ap.labels_    <span class="comment"># 预测出的每个数据的类别标签,labels是一个NumPy数组</span></span><br><span class="line"></span><br><span class="line">n_clusters_ = len(cluster_centers_indices)    <span class="comment"># 预测聚类中心的个数</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;预测的聚类中心个数：%d&#x27;</span> % n_clusters_)</span><br><span class="line">print(<span class="string">&#x27;同质性：%0.3f&#x27;</span> % metrics.homogeneity_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;完整性：%0.3f&#x27;</span> % metrics.completeness_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;V-值： % 0.3f&#x27;</span> % metrics.v_measure_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;调整后的兰德指数：%0.3f&#x27;</span> % metrics.adjusted_rand_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;调整后的互信息： %0.3f&#x27;</span> % metrics.adjusted_mutual_info_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;轮廓系数：%0.3f&#x27;</span> % metrics.silhouette_score(X, labels, metric=<span class="string">&#x27;sqeuclidean&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制图表展示</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line"></span><br><span class="line">plt.close(<span class="string">&#x27;all&#x27;</span>)    <span class="comment"># 关闭所有的图形</span></span><br><span class="line">plt.figure(<span class="number">1</span>)    <span class="comment"># 产生一个新的图形</span></span><br><span class="line">plt.clf()    <span class="comment"># 清空当前的图形</span></span><br><span class="line"></span><br><span class="line">colors = cycle(<span class="string">&#x27;bgrcmykbgrcmykbgrcmykbgrcmyk&#x27;</span>)</span><br><span class="line"><span class="comment"># 循环为每个类标记不同的颜色</span></span><br><span class="line"><span class="keyword">for</span> k, col <span class="keyword">in</span> zip(range(n_clusters_), colors):</span><br><span class="line">    <span class="comment"># labels == k 使用k与labels数组中的每个值进行比较</span></span><br><span class="line">    <span class="comment"># 如labels = [1,0],k=0,则‘labels==k’的结果为[False, True]</span></span><br><span class="line">    class_members = labels == k</span><br><span class="line">    cluster_center = X[cluster_centers_indices[k]]    <span class="comment"># 聚类中心的坐标</span></span><br><span class="line">    plt.plot(X[class_members, <span class="number">0</span>], X[class_members, <span class="number">1</span>], col + <span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">    plt.plot(cluster_center[<span class="number">0</span>], cluster_center[<span class="number">1</span>], markerfacecolor=col,</span><br><span class="line">             markeredgecolor=<span class="string">&#x27;k&#x27;</span>, markersize=<span class="number">14</span>)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> X[class_members]:</span><br><span class="line">        plt.plot([cluster_center[<span class="number">0</span>], x[<span class="number">0</span>]], [cluster_center[<span class="number">1</span>], x[<span class="number">1</span>]], col)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">&#x27;预测聚类中心个数：%d&#x27;</span> % n_clusters_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>]]></content>
+    <title>C++ std::copy用法</title>
+    <url>/2020/10/17/C-std-copy%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>把一个序列（sequence）拷贝到一个容器（container）中去。</p>
+<h2 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::copy(start, end, <span class="built_in">std</span>::back_inserter(container));</span><br></pre></td></tr></table></figure>
+<p>std::back_inserter可以替换成std::front_inserter和std::inserter</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">auto</span> vi = inserter(v, v.begin() + <span class="number">1</span>);</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">3</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line">	copy(v1.begin(), v1.end(), vi);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -78,23 +61,6 @@
       <tags>
         <tag>ReID</tag>
         <tag>论文笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++ std::copy用法</title>
-    <url>/2020/10/17/C-std-copy%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>把一个序列（sequence）拷贝到一个容器（container）中去。</p>
-<h2 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::copy(start, end, <span class="built_in">std</span>::back_inserter(container));</span><br></pre></td></tr></table></figure>
-<p>std::back_inserter可以替换成std::front_inserter和std::inserter</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">auto</span> vi = inserter(v, v.begin() + <span class="number">1</span>);</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">3</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line">	copy(v1.begin(), v1.end(), vi);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -136,6 +102,40 @@
       </categories>
       <tags>
         <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AP聚类</title>
+    <url>/2020/10/19/AP%E8%81%9A%E7%B1%BB/</url>
+    <content><![CDATA[<h2 id="sklearn包中的AP算法"><a href="#sklearn包中的AP算法" class="headerlink" title="sklearn包中的AP算法"></a>sklearn包中的AP算法</h2><h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">cluster</span>.<span class="title">AffinityPropagation</span>(<span class="params">*, damping=<span class="number">0.5</span>, max_iter=<span class="number">200</span>, convergence_iter=<span class="number">15</span>, copy=True, preference=None, affinity=<span class="string">&#x27;euclidean&#x27;</span>, verbose=False, random_state=<span class="string">&#x27;warn&#x27;</span></span>)</span></span><br></pre></td></tr></table></figure>
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
+<li>preference: 参考度或称为偏好参数：是相似度矩阵中横轴纵轴索引相同的点，如s(i,i)，若按欧氏距离计算其值应为0，但在AP聚类中其表示数据点i作为聚类中心的程度，因此不能为0。迭代开始前假设所有点成为聚类中心的能力相同，因此参考度一般设为相似度矩阵中所有值得最小值或者中位数，但是参考度越大则说明个数据点成为聚类中心的能力越强，则最终聚类中心的个数则越多，如果不指定，则都设为相似度矩阵中的中位数；</li>
+<li>damping=0.5: 阻尼因子,用于减少吸引信息和归属信息以防止更新减少吸引度和归属度信息时数据振荡，设置为 0.5 到 1 之间。</li>
+<li>max_iter=200： 最大迭代次数；</li>
+<li>convergence_iter=15： 聚类个数连续 convergence_iter 次迭代都不再改变，就停止迭代；</li>
+<li>copy=True： 在 scikit-learn 很多接口中都会有这个参数的，就是是否对输入数据进行 copy 操作，以便不修改用户的输入数据；</li>
+<li>affinity=’euclidean’： string，“precomputed” 或者 “euclidean”，“euclidean” 采用负的欧几里得距离（class中的参数）</li>
+<li>verbose=False： int 类型，是否输出详细信息<a id="more"></a>
+<h3 id="函数返回结果"><a href="#函数返回结果" class="headerlink" title="函数返回结果"></a>函数返回结果</h3></li>
+<li>cluster_centers_indices : array, shape (n_clusters,) 聚类中心在所有数据中的索引，聚类中心是已有数据点。</li>
+<li>labels : array, shape (n_samples,) 聚类标签，每个记录对应的种类，默认是从0开始的数字</li>
+<li>n_iter : int 运行的迭代次数，只有 return_n_iter参数设置维True时才返回。</li>
+</ul>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>不需要指定最终聚类族的个数</li>
+<li>已有的数据点作为最终的聚类中心，而不是新生成一个族中心</li>
+<li>模型对数据的初始值不敏感</li>
+<li>对初始相似度矩阵数据的对称性没有要求</li>
+<li>相比于k-centers聚类方法，其结果的平方差误差较小</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h4 id="affinity-’euclidean’"><a href="#affinity-’euclidean’" class="headerlink" title="affinity=’euclidean’"></a>affinity=’euclidean’</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> AffinityPropagation</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成的测试数据的中心点</span></span><br><span class="line">centers = [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">1</span>, <span class="number">-1</span>]]</span><br><span class="line"><span class="comment">##生成数据</span></span><br><span class="line">Xn, labels_true = make_blobs(n_samples=<span class="number">150</span>, centers=centers, cluster_std=<span class="number">0.5</span>,</span><br><span class="line">                            random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">simi = []</span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> Xn:</span><br><span class="line">    <span class="comment">##每个数字与所有数字的相似度列表，即矩阵中的一行</span></span><br><span class="line">    temp = []</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> Xn:</span><br><span class="line">         <span class="comment">##采用负的欧式距离计算相似度</span></span><br><span class="line">        s =-np.sqrt((m[<span class="number">0</span>]-n[<span class="number">0</span>])**<span class="number">2</span> + (m[<span class="number">1</span>]-n[<span class="number">1</span>])**<span class="number">2</span>)</span><br><span class="line">        temp.append(s)</span><br><span class="line">    simi.append(temp)</span><br><span class="line"></span><br><span class="line">p=<span class="number">-50</span>   <span class="comment">##3个中心</span></span><br><span class="line"><span class="comment">#p = np.min(simi)  ##9个中心，</span></span><br><span class="line"><span class="comment">#p = np.median(simi)  ##13个中心    </span></span><br><span class="line"></span><br><span class="line">ap = AffinityPropagation(damping=<span class="number">0.5</span>,max_iter=<span class="number">500</span>,convergence_iter=<span class="number">30</span>,</span><br><span class="line">                         preference=p).fit(Xn)</span><br><span class="line">cluster_centers_indices = ap.cluster_centers_indices_</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> cluster_centers_indices:</span><br><span class="line">    print(Xn[idx])</span><br></pre></td></tr></table></figure>
+
+<h4 id="affinity-’precomputed’"><a href="#affinity-’precomputed’" class="headerlink" title="affinity=’precomputed’"></a>affinity=’precomputed’</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> AffinityPropagation</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="comment"># 计算欧氏距离</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caldist</span>(<span class="params">qf, gf</span>):</span></span><br><span class="line">    m, n = qf.shape[<span class="number">0</span>], gf.shape[<span class="number">0</span>]</span><br><span class="line">    distmat = torch.pow(qf, <span class="number">2</span>).sum(dim=<span class="number">1</span>, keepdim=<span class="literal">True</span>).expand(m, n) + \</span><br><span class="line">              torch.pow(gf, <span class="number">2</span>).sum(dim=<span class="number">1</span>, keepdim=<span class="literal">True</span>).expand(n, m).t()</span><br><span class="line">    distmat.addmm_(<span class="number">1</span>, <span class="number">-2</span>, qf, gf.t())</span><br><span class="line">    <span class="keyword">return</span> -distmat<span class="comment"># 取负值</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成测试数据</span></span><br><span class="line">centers = [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">1</span>, <span class="number">-1</span>]]</span><br><span class="line"><span class="comment"># 生成实际中心为centers的测试样本300个，X是包含300个(x,y)点的二维数组，labels_true为其对应的真是类别标签</span></span><br><span class="line">X, labels_true = make_blobs(n_samples=<span class="number">300</span>, centers=centers, cluster_std=<span class="number">0.5</span>,</span><br><span class="line">                            random_state=<span class="number">0</span>)</span><br><span class="line">distMat = caldist(torch.from_numpy(X), torch.from_numpy(X)).numpy()</span><br><span class="line"><span class="comment"># 计算AP</span></span><br><span class="line">ap = AffinityPropagation(preference=<span class="number">-50</span>, affinity=<span class="string">&#x27;precomputed&#x27;</span>).fit(distMat)</span><br><span class="line">cluster_centers_indices = ap.cluster_centers_indices_    <span class="comment"># 预测出的中心点的索引，如[123,23,34]</span></span><br><span class="line">labels = ap.labels_    <span class="comment"># 预测出的每个数据的类别标签,labels是一个NumPy数组</span></span><br><span class="line"></span><br><span class="line">n_clusters_ = len(cluster_centers_indices)    <span class="comment"># 预测聚类中心的个数</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;预测的聚类中心个数：%d&#x27;</span> % n_clusters_)</span><br><span class="line">print(<span class="string">&#x27;同质性：%0.3f&#x27;</span> % metrics.homogeneity_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;完整性：%0.3f&#x27;</span> % metrics.completeness_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;V-值： % 0.3f&#x27;</span> % metrics.v_measure_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;调整后的兰德指数：%0.3f&#x27;</span> % metrics.adjusted_rand_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;调整后的互信息： %0.3f&#x27;</span> % metrics.adjusted_mutual_info_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;轮廓系数：%0.3f&#x27;</span> % metrics.silhouette_score(X, labels, metric=<span class="string">&#x27;sqeuclidean&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制图表展示</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line"></span><br><span class="line">plt.close(<span class="string">&#x27;all&#x27;</span>)    <span class="comment"># 关闭所有的图形</span></span><br><span class="line">plt.figure(<span class="number">1</span>)    <span class="comment"># 产生一个新的图形</span></span><br><span class="line">plt.clf()    <span class="comment"># 清空当前的图形</span></span><br><span class="line"></span><br><span class="line">colors = cycle(<span class="string">&#x27;bgrcmykbgrcmykbgrcmykbgrcmyk&#x27;</span>)</span><br><span class="line"><span class="comment"># 循环为每个类标记不同的颜色</span></span><br><span class="line"><span class="keyword">for</span> k, col <span class="keyword">in</span> zip(range(n_clusters_), colors):</span><br><span class="line">    <span class="comment"># labels == k 使用k与labels数组中的每个值进行比较</span></span><br><span class="line">    <span class="comment"># 如labels = [1,0],k=0,则‘labels==k’的结果为[False, True]</span></span><br><span class="line">    class_members = labels == k</span><br><span class="line">    cluster_center = X[cluster_centers_indices[k]]    <span class="comment"># 聚类中心的坐标</span></span><br><span class="line">    plt.plot(X[class_members, <span class="number">0</span>], X[class_members, <span class="number">1</span>], col + <span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">    plt.plot(cluster_center[<span class="number">0</span>], cluster_center[<span class="number">1</span>], markerfacecolor=col,</span><br><span class="line">             markeredgecolor=<span class="string">&#x27;k&#x27;</span>, markersize=<span class="number">14</span>)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> X[class_members]:</span><br><span class="line">        plt.plot([cluster_center[<span class="number">0</span>], x[<span class="number">0</span>]], [cluster_center[<span class="number">1</span>], x[<span class="number">1</span>]], col)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">&#x27;预测聚类中心个数：%d&#x27;</span> % n_clusters_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -298,40 +298,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记</title>
-    <url>/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-level的domain bias很容易通过网络学出来，但在无监督学习下却不行。</li>
-</ul>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>提出exemplar-invariance, camera- invariance and neighborhood-invariance三种不变性约束。</li>
-<li>提出memory module来充分利用整个training set上的样本。</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="framework"></p>
-<h2 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h2><p>蓝色支路为baseline，输入为source domain上带标签的图片，用cross entropy loss做约束，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210162135330.png" alt="在这里插入图片描述"><br>$n_{s}$为source domain上图片的数量，$x_{s,i}$为source domain上的第$i$张图片，$y_{s,i}$为其label。</p>
-<h2 id="Exemplar-Memory"><a href="#Exemplar-Memory" class="headerlink" title="Exemplar Memory"></a>Exemplar Memory</h2><p>Exemplar Memory为key-value结构，key存储经过L2正则化之后的4096维特征，value存储label(实际上为index)，value在训练过程中保持不变。<br>key初始化为0，在BP时更新，方法如下：<br><img src="https://img-blog.csdnimg.cn/2019121016300286.png" alt="在这里插入图片描述"><br>$\alpha$在[0, 1]的范围内，控制更新速度，为一个超参数。下面用Exemplar Memory模块来完成三种不变性约束。</p>
-<h3 id="Exemplar-invariance"><a href="#Exemplar-invariance" class="headerlink" title="Exemplar-invariance"></a>Exemplar-invariance</h3><p>每张图的appearence都是独一无二的，就算是相同ID的图片，也会受到pose，illumination，background等因素的影响，所以对于每张图，都应该靠近自己(Exemplar Memory的作用)而远离其它图片，作者视每张图都为不同的id，然后将每张图归于自己的id。实际上就是训练一个$N_t$($N_t$为target domain上图片数目)个类的分类器，概率如下：<br><img src="https://img-blog.csdnimg.cn/20191210164027839.png" alt="在这里插入图片描述"><br>$f(x_{t,i})$为backbone输出的4096维特征，与Exemplar Memory中的每个特征计算余弦距离，$\beta$为smooth项，$\beta$越大输出越均匀。</p>
-<h3 id="Camera-invariance"><a href="#Camera-invariance" class="headerlink" title="Camera-invariance"></a>Camera-invariance</h3><p>用StarGAN来风格迁移，将每一张图片都迁移到其他$C-1$个相机下。迁移过程中保证ID不变，camstyle变成对应camid的style。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210165159127.png" alt="在这里插入图片描述"><br>$\hat{x}<em>{t,i}$为由$x</em>{t,i}$风格迁移得到的图片，这张图片应该与$x_{t,i}$属于相同id。</p>
-<h3 id="Neighborhood-invariance"><a href="#Neighborhood-invariance" class="headerlink" title="Neighborhood-invariance"></a>Neighborhood-invariance</h3><p>对于target domain上的每张图，都存在其他正例，只是在这个问题定义下我们不知道而已。对于每一张图片的输出$f(x_{t,i})$我们可以在key张找到k-nearest近邻，显然最近的是自己。$M(x_{t,i},k)$表示离$f(x_{t,i})$最近的k个近邻的value值。<br>作者认为$M(x_{t,i},k)$中的k张图最有可能与$f(x_{t,i})$拥有相同的id，所以希望在特征空间中拉近彼此之间的距离，但是这种伪标签又是不可信的，所以不能赋予太高的权重。权重如下：<br><img src="https://img-blog.csdnimg.cn/20191210170510387.png" alt="在这里插入图片描述"><br>对$f(x_{t,i})$自身赋予1，其余赋予$\frac{1}{k}$的权重。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210170734221.png" alt="在这里插入图片描述"><br>这个损失函数中为了与exemplar-invariance区别将自身剔除了。</p>
-<h3 id="Overall-loss-of-invariance-learning"><a href="#Overall-loss-of-invariance-learning" class="headerlink" title="Overall loss of invariance learning"></a>Overall loss of invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210170924743.png" alt="在这里插入图片描述"><br>将三种不变性loss合在一起写简单明了。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="beta-的影响"><a href="#beta-的影响" class="headerlink" title="$\beta$的影响"></a>$\beta$的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Memory的影响"><a href="#Memory的影响" class="headerlink" title="Memory的影响"></a>Memory的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171321178.png" alt="在这里插入图片描述"><br>memroy module的计算开销小，效果提升显著，非常值得借鉴。</p>
-<h3 id="Ablation-experiment-on-invariance-learning"><a href="#Ablation-experiment-on-invariance-learning" class="headerlink" title="Ablation experiment on invariance learning"></a>Ablation experiment on invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="SOTA性能"><a href="#SOTA性能" class="headerlink" title="SOTA性能"></a>SOTA性能</h3><p><img src="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Image-Image Domain Adaptation with Preserved Self-Similarity and Domain-Dissimilarity for Person Re-identification 论文笔记</title>
     <url>/2020/10/07/Image-Image-Domain-Adaptation-with-Preserved-Self-Similarity-and-Domain-Dissimilarity-for-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Weijian Deng, Liang Zheng</p>
@@ -373,6 +339,40 @@
 <h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="迁移结果"><a href="#迁移结果" class="headerlink" title="迁移结果"></a>迁移结果</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dnZFI.png" alt="迁移结果"></p>
 <h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p><img src="https://s1.ax1x.com/2020/10/07/0dn3wj.png" alt="性能"></p>
 <h2 id="补充：什么是LMP"><a href="#补充：什么是LMP" class="headerlink" title="补充：什么是LMP"></a>补充：什么是LMP</h2><p><img src="https://s1.ax1x.com/2020/10/07/0dnOc8.png" alt="性能"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Invariance Matters Exemplar Memory for Domain Adaptive Person Re-identificatio论文笔记</title>
+    <url>/2020/08/27/Invariance-Matters-Exemplar-Memory-for-Domain-Adaptive-Person-Re-identificatio%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Zhun Zhong, Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>在迁移学习的过程中，不仅要考虑source domain与target domain之间的domain bias，还要考虑target domain内部的bias。简单来说target domain中的每一个camera都是一个domain，在监督学习下，这些camera-level的domain bias很容易通过网络学出来，但在无监督学习下却不行。</li>
+</ul>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>提出exemplar-invariance, camera- invariance and neighborhood-invariance三种不变性约束。</li>
+<li>提出memory module来充分利用整个training set上的样本。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210161738447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="framework"></p>
+<h2 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h2><p>蓝色支路为baseline，输入为source domain上带标签的图片，用cross entropy loss做约束，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210162135330.png" alt="在这里插入图片描述"><br>$n_{s}$为source domain上图片的数量，$x_{s,i}$为source domain上的第$i$张图片，$y_{s,i}$为其label。</p>
+<h2 id="Exemplar-Memory"><a href="#Exemplar-Memory" class="headerlink" title="Exemplar Memory"></a>Exemplar Memory</h2><p>Exemplar Memory为key-value结构，key存储经过L2正则化之后的4096维特征，value存储label(实际上为index)，value在训练过程中保持不变。<br>key初始化为0，在BP时更新，方法如下：<br><img src="https://img-blog.csdnimg.cn/2019121016300286.png" alt="在这里插入图片描述"><br>$\alpha$在[0, 1]的范围内，控制更新速度，为一个超参数。下面用Exemplar Memory模块来完成三种不变性约束。</p>
+<h3 id="Exemplar-invariance"><a href="#Exemplar-invariance" class="headerlink" title="Exemplar-invariance"></a>Exemplar-invariance</h3><p>每张图的appearence都是独一无二的，就算是相同ID的图片，也会受到pose，illumination，background等因素的影响，所以对于每张图，都应该靠近自己(Exemplar Memory的作用)而远离其它图片，作者视每张图都为不同的id，然后将每张图归于自己的id。实际上就是训练一个$N_t$($N_t$为target domain上图片数目)个类的分类器，概率如下：<br><img src="https://img-blog.csdnimg.cn/20191210164027839.png" alt="在这里插入图片描述"><br>$f(x_{t,i})$为backbone输出的4096维特征，与Exemplar Memory中的每个特征计算余弦距离，$\beta$为smooth项，$\beta$越大输出越均匀。</p>
+<h3 id="Camera-invariance"><a href="#Camera-invariance" class="headerlink" title="Camera-invariance"></a>Camera-invariance</h3><p>用StarGAN来风格迁移，将每一张图片都迁移到其他$C-1$个相机下。迁移过程中保证ID不变，camstyle变成对应camid的style。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210165159127.png" alt="在这里插入图片描述"><br>$\hat{x}<em>{t,i}$为由$x</em>{t,i}$风格迁移得到的图片，这张图片应该与$x_{t,i}$属于相同id。</p>
+<h3 id="Neighborhood-invariance"><a href="#Neighborhood-invariance" class="headerlink" title="Neighborhood-invariance"></a>Neighborhood-invariance</h3><p>对于target domain上的每张图，都存在其他正例，只是在这个问题定义下我们不知道而已。对于每一张图片的输出$f(x_{t,i})$我们可以在key张找到k-nearest近邻，显然最近的是自己。$M(x_{t,i},k)$表示离$f(x_{t,i})$最近的k个近邻的value值。<br>作者认为$M(x_{t,i},k)$中的k张图最有可能与$f(x_{t,i})$拥有相同的id，所以希望在特征空间中拉近彼此之间的距离，但是这种伪标签又是不可信的，所以不能赋予太高的权重。权重如下：<br><img src="https://img-blog.csdnimg.cn/20191210170510387.png" alt="在这里插入图片描述"><br>对$f(x_{t,i})$自身赋予1，其余赋予$\frac{1}{k}$的权重。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191210170734221.png" alt="在这里插入图片描述"><br>这个损失函数中为了与exemplar-invariance区别将自身剔除了。</p>
+<h3 id="Overall-loss-of-invariance-learning"><a href="#Overall-loss-of-invariance-learning" class="headerlink" title="Overall loss of invariance learning"></a>Overall loss of invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210170924743.png" alt="在这里插入图片描述"><br>将三种不变性loss合在一起写简单明了。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="beta-的影响"><a href="#beta-的影响" class="headerlink" title="$\beta$的影响"></a>$\beta$的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171159729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Memory的影响"><a href="#Memory的影响" class="headerlink" title="Memory的影响"></a>Memory的影响</h3><p><img src="https://img-blog.csdnimg.cn/20191210171321178.png" alt="在这里插入图片描述"><br>memroy module的计算开销小，效果提升显著，非常值得借鉴。</p>
+<h3 id="Ablation-experiment-on-invariance-learning"><a href="#Ablation-experiment-on-invariance-learning" class="headerlink" title="Ablation experiment on invariance learning"></a>Ablation experiment on invariance learning</h3><p><img src="https://img-blog.csdnimg.cn/20191210171538692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="SOTA性能"><a href="#SOTA性能" class="headerlink" title="SOTA性能"></a>SOTA性能</h3><p><img src="https://img-blog.csdnimg.cn/20191210171626835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -495,6 +495,22 @@
       </tags>
   </entry>
   <entry>
+    <title>Python偏函数</title>
+    <url>/2020/10/01/Python%E5%81%8F%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>functools.partial的作用就是把一个函数的某些参数给固定住（设置默认值），返回一个新函数，调用这个函数会更加简单</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mod</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x % y</span><br><span class="line"></span><br><span class="line">mod100 = partial(mod, <span class="number">100</span>)</span><br><span class="line">print(mod100(<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">int2 = partial(int,base=<span class="number">2</span>)</span><br><span class="line">print(int2(<span class="string">&#x27;0101010010101&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2709</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python修饰器</title>
     <url>/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
@@ -517,22 +533,6 @@
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python偏函数</title>
-    <url>/2020/10/01/Python%E5%81%8F%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>functools.partial的作用就是把一个函数的某些参数给固定住（设置默认值），返回一个新函数，调用这个函数会更加简单</li>
-</ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mod</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x % y</span><br><span class="line"></span><br><span class="line">mod100 = partial(mod, <span class="number">100</span>)</span><br><span class="line">print(mod100(<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">int2 = partial(int,base=<span class="number">2</span>)</span><br><span class="line">print(int2(<span class="string">&#x27;0101010010101&#x27;</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2709</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -573,23 +573,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python处理pickle文件</title>
-    <url>/2020/10/03/Python%E5%A4%84%E7%90%86pickle%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>python的pickle模块实现了基本的数据序列和反序列化。<br>通过pickle模块的序列化操作我们能够将程序中运行的对象信息保存到文件中去，永久存储。<br>通过pickle模块的反序列化操作，我们能够从文件中创建上一次程序保存的对象。</p>
-<a id="more"></a>
-<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = &#123;<span class="number">1</span>:<span class="number">2</span>, <span class="number">2</span>:<span class="number">3</span>&#125;</span><br><span class="line">    pickle.dump(data, f)</span><br></pre></td></tr></table></figure>
-
-<h2 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = pickle.load(f)</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
-<p>输出为：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="number">1</span>: <span class="number">2</span>, <span class="number">2</span>: <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python处理json文件</title>
     <url>/2020/10/03/Python%E5%A4%84%E7%90%86json%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式，易于人阅读和编写。<br>我们可以使用Python 语言来编码和解码 JSON 对象。</p>
@@ -601,6 +584,23 @@
 <li>json.loads(): 对数据进行解码。</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python处理pickle文件</title>
+    <url>/2020/10/03/Python%E5%A4%84%E7%90%86pickle%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>python的pickle模块实现了基本的数据序列和反序列化。<br>通过pickle模块的序列化操作我们能够将程序中运行的对象信息保存到文件中去，永久存储。<br>通过pickle模块的反序列化操作，我们能够从文件中创建上一次程序保存的对象。</p>
+<a id="more"></a>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = &#123;<span class="number">1</span>:<span class="number">2</span>, <span class="number">2</span>:<span class="number">3</span>&#125;</span><br><span class="line">    pickle.dump(data, f)</span><br></pre></td></tr></table></figure>
+
+<h2 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = pickle.load(f)</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="number">1</span>: <span class="number">2</span>, <span class="number">2</span>: <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -652,6 +652,27 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ss = <span class="string">&#x27;春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。\n&#x27;</span>,<span class="string">&#x27;雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。\n&#x27;</span></span><br><span class="line">    f.writelines(ss)</span><br></pre></td></tr></table></figure>
 <p>file文件：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。</span><br><span class="line">雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python字符串前面的u,r,b含义</title>
+    <url>/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/</url>
+    <content><![CDATA[<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
+<li>加r是取消转义，保留原始字符串</li>
+<li>加u是采用Unicode编码</li>
+<li>加b是表示后面的字符串是bytes类型，用于网络编程中收发数据</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>1、字符串前加 u<br>例：u”我是含有中文字符组成的字符串。”<br>作用：后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。 </p>
+<p>2、字符串前加 r<br>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。<br>作用：去掉反斜杠的转义机制。（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）<br>应用：常用于正则表达式，对应着re模块。 </p>
+<p>3、字符串前加 b<br>例: response = b’<h1>Hello World!</h1>‘     # b’ ‘ 表示这是一个 bytes 对象<br>作用：b” “前缀表示：后面字符串是bytes 类型。<br>应用：网络编程中，服务器和浏览器只认bytes 类型数据。如：send 函数的参数和 recv 函数的返回值都是 bytes 类型<br>附：在 Python3 中，bytes 和 str 的互相转换方式是</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -723,27 +744,6 @@
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span></span><br><span class="line">Thread<span class="number">-2</span> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> <span class="number">30</span></span><br><span class="line">Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line">Thread<span class="number">-5</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python字符串前面的u,r,b含义</title>
-    <url>/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/</url>
-    <content><![CDATA[<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
-<li>加r是取消转义，保留原始字符串</li>
-<li>加u是采用Unicode编码</li>
-<li>加b是表示后面的字符串是bytes类型，用于网络编程中收发数据</li>
-</ul>
-<a id="more"></a>
-
-<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>1、字符串前加 u<br>例：u”我是含有中文字符组成的字符串。”<br>作用：后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。 </p>
-<p>2、字符串前加 r<br>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。<br>作用：去掉反斜杠的转义机制。（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）<br>应用：常用于正则表达式，对应着re模块。 </p>
-<p>3、字符串前加 b<br>例: response = b’<h1>Hello World!</h1>‘     # b’ ‘ 表示这是一个 bytes 对象<br>作用：b” “前缀表示：后面字符串是bytes 类型。<br>应用：网络编程中，服务器和浏览器只认bytes 类型数据。如：send 函数的参数和 recv 函数的返回值都是 bytes 类型<br>附：在 Python3 中，bytes 和 str 的互相转换方式是</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -867,6 +867,28 @@
       </tags>
   </entry>
   <entry>
+    <title>Python自动给数字前面补0</title>
+    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>zfill方法</li>
+<li>格式化</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+<p>也可以用format</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python统计类实例化了多少对象</title>
     <url>/2020/10/02/Python%E7%BB%9F%E8%AE%A1%E7%B1%BB%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%BA%86%E5%A4%9A%E5%B0%91%E5%AF%B9%E8%B1%A1/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -902,25 +924,40 @@
       </tags>
   </entry>
   <entry>
-    <title>Python自动给数字前面补0</title>
-    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>zfill方法</li>
-<li>格式化</li>
-</ul>
+    <title>Unsupervised Person Re-identification: Clustering and Fine-tuning 论文笔记</title>
+    <url>/2020/10/12/Unsupervised-Person-Re-identification-Clustering-and-Fine-tuning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Hehe Fan, Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>TOMM 2017</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li><p>无监督ReID，数据集没有label所以用聚类的方式产生伪标签，挑选可信样本组成新数据集，迭代训练。</p>
 <a id="more"></a>
-
-<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-<p>也可以用format</p>
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li><p>这应该是第一篇用聚类的方法来解决无监督ReID的paper</p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012054004.png"></p>
+</li>
+<li><p>用源域上带标签的图片初始化CNN模型，</p>
+</li>
+<li><p>用这个模型提取目标域上图片特征，用特征相似性，聚类，保留可信样本（样本到聚类中心的余弦距离，小于某个阈值为可信样本），组成新数据集</p>
+</li>
+<li><p>用这个新数据集fine-tune之前的CNN模型</p>
+</li>
+<li><p>迭代上面步骤，直到模型收敛</p>
+</li>
+</ul>
+<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012054355.png"><br>就是上面提到的内容……</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012054504.png"><br>第一篇paper，性能低正常，分析不足之处：</p>
+<ul>
+<li>paper里面用的聚类方法为L-means，所以需要知道K，但我们是无监督，没有label，自然无法得知K，所以这篇paper实际上是弱监督。对于这个问题可以用不指定聚类类别的方式来替代，比如HDBSCAN等等</li>
+<li>需要用带标签的ReID数据集初始化模型</li>
+<li>没有充分利用困难样本信息<br>最后一点是制约这篇paper性能的最主要原因，为什么这么说呢？看实验结果：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012055027.png"><br>图中$\lambda$为挑选可信样本时的余弦距离，我们发现当$\lambda=0.85$时性能最好，但是此时我们只用了百分之五十不到的图片（看第二张图）所以压根儿没有挖掘到困难样本信息，只是一直在用简单样本训练，性能当然不好~</li>
+</ul>
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -949,43 +986,6 @@
 <h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Ablation-Study"><a href="#Ablation-Study" class="headerlink" title="Ablation Study"></a>Ablation Study</h3><p><img src="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h3 id="不同的聚类方法"><a href="#不同的聚类方法" class="headerlink" title="不同的聚类方法"></a>不同的聚类方法</h3><p><img src="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h3 id="SOTA"><a href="#SOTA" class="headerlink" title="SOTA"></a>SOTA</h3><p><img src="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unsupervised Person Re-identification: Clustering and Fine-tuning 论文笔记</title>
-    <url>/2020/10/12/Unsupervised-Person-Re-identification-Clustering-and-Fine-tuning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Hehe Fan, Liang Zheng</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>TOMM 2017</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li><p>无监督ReID，数据集没有label所以用聚类的方式产生伪标签，挑选可信样本组成新数据集，迭代训练。</p>
-<a id="more"></a>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li><p>这应该是第一篇用聚类的方法来解决无监督ReID的paper</p>
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012054004.png"></p>
-</li>
-<li><p>用源域上带标签的图片初始化CNN模型，</p>
-</li>
-<li><p>用这个模型提取目标域上图片特征，用特征相似性，聚类，保留可信样本（样本到聚类中心的余弦距离，小于某个阈值为可信样本），组成新数据集</p>
-</li>
-<li><p>用这个新数据集fine-tune之前的CNN模型</p>
-</li>
-<li><p>迭代上面步骤，直到模型收敛</p>
-</li>
-</ul>
-<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012054355.png"><br>就是上面提到的内容……</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012054504.png"><br>第一篇paper，性能低正常，分析不足之处：</p>
-<ul>
-<li>paper里面用的聚类方法为L-means，所以需要知道K，但我们是无监督，没有label，自然无法得知K，所以这篇paper实际上是弱监督。对于这个问题可以用不指定聚类类别的方式来替代，比如HDBSCAN等等</li>
-<li>需要用带标签的ReID数据集初始化模型</li>
-<li>没有充分利用困难样本信息<br>最后一点是制约这篇paper性能的最主要原因，为什么这么说呢？看实验结果：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012055027.png"><br>图中$\lambda$为挑选可信样本时的余弦距离，我们发现当$\lambda=0.85$时性能最好，但是此时我们只用了百分之五十不到的图片（看第二张图）所以压根儿没有挖掘到困难样本信息，只是一直在用简单样本训练，性能当然不好~</li>
-</ul>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1179,31 +1179,6 @@
       </tags>
   </entry>
   <entry>
-    <title>__delattr__和__del__</title>
-    <url>/2020/10/02/delattr-%E5%92%8C-del/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>__delattr__(self, name)</li>
-<li>__del__(self)</li>
-</ul>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>__delattr__(self, name)为删除类的name属性，而__del__(self)是删除类本身</p>
-<a id="more"></a>
-
-<h2 id="delattr-self-name"><a href="#delattr-self-name" class="headerlink" title="__delattr__(self, name)"></a>__delattr__(self, name)</h2><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __delattr___...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;del attribute &#123;&#125;&#x27;</span>.format(item))</span><br><span class="line">        object.__delattr__(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> stu1.sex</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">running</span></span> __delattr___...</span><br><span class="line">del attribute sex</span><br></pre></td></tr></table></figure>
-
-<h2 id="del-self"><a href="#del-self" class="headerlink" title="__del__(self)"></a>__del__(self)</h2><h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __delattr___...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;del attribute &#123;&#125;&#x27;</span>.format(item))</span><br><span class="line">        object.__delattr__(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __del__...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;can not delete instance...&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> stu1</span><br><span class="line"></span><br><span class="line">time.sleep(<span class="number">100000</span>)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">running</span></span> __del__...</span><br><span class="line"><span class="function"><span class="title">can</span></span> <span class="keyword">not</span> delete instance...</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>dict类的get方法</title>
     <url>/2020/09/30/dict%E7%B1%BB%E7%9A%84get%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>Python 字典(Dictionary) get() 函数返回指定键的值，如果值不在字典中返回默认值。</p>
@@ -1223,6 +1198,31 @@
 <h2 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h2><ul>
 <li>defaultdict也可以默认设置缺省值</li>
 </ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>__delattr__和__del__</title>
+    <url>/2020/10/02/delattr-%E5%92%8C-del/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>__delattr__(self, name)</li>
+<li>__del__(self)</li>
+</ul>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>__delattr__(self, name)为删除类的name属性，而__del__(self)是删除类本身</p>
+<a id="more"></a>
+
+<h2 id="delattr-self-name"><a href="#delattr-self-name" class="headerlink" title="__delattr__(self, name)"></a>__delattr__(self, name)</h2><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __delattr___...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;del attribute &#123;&#125;&#x27;</span>.format(item))</span><br><span class="line">        object.__delattr__(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> stu1.sex</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">running</span></span> __delattr___...</span><br><span class="line">del attribute sex</span><br></pre></td></tr></table></figure>
+
+<h2 id="del-self"><a href="#del-self" class="headerlink" title="__del__(self)"></a>__del__(self)</h2><h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __delattr___...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;del attribute &#123;&#125;&#x27;</span>.format(item))</span><br><span class="line">        object.__delattr__(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __del__...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;can not delete instance...&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> stu1</span><br><span class="line"></span><br><span class="line">time.sleep(<span class="number">100000</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">running</span></span> __del__...</span><br><span class="line"><span class="function"><span class="title">can</span></span> <span class="keyword">not</span> delete instance...</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1292,6 +1292,22 @@
       </tags>
   </entry>
   <entry>
+    <title>np.argwhere用法</title>
+    <url>/2020/10/19/np-argwhere%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>和np.where差不多都是用来找出满足指定statement的数的index，所谓的statement就是np.where(statement)中的条件表达式，如：x==2</p>
+<h2 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h2><p>a = np.where(x==2)的结果是tuple类型的，比如（array([0], dtype=int64), array([0], dtype=int64))，而np.argwhere。a = np.argwhere(x==2) 的输出是numpy数组，比如：array([0,0], dtype=int64)</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">a = np.arange(<span class="number">6</span>).reshape(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">index1 = np.where(a&gt;<span class="number">3</span>)</span><br><span class="line">a1 = a[index1]</span><br><span class="line"></span><br><span class="line">index2 = np.argwhere(a&gt;<span class="number">3</span>)</span><br><span class="line">a2 = a[tuple(index2)]</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;a = &#x27;</span>, a)</span><br><span class="line">print(<span class="string">&#x27;a1 = &#x27;</span>, a1)</span><br><span class="line">print(<span class="string">&#x27;a2 = &#x27;</span>, a2)</span><br><span class="line">print(<span class="string">&#x27;index1 = &#x27;</span>, index1)</span><br><span class="line">print(<span class="string">&#x27;index2 = &#x27;</span>, index2)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">a =  [[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span>]</span><br><span class="line"> [<span class="number">3</span> <span class="number">4</span> <span class="number">5</span>]]</span><br><span class="line">a1 =  [<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">a2 =  [<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">index1 =  (<span class="built_in">array</span>([<span class="number">1</span>, <span class="number">1</span>]), <span class="built_in">array</span>([<span class="number">1</span>, <span class="number">2</span>]))</span><br><span class="line">index2 =  [[<span class="number">1</span> <span class="number">1</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">2</span>]]</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>np.linspace()和np.arange()</title>
     <url>/2020/10/05/np-linspace-%E5%92%8Cnp-arange/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>两者都是通过规定起始start和结束end来产生numpy数组，不同的是np.linspace()通过指定产生的数据num数目来产生numpy数组，而np.arange()是指定步长step</p>
@@ -1356,6 +1372,29 @@
       </tags>
   </entry>
   <entry>
+    <title>numpy广播</title>
+    <url>/2020/10/05/numpy%E5%B9%BF%E6%92%AD/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>广播(Broadcast)是 numpy 对不同形状(shape)的数组进行数值计算的方式， 对数组的算术运算通常在相应的元素上进行。</p>
+<a id="more"></a>
+<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><h3 id="规则一"><a href="#规则一" class="headerlink" title="规则一"></a>规则一</h3><p>两个数组的维数不相等，但是它们的<strong>后缘维度</strong>（trailing dimension，即从末尾开始算起的维度）的轴长相符</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">8</span>  <span class="number">6</span>  <span class="number">8</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">11</span>  <span class="number">4</span> <span class="number">18</span>]</span><br><span class="line">  [<span class="number">12</span> <span class="number">19</span> <span class="number">12</span>  <span class="number">6</span>]]</span><br><span class="line"></span><br><span class="line"> [[ <span class="number">7</span>  <span class="number">9</span>  <span class="number">4</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">19</span>  <span class="number">1</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">12</span>  <span class="number">8</span> <span class="number">10</span>  <span class="number">3</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[<span class="number">11</span>  <span class="number">6</span> <span class="number">14</span>  <span class="number">7</span>]</span><br><span class="line"> [<span class="number">10</span> <span class="number">15</span> <span class="number">12</span>  <span class="number">3</span>]</span><br><span class="line"> [ <span class="number">4</span> <span class="number">16</span>  <span class="number">1</span> <span class="number">17</span>]]</span><br><span class="line">aa + bb = </span><br><span class="line"> [[[<span class="number">19</span> <span class="number">12</span> <span class="number">22</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">26</span> <span class="number">16</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">35</span> <span class="number">13</span> <span class="number">23</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">18</span> <span class="number">15</span> <span class="number">18</span> <span class="number">10</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">34</span> <span class="number">13</span> <span class="number">17</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">24</span> <span class="number">11</span> <span class="number">20</span>]]]</span><br></pre></td></tr></table></figure>
+<p>反例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">6</span>  <span class="number">9</span>  <span class="number">5</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span>  <span class="number">2</span>  <span class="number">2</span> <span class="number">14</span>]</span><br><span class="line">  [ <span class="number">4</span>  <span class="number">9</span>  <span class="number">7</span>  <span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">19</span>  <span class="number">7</span> <span class="number">15</span> <span class="number">12</span>]</span><br><span class="line">  [ <span class="number">3</span>  <span class="number">8</span>  <span class="number">1</span>  <span class="number">8</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">11</span> <span class="number">13</span> <span class="number">17</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[ <span class="number">5</span> <span class="number">10</span> <span class="number">10</span>]</span><br><span class="line"> [ <span class="number">9</span>  <span class="number">2</span> <span class="number">18</span>]]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br><span class="line">ValueError: operands could <span class="keyword">not</span> be broadcast together with shapes (<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>) (<span class="number">2</span>,<span class="number">3</span>) </span><br></pre></td></tr></table></figure>
+<p>（2，3）与（2，3，4）后缘维度不相同</p>
+<h3 id="规则二"><a href="#规则二" class="headerlink" title="规则二"></a>规则二</h3><p>有一方的长度为1<br>比如两个数组的维度分别是(2,1,4,1)和(2,3,4,5)，则可以广播</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>np.zeros()和np.zeros_like()</title>
     <url>/2020/10/05/np-zeros-%E5%92%8Cnp-zeros-like/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>产生一个数值为0的numpy数组，不同的是np.zeros()通过显示指定shape的方式，而np.zeros_like()通过传入一个已经有的numpy数组，来创建和这个数组一样形状的新的全0数组。</p>
@@ -1407,29 +1446,6 @@
 </ul>
 </li>
 </ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>numpy广播</title>
-    <url>/2020/10/05/numpy%E5%B9%BF%E6%92%AD/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>广播(Broadcast)是 numpy 对不同形状(shape)的数组进行数值计算的方式， 对数组的算术运算通常在相应的元素上进行。</p>
-<a id="more"></a>
-<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><h3 id="规则一"><a href="#规则一" class="headerlink" title="规则一"></a>规则一</h3><p>两个数组的维数不相等，但是它们的<strong>后缘维度</strong>（trailing dimension，即从末尾开始算起的维度）的轴长相符</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">8</span>  <span class="number">6</span>  <span class="number">8</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">11</span>  <span class="number">4</span> <span class="number">18</span>]</span><br><span class="line">  [<span class="number">12</span> <span class="number">19</span> <span class="number">12</span>  <span class="number">6</span>]]</span><br><span class="line"></span><br><span class="line"> [[ <span class="number">7</span>  <span class="number">9</span>  <span class="number">4</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">19</span>  <span class="number">1</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">12</span>  <span class="number">8</span> <span class="number">10</span>  <span class="number">3</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[<span class="number">11</span>  <span class="number">6</span> <span class="number">14</span>  <span class="number">7</span>]</span><br><span class="line"> [<span class="number">10</span> <span class="number">15</span> <span class="number">12</span>  <span class="number">3</span>]</span><br><span class="line"> [ <span class="number">4</span> <span class="number">16</span>  <span class="number">1</span> <span class="number">17</span>]]</span><br><span class="line">aa + bb = </span><br><span class="line"> [[[<span class="number">19</span> <span class="number">12</span> <span class="number">22</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">26</span> <span class="number">16</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">35</span> <span class="number">13</span> <span class="number">23</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">18</span> <span class="number">15</span> <span class="number">18</span> <span class="number">10</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">34</span> <span class="number">13</span> <span class="number">17</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">24</span> <span class="number">11</span> <span class="number">20</span>]]]</span><br></pre></td></tr></table></figure>
-<p>反例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">6</span>  <span class="number">9</span>  <span class="number">5</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span>  <span class="number">2</span>  <span class="number">2</span> <span class="number">14</span>]</span><br><span class="line">  [ <span class="number">4</span>  <span class="number">9</span>  <span class="number">7</span>  <span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">19</span>  <span class="number">7</span> <span class="number">15</span> <span class="number">12</span>]</span><br><span class="line">  [ <span class="number">3</span>  <span class="number">8</span>  <span class="number">1</span>  <span class="number">8</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">11</span> <span class="number">13</span> <span class="number">17</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[ <span class="number">5</span> <span class="number">10</span> <span class="number">10</span>]</span><br><span class="line"> [ <span class="number">9</span>  <span class="number">2</span> <span class="number">18</span>]]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br><span class="line">ValueError: operands could <span class="keyword">not</span> be broadcast together with shapes (<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>) (<span class="number">2</span>,<span class="number">3</span>) </span><br></pre></td></tr></table></figure>
-<p>（2，3）与（2，3，4）后缘维度不相同</p>
-<h3 id="规则二"><a href="#规则二" class="headerlink" title="规则二"></a>规则二</h3><p>有一方的长度为1<br>比如两个数组的维度分别是(2,1,4,1)和(2,3,4,5)，则可以广播</p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1605,6 +1621,33 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>super()与多重继承</title>
+    <url>/2020/09/28/super-%E4%B8%8E%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>super </li>
+<li>mro</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person1</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name1, age1, **kwargs</span>):</span></span><br><span class="line">        self.name1 = name1</span><br><span class="line">        self.age1 = age1</span><br><span class="line">        super(Person1, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_eat</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;person1 eat...&#x27;</span>)</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person2</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name2, age2, **kwargs</span>):</span></span><br><span class="line">        self.name2 = name2</span><br><span class="line">        self.age2 = age2</span><br><span class="line">        super(Person2, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_eat</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;person2 eat...&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">Person1, Person2</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, id, **kwargs</span>):</span></span><br><span class="line">        super(Student, self).__init__(**kwargs)</span><br><span class="line">        self.id = id</span><br><span class="line"></span><br><span class="line">    <span class="comment"># def _eat(self):</span></span><br><span class="line">    <span class="comment">#     print(1)</span></span><br><span class="line"></span><br><span class="line">stu = Student(<span class="number">1</span>, name1=<span class="string">&#x27;shensj&#x27;</span>, age1=<span class="number">23</span>, name2=<span class="string">&#x27;panjx&#x27;</span>, age2=<span class="number">24</span>)</span><br><span class="line">stu._eat()</span><br><span class="line">print(Student.__mro__)</span><br><span class="line">print(stu.name2)</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">person<span class="number">1</span> eat...</span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Student&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Person1&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Person2&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;)</span><br><span class="line">panjx</span><br></pre></td></tr></table></figure>
+
+<h3 id="更好的例子"><a href="#更好的例子" class="headerlink" title="更好的例子"></a>更好的例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 代码基于python3.8</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;下图中,两根斜线是指往这个方向数的第二个类,O是object</span></span><br><span class="line"><span class="string">O</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line"><span class="string">G</span></span><br><span class="line"><span class="string">| \ \</span></span><br><span class="line"><span class="string">D E  F</span></span><br><span class="line"><span class="string">|/\\/</span></span><br><span class="line"><span class="string">B  C</span></span><br><span class="line"><span class="string">| /</span></span><br><span class="line"><span class="string">A </span></span><br><span class="line"><span class="string">mro=ABCDEFGO</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">G</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, g, **kargs</span>):</span>  <span class="comment"># g是本构造器自身需要的参数,用位置参数将指提取出来,而kargs则是剩余的关键字参</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ G&quot;</span>)  <span class="comment"># 数,用于传递给下一层的__init__()</span></span><br><span class="line">        self.g = g</span><br><span class="line">        super(G, self).__init__(**kargs)  <span class="comment"># 为了和python2的新式类兼容,手动把super的两个参数填上</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, d, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ D&quot;</span>)</span><br><span class="line">        self.d = d</span><br><span class="line">        super(D, self).__init__(**kargs)  <span class="comment"># 调用__init__时,只写**kargs,因为super返回的偏函数自动填充了self参数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">E</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, e=<span class="number">100</span>, **kargs</span>):</span>  <span class="comment"># 给 本类初始化所需要的位置参数 一个默认值,使得传参时可以省掉这个参数</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ E&quot;</span>)</span><br><span class="line">        self.e = e</span><br><span class="line">        super(E, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">F</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, f=None, **kargs</span>):</span>  <span class="comment"># 即使这个参数没有默认值,最好也给它一个默认值None,除非这个参数是必须要给出的</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ F&quot;</span>)</span><br><span class="line">        self.f = f</span><br><span class="line">        super(F, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>(<span class="params">D, E</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, b, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ B&quot;</span>)</span><br><span class="line">        self.b = b</span><br><span class="line">        super(B, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>(<span class="params">D, F</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, c, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ C&quot;</span>)</span><br><span class="line">        self.c = c</span><br><span class="line">        super(C, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>(<span class="params">B, C</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ A&quot;</span>)</span><br><span class="line">        self.a = a</span><br><span class="line">        super(A, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">play</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter play A&quot;</span>)</span><br><span class="line">        print(self.__dict__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aa = A(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>, d=<span class="number">4</span>, e=<span class="number">5</span>, f=<span class="number">6</span>, g=<span class="number">7</span>)  <span class="comment"># 或者A(1,b=2,...)也可以,但是A(1,2,c=3,..)不可以</span></span><br><span class="line">aa.play()  <span class="comment"># 也就是说位置参数可以用位置参数或者关键字参数传递,但是**关键字参数不能用位置参数传递</span></span><br><span class="line"></span><br><span class="line">bb = A(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>, d=<span class="number">4</span>, g=<span class="number">5</span>)</span><br><span class="line">bb.play()  <span class="comment"># out: &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3, &#x27;d&#x27;: 4, &#x27;e&#x27;: 100, &#x27;f&#x27;: None, &#x27;g&#x27;: 5&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight sqf"><table><tr><td class="code"><pre><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;f&#x27;</span>: <span class="number">6</span>, <span class="string">&#x27;g&#x27;</span>: <span class="number">7</span>&#125;</span><br><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">100</span>, <span class="string">&#x27;f&#x27;</span>: None, <span class="string">&#x27;g&#x27;</span>: <span class="number">5</span>&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>__str__和__repr__</title>
     <url>/2020/10/02/str-%E5%92%8C-repr/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -1634,33 +1677,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>super()与多重继承</title>
-    <url>/2020/09/28/super-%E4%B8%8E%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>super </li>
-<li>mro</li>
-</ul>
-<a id="more"></a>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person1</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name1, age1, **kwargs</span>):</span></span><br><span class="line">        self.name1 = name1</span><br><span class="line">        self.age1 = age1</span><br><span class="line">        super(Person1, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_eat</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;person1 eat...&#x27;</span>)</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person2</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name2, age2, **kwargs</span>):</span></span><br><span class="line">        self.name2 = name2</span><br><span class="line">        self.age2 = age2</span><br><span class="line">        super(Person2, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_eat</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;person2 eat...&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">Person1, Person2</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, id, **kwargs</span>):</span></span><br><span class="line">        super(Student, self).__init__(**kwargs)</span><br><span class="line">        self.id = id</span><br><span class="line"></span><br><span class="line">    <span class="comment"># def _eat(self):</span></span><br><span class="line">    <span class="comment">#     print(1)</span></span><br><span class="line"></span><br><span class="line">stu = Student(<span class="number">1</span>, name1=<span class="string">&#x27;shensj&#x27;</span>, age1=<span class="number">23</span>, name2=<span class="string">&#x27;panjx&#x27;</span>, age2=<span class="number">24</span>)</span><br><span class="line">stu._eat()</span><br><span class="line">print(Student.__mro__)</span><br><span class="line">print(stu.name2)</span><br></pre></td></tr></table></figure>
-
-<p>输出为：</p>
-<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">person<span class="number">1</span> eat...</span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Student&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Person1&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Person2&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;)</span><br><span class="line">panjx</span><br></pre></td></tr></table></figure>
-
-<h3 id="更好的例子"><a href="#更好的例子" class="headerlink" title="更好的例子"></a>更好的例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 代码基于python3.8</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;下图中,两根斜线是指往这个方向数的第二个类,O是object</span></span><br><span class="line"><span class="string">O</span></span><br><span class="line"><span class="string">|</span></span><br><span class="line"><span class="string">G</span></span><br><span class="line"><span class="string">| \ \</span></span><br><span class="line"><span class="string">D E  F</span></span><br><span class="line"><span class="string">|/\\/</span></span><br><span class="line"><span class="string">B  C</span></span><br><span class="line"><span class="string">| /</span></span><br><span class="line"><span class="string">A </span></span><br><span class="line"><span class="string">mro=ABCDEFGO</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">G</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, g, **kargs</span>):</span>  <span class="comment"># g是本构造器自身需要的参数,用位置参数将指提取出来,而kargs则是剩余的关键字参</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ G&quot;</span>)  <span class="comment"># 数,用于传递给下一层的__init__()</span></span><br><span class="line">        self.g = g</span><br><span class="line">        super(G, self).__init__(**kargs)  <span class="comment"># 为了和python2的新式类兼容,手动把super的两个参数填上</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, d, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ D&quot;</span>)</span><br><span class="line">        self.d = d</span><br><span class="line">        super(D, self).__init__(**kargs)  <span class="comment"># 调用__init__时,只写**kargs,因为super返回的偏函数自动填充了self参数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">E</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, e=<span class="number">100</span>, **kargs</span>):</span>  <span class="comment"># 给 本类初始化所需要的位置参数 一个默认值,使得传参时可以省掉这个参数</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ E&quot;</span>)</span><br><span class="line">        self.e = e</span><br><span class="line">        super(E, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">F</span>(<span class="params">G</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, f=None, **kargs</span>):</span>  <span class="comment"># 即使这个参数没有默认值,最好也给它一个默认值None,除非这个参数是必须要给出的</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ F&quot;</span>)</span><br><span class="line">        self.f = f</span><br><span class="line">        super(F, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>(<span class="params">D, E</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, b, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ B&quot;</span>)</span><br><span class="line">        self.b = b</span><br><span class="line">        super(B, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>(<span class="params">D, F</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, c, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ C&quot;</span>)</span><br><span class="line">        self.c = c</span><br><span class="line">        super(C, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>(<span class="params">B, C</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a, **kargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter __init__ A&quot;</span>)</span><br><span class="line">        self.a = a</span><br><span class="line">        super(A, self).__init__(**kargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">play</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;enter play A&quot;</span>)</span><br><span class="line">        print(self.__dict__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aa = A(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>, d=<span class="number">4</span>, e=<span class="number">5</span>, f=<span class="number">6</span>, g=<span class="number">7</span>)  <span class="comment"># 或者A(1,b=2,...)也可以,但是A(1,2,c=3,..)不可以</span></span><br><span class="line">aa.play()  <span class="comment"># 也就是说位置参数可以用位置参数或者关键字参数传递,但是**关键字参数不能用位置参数传递</span></span><br><span class="line"></span><br><span class="line">bb = A(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>, d=<span class="number">4</span>, g=<span class="number">5</span>)</span><br><span class="line">bb.play()  <span class="comment"># out: &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3, &#x27;d&#x27;: 4, &#x27;e&#x27;: 100, &#x27;f&#x27;: None, &#x27;g&#x27;: 5&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>输出为：</p>
-<figure class="highlight sqf"><table><tr><td class="code"><pre><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;f&#x27;</span>: <span class="number">6</span>, <span class="string">&#x27;g&#x27;</span>: <span class="number">7</span>&#125;</span><br><span class="line">enter <span class="variable">__init__</span> A</span><br><span class="line">enter <span class="variable">__init__</span> B</span><br><span class="line">enter <span class="variable">__init__</span> C</span><br><span class="line">enter <span class="variable">__init__</span> D</span><br><span class="line">enter <span class="variable">__init__</span> E</span><br><span class="line">enter <span class="variable">__init__</span> F</span><br><span class="line">enter <span class="variable">__init__</span> G</span><br><span class="line">enter play A</span><br><span class="line">&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;e&#x27;</span>: <span class="number">100</span>, <span class="string">&#x27;f&#x27;</span>: None, <span class="string">&#x27;g&#x27;</span>: <span class="number">5</span>&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>torch.expand和torch.repeat</title>
     <url>/2020/10/19/torch-expand%E5%92%8Ctorch-repeat/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>这两个方法都用作按照某一维度扩展数组，区别是<strong>扩展（expand）</strong>张量不会分配新的内存，只是在存在的张量上创建一个新的视图（view），一个<strong>大小（size）等于1的维度</strong>扩展到更大的尺寸。而**repeat()**会拷贝张量的数据。</p>
@@ -1677,22 +1693,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>Python迭代器</title>
-    <url>/2020/10/03/%E2%80%9CPython%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>迭代器是一个可以记住遍历的位置的对象。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>凡是定义了__iter__和__next__方法的对象都是可迭代对象</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRange</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, start, end, step</span>):</span></span><br><span class="line">        self.start = start</span><br><span class="line">        self.end = end</span><br><span class="line">        self.step = step</span><br><span class="line">        self.cur = start</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.cur &lt; self.end:</span><br><span class="line">            x = self.cur</span><br><span class="line">            self.cur += self.step</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">myRange = MyRange(<span class="number">0</span>,<span class="number">10</span>,<span class="number">2</span>)</span><br><span class="line">myRange = iter(myRange)</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line"></span><br><span class="line"><span class="comment"># for i in MyRange(0,10,3):</span></span><br><span class="line"><span class="comment">#     print(i)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># print(&#x27;end.....&#x27;)</span></span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">0</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">6</span><br><span class="line">8</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> <span class="keyword">last</span>):</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">26</span>, <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;</span><br><span class="line">    print(<span class="keyword">next</span>(myRange))</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">16</span>, <span class="keyword">in</span> __next__</span><br><span class="line">    <span class="keyword">raise</span> StopIteration</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>内置filter函数</title>
     <url>/2020/09/28/%E5%86%85%E7%BD%AEfilter%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>filter() 函数用于<strong>过滤序列</strong>，过滤掉不符合条件的元素，返回一个迭代器对象，如果要转换为列表，可以使用 list() 来转换。</p>
@@ -1702,6 +1702,22 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <p>该接收两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判，然后返回 True 或 False，最后将返回 True 的元素放到新列表中。</p>
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjMRg.png" alt="例子"></p>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python迭代器</title>
+    <url>/2020/10/03/%E2%80%9CPython%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>迭代器是一个可以记住遍历的位置的对象。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>凡是定义了__iter__和__next__方法的对象都是可迭代对象</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRange</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, start, end, step</span>):</span></span><br><span class="line">        self.start = start</span><br><span class="line">        self.end = end</span><br><span class="line">        self.step = step</span><br><span class="line">        self.cur = start</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.cur &lt; self.end:</span><br><span class="line">            x = self.cur</span><br><span class="line">            self.cur += self.step</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">myRange = MyRange(<span class="number">0</span>,<span class="number">10</span>,<span class="number">2</span>)</span><br><span class="line">myRange = iter(myRange)</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line">print(next(myRange))</span><br><span class="line"></span><br><span class="line"><span class="comment"># for i in MyRange(0,10,3):</span></span><br><span class="line"><span class="comment">#     print(i)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># print(&#x27;end.....&#x27;)</span></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">0</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">6</span><br><span class="line">8</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> <span class="keyword">last</span>):</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">26</span>, <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;</span><br><span class="line">    print(<span class="keyword">next</span>(myRange))</span><br><span class="line">  <span class="keyword">File</span> <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">16</span>, <span class="keyword">in</span> __next__</span><br><span class="line">    <span class="keyword">raise</span> StopIteration</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1724,31 +1740,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </categories>
       <tags>
         <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>创建多个Github Pages</title>
-    <url>/2020/10/07/%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub-Pages/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很多人会将自己的个人主页挂载在github上，这时就需要创建用户站点，用户站点的仓库名必须是<code>&lt;user&gt;.github.io</code>，做完这一步之后，很多人会和我有一样的想法——搭建多个Github Pages页面。这些页面可以用来实现不同的功能，比如放ACG，放网站导航等等。之前一直以为每个用户只能拥有一个Github Pages（这个就是上文提到的<code>&lt;user&gt;.github.io</code>仓库），现在查阅各种资料之后，发现不是这么一回事，下面讲述我搭建第二个Github Pages时遇到的各种坑~</p>
-<a id="more"></a>
-<h2 id="Github-Pages分类"><a href="#Github-Pages分类" class="headerlink" title="Github Pages分类"></a>Github Pages分类</h2><p>查阅文档之后发现，Github Pages有三类，分别是用户站点，组织站点和<strong>项目站点</strong>，其中用户/组织站点只能创建一个，同时要发布用户站点，必须创建名为 <code>&lt;user&gt;.github.io</code> 的用户帐户所拥有的仓库。 要发布组织站点，必须创建名为 <code>&lt;organization&gt;.github.io</code> 的组织所拥有的仓库。 除非您使用自定义域，否则用户和组织站点位于 <code>http(s)://&lt;username&gt;.github.io</code> 或  <code>http(s)://&lt;organization&gt;.github.io</code>。而<strong>项目站点</strong>却可以创建多个，比如为这个项目创建一个名为<code>acg</code>的仓库，我们将项目站点源文件传到这个仓库，那么我们就可以用<code>http(s)://&lt;user&gt;.github.io/acg</code>来访问这个项目站点。</p>
-<h2 id="搭建站点"><a href="#搭建站点" class="headerlink" title="搭建站点"></a>搭建站点</h2><h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>我已经搭建了个人博客，地址为：<code>https://blog.shensanjing.site/</code>，现在我要创建一个网站导航项目站点，站点示意图如下：<br><img src="https://s1.ax1x.com/2020/10/07/0aLKMD.png" alt="个人站点"><br><img src="https://s1.ax1x.com/2020/10/07/0aLtRf.png" alt="导航页面"></p>
-<h3 id="搭建导航页面"><a href="#搭建导航页面" class="headerlink" title="搭建导航页面"></a>搭建导航页面</h3><ol>
-<li>创建一个新的仓库，仓库名叫做<code>nav</code></li>
-<li>克隆webstack，地址为：<code>https://github.com/HCLonely/hexo-theme-webstack</code>，因为网站导航是子页面，所以要将_config.yml的URL设置为你的个人站点网址，root设置为你的仓库名，我的设置为<code>url: https://blog.shensanjing.site</code>和<code>root: /nav/</code>，不这么做，会导致没有样式。</li>
-<li>同时还要将webstack的所有图片连接加上<code>/nav/</code>，否则将无法显示图片。</li>
-<li>经过上面三步，已经可以用<code>https://blog.shensanjing.site/nav/</code>来访问网站</li>
-<li>接下来，只要在个人主页项目上加上导航标签即可。</li>
-</ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://zhuanlan.zhihu.com/p/183977963">https://zhuanlan.zhihu.com/p/183977963</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>网站搭建</tag>
       </tags>
   </entry>
   <entry>
@@ -1778,6 +1769,46 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <li>np.empty_like()</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>创建多个Github Pages</title>
+    <url>/2020/10/07/%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub-Pages/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很多人会将自己的个人主页挂载在github上，这时就需要创建用户站点，用户站点的仓库名必须是<code>&lt;user&gt;.github.io</code>，做完这一步之后，很多人会和我有一样的想法——搭建多个Github Pages页面。这些页面可以用来实现不同的功能，比如放ACG，放网站导航等等。之前一直以为每个用户只能拥有一个Github Pages（这个就是上文提到的<code>&lt;user&gt;.github.io</code>仓库），现在查阅各种资料之后，发现不是这么一回事，下面讲述我搭建第二个Github Pages时遇到的各种坑~</p>
+<a id="more"></a>
+<h2 id="Github-Pages分类"><a href="#Github-Pages分类" class="headerlink" title="Github Pages分类"></a>Github Pages分类</h2><p>查阅文档之后发现，Github Pages有三类，分别是用户站点，组织站点和<strong>项目站点</strong>，其中用户/组织站点只能创建一个，同时要发布用户站点，必须创建名为 <code>&lt;user&gt;.github.io</code> 的用户帐户所拥有的仓库。 要发布组织站点，必须创建名为 <code>&lt;organization&gt;.github.io</code> 的组织所拥有的仓库。 除非您使用自定义域，否则用户和组织站点位于 <code>http(s)://&lt;username&gt;.github.io</code> 或  <code>http(s)://&lt;organization&gt;.github.io</code>。而<strong>项目站点</strong>却可以创建多个，比如为这个项目创建一个名为<code>acg</code>的仓库，我们将项目站点源文件传到这个仓库，那么我们就可以用<code>http(s)://&lt;user&gt;.github.io/acg</code>来访问这个项目站点。</p>
+<h2 id="搭建站点"><a href="#搭建站点" class="headerlink" title="搭建站点"></a>搭建站点</h2><h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>我已经搭建了个人博客，地址为：<code>https://blog.shensanjing.site/</code>，现在我要创建一个网站导航项目站点，站点示意图如下：<br><img src="https://s1.ax1x.com/2020/10/07/0aLKMD.png" alt="个人站点"><br><img src="https://s1.ax1x.com/2020/10/07/0aLtRf.png" alt="导航页面"></p>
+<h3 id="搭建导航页面"><a href="#搭建导航页面" class="headerlink" title="搭建导航页面"></a>搭建导航页面</h3><ol>
+<li>创建一个新的仓库，仓库名叫做<code>nav</code></li>
+<li>克隆webstack，地址为：<code>https://github.com/HCLonely/hexo-theme-webstack</code>，因为网站导航是子页面，所以要将_config.yml的URL设置为你的个人站点网址，root设置为你的仓库名，我的设置为<code>url: https://blog.shensanjing.site</code>和<code>root: /nav/</code>，不这么做，会导致没有样式。</li>
+<li>同时还要将webstack的所有图片连接加上<code>/nav/</code>，否则将无法显示图片。</li>
+<li>经过上面三步，已经可以用<code>https://blog.shensanjing.site/nav/</code>来访问网站</li>
+<li>接下来，只要在个人主页项目上加上导航标签即可。</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/183977963">https://zhuanlan.zhihu.com/p/183977963</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>网站搭建</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多维数组的迭代</title>
+    <url>/2020/10/05/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%AD%E4%BB%A3/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>通常我们需要对一个numpy数组进行迭代操作，比如for循环，但直接对数组本身进行循环，实际上是对第一个轴进行操作，如果要对数组中的每个值进行操作，可以使用<strong>flat</strong>属性</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa:</span><br><span class="line">    print(a)</span><br><span class="line">print(<span class="string">&#x27;------------&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa.flat:</span><br><span class="line">    print(a)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">[<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">[<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">[<span class="number">6</span> <span class="number">7</span>]</span><br><span class="line">------------</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1838,13 +1869,13 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>多维数组的迭代</title>
-    <url>/2020/10/05/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%AD%E4%BB%A3/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>通常我们需要对一个numpy数组进行迭代操作，比如for循环，但直接对数组本身进行循环，实际上是对第一个轴进行操作，如果要对数组中的每个值进行操作，可以使用<strong>flat</strong>属性</p>
+    <title>矩阵乘法和对应元素相乘</title>
+    <url>/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; = 3.5中）或dot函数或方法执行：</p>
 <a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa:</span><br><span class="line">    print(a)</span><br><span class="line">print(<span class="string">&#x27;------------&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa.flat:</span><br><span class="line">    print(a)</span><br></pre></td></tr></table></figure>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">bb = np.array([[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"></span><br><span class="line">print(aa*bb)</span><br><span class="line">print(aa@bb)</span><br><span class="line">print(aa.dot(bb))</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">[<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">[<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">[<span class="number">6</span> <span class="number">7</span>]</span><br><span class="line">------------</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">4</span> <span class="number">10</span>]</span><br><span class="line"> [<span class="number">18</span> <span class="number">28</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1863,21 +1894,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <li>x[4,…,5,:] 等效于 x[4,:,:,5,:]</li>
 </ul>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>矩阵乘法和对应元素相乘</title>
-    <url>/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; = 3.5中）或dot函数或方法执行：</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">bb = np.array([[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"></span><br><span class="line">print(aa*bb)</span><br><span class="line">print(aa@bb)</span><br><span class="line">print(aa.dot(bb))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">4</span> <span class="number">10</span>]</span><br><span class="line"> [<span class="number">18</span> <span class="number">28</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
