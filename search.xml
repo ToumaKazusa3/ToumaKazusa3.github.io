@@ -1,29 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>A Bottom-up Clustering Approach to Unsupervised Person Re-identification 论文笔记</title>
-    <url>/2020/10/12/A-Bottom-up-Clustering-Approach-to-Unsupervised-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Yutian Lin， Liang Zheng</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>AAAI 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>之前基于聚类的方法来做无监督ReID都需要一个源域来初始化，这篇论文用一张图代表一类来初始化，并且用层次聚类的方法逐步减少类别<a id="more"></a>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li> We propose a bottom-up clustering framework to solve the unsupervised re-ID problem. By exploiting the intrinsic diversity among identities and similarity within each identity, our framework can learn robust and discriminative features</li>
-</ul>
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012055951.png"><br>刚开始用一张图代表一类来初始化，然后用层次聚类的方法逐步减少类别。</p>
-<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060105.png"><br>最常规的聚类打标签方法</p>
-<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060215.png"><br>第7，8行如何减小类别paper中用了minimum distance criterion，公式如下：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060741.png"><br>其中d为欧氏距离，但是这会导致部分类别中的图片极具的膨胀，所以再加了一个正则项来约束：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060921.png"><br>模代表这一类的图片数目，所以最终的距离表达式为：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012061026.png"></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012061119.png"></p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>AD-Cluster: Augmented Discriminative Clustering for Domain Adaptive Person Re-identification 论文笔记</title>
     <url>/2020/10/12/AD-Cluster-Augmented-Discriminative-Clustering-for-Domain-Adaptive-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Yunpeng Zhai</p>
@@ -47,6 +24,80 @@
       </tags>
   </entry>
   <entry>
+    <title>A Bottom-up Clustering Approach to Unsupervised Person Re-identification 论文笔记</title>
+    <url>/2020/10/12/A-Bottom-up-Clustering-Approach-to-Unsupervised-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Yutian Lin， Liang Zheng</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>AAAI 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>之前基于聚类的方法来做无监督ReID都需要一个源域来初始化，这篇论文用一张图代表一类来初始化，并且用层次聚类的方法逐步减少类别<a id="more"></a>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li> We propose a bottom-up clustering framework to solve the unsupervised re-ID problem. By exploiting the intrinsic diversity among identities and similarity within each identity, our framework can learn robust and discriminative features</li>
+</ul>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012055951.png"><br>刚开始用一张图代表一类来初始化，然后用层次聚类的方法逐步减少类别。</p>
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060105.png"><br>最常规的聚类打标签方法</p>
+<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060215.png"><br>第7，8行如何减小类别paper中用了minimum distance criterion，公式如下：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060741.png"><br>其中d为欧氏距离，但是这会导致部分类别中的图片极具的膨胀，所以再加了一个正则项来约束：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012060921.png"><br>模代表这一类的图片数目，所以最终的距离表达式为：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012061026.png"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012061119.png"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ std::copy用法</title>
+    <url>/2020/10/17/C-std-copy%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>把一个序列（sequence）拷贝到一个容器（container）中去。</p>
+<h2 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::copy(start, end, <span class="built_in">std</span>::back_inserter(container));</span><br></pre></td></tr></table></figure>
+<p>std::back_inserter可以替换成std::front_inserter和std::inserter</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">auto</span> vi = inserter(v, v.begin() + <span class="number">1</span>);</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">3</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line">	copy(v1.begin(), v1.end(), vi);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AP聚类</title>
+    <url>/2020/10/19/AP%E8%81%9A%E7%B1%BB/</url>
+    <content><![CDATA[<h2 id="sklearn包中的AP算法"><a href="#sklearn包中的AP算法" class="headerlink" title="sklearn包中的AP算法"></a>sklearn包中的AP算法</h2><h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">cluster</span>.<span class="title">AffinityPropagation</span>(<span class="params">*, damping=<span class="number">0.5</span>, max_iter=<span class="number">200</span>, convergence_iter=<span class="number">15</span>, copy=True, preference=None, affinity=<span class="string">&#x27;euclidean&#x27;</span>, verbose=False, random_state=<span class="string">&#x27;warn&#x27;</span></span>)</span></span><br></pre></td></tr></table></figure>
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
+<li>preference: 参考度或称为偏好参数：是相似度矩阵中横轴纵轴索引相同的点，如s(i,i)，若按欧氏距离计算其值应为0，但在AP聚类中其表示数据点i作为聚类中心的程度，因此不能为0。迭代开始前假设所有点成为聚类中心的能力相同，因此参考度一般设为相似度矩阵中所有值得最小值或者中位数，但是参考度越大则说明个数据点成为聚类中心的能力越强，则最终聚类中心的个数则越多，如果不指定，则都设为相似度矩阵中的中位数；</li>
+<li>damping=0.5: 阻尼因子,用于减少吸引信息和归属信息以防止更新减少吸引度和归属度信息时数据振荡，设置为 0.5 到 1 之间。</li>
+<li>max_iter=200： 最大迭代次数；</li>
+<li>convergence_iter=15： 聚类个数连续 convergence_iter 次迭代都不再改变，就停止迭代；</li>
+<li>copy=True： 在 scikit-learn 很多接口中都会有这个参数的，就是是否对输入数据进行 copy 操作，以便不修改用户的输入数据；</li>
+<li>affinity=’euclidean’： string，“precomputed” 或者 “euclidean”，“euclidean” 采用负的欧几里得距离（class中的参数）</li>
+<li>verbose=False： int 类型，是否输出详细信息<a id="more"></a>
+<h3 id="函数返回结果"><a href="#函数返回结果" class="headerlink" title="函数返回结果"></a>函数返回结果</h3></li>
+<li>cluster_centers_indices : array, shape (n_clusters,) 聚类中心在所有数据中的索引，聚类中心是已有数据点。</li>
+<li>labels : array, shape (n_samples,) 聚类标签，每个记录对应的种类，默认是从0开始的数字</li>
+<li>n_iter : int 运行的迭代次数，只有 return_n_iter参数设置维True时才返回。</li>
+</ul>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>不需要指定最终聚类族的个数</li>
+<li>已有的数据点作为最终的聚类中心，而不是新生成一个族中心</li>
+<li>模型对数据的初始值不敏感</li>
+<li>对初始相似度矩阵数据的对称性没有要求</li>
+<li>相比于k-centers聚类方法，其结果的平方差误差较小</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h4 id="affinity-’euclidean’"><a href="#affinity-’euclidean’" class="headerlink" title="affinity=’euclidean’"></a>affinity=’euclidean’</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> AffinityPropagation</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成的测试数据的中心点</span></span><br><span class="line">centers = [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">1</span>, <span class="number">-1</span>]]</span><br><span class="line"><span class="comment">##生成数据</span></span><br><span class="line">Xn, labels_true = make_blobs(n_samples=<span class="number">150</span>, centers=centers, cluster_std=<span class="number">0.5</span>,</span><br><span class="line">                            random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">simi = []</span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> Xn:</span><br><span class="line">    <span class="comment">##每个数字与所有数字的相似度列表，即矩阵中的一行</span></span><br><span class="line">    temp = []</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> Xn:</span><br><span class="line">         <span class="comment">##采用负的欧式距离计算相似度</span></span><br><span class="line">        s =-np.sqrt((m[<span class="number">0</span>]-n[<span class="number">0</span>])**<span class="number">2</span> + (m[<span class="number">1</span>]-n[<span class="number">1</span>])**<span class="number">2</span>)</span><br><span class="line">        temp.append(s)</span><br><span class="line">    simi.append(temp)</span><br><span class="line"></span><br><span class="line">p=<span class="number">-50</span>   <span class="comment">##3个中心</span></span><br><span class="line"><span class="comment">#p = np.min(simi)  ##9个中心，</span></span><br><span class="line"><span class="comment">#p = np.median(simi)  ##13个中心    </span></span><br><span class="line"></span><br><span class="line">ap = AffinityPropagation(damping=<span class="number">0.5</span>,max_iter=<span class="number">500</span>,convergence_iter=<span class="number">30</span>,</span><br><span class="line">                         preference=p).fit(Xn)</span><br><span class="line">cluster_centers_indices = ap.cluster_centers_indices_</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> cluster_centers_indices:</span><br><span class="line">    print(Xn[idx])</span><br></pre></td></tr></table></figure>
+
+<h4 id="affinity-’precomputed’"><a href="#affinity-’precomputed’" class="headerlink" title="affinity=’precomputed’"></a>affinity=’precomputed’</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> AffinityPropagation</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="comment"># 计算欧氏距离</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caldist</span>(<span class="params">qf, gf</span>):</span></span><br><span class="line">    m, n = qf.shape[<span class="number">0</span>], gf.shape[<span class="number">0</span>]</span><br><span class="line">    distmat = torch.pow(qf, <span class="number">2</span>).sum(dim=<span class="number">1</span>, keepdim=<span class="literal">True</span>).expand(m, n) + \</span><br><span class="line">              torch.pow(gf, <span class="number">2</span>).sum(dim=<span class="number">1</span>, keepdim=<span class="literal">True</span>).expand(n, m).t()</span><br><span class="line">    distmat.addmm_(<span class="number">1</span>, <span class="number">-2</span>, qf, gf.t())</span><br><span class="line">    <span class="keyword">return</span> -distmat<span class="comment"># 取负值</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成测试数据</span></span><br><span class="line">centers = [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">1</span>, <span class="number">-1</span>]]</span><br><span class="line"><span class="comment"># 生成实际中心为centers的测试样本300个，X是包含300个(x,y)点的二维数组，labels_true为其对应的真是类别标签</span></span><br><span class="line">X, labels_true = make_blobs(n_samples=<span class="number">300</span>, centers=centers, cluster_std=<span class="number">0.5</span>,</span><br><span class="line">                            random_state=<span class="number">0</span>)</span><br><span class="line">distMat = caldist(torch.from_numpy(X), torch.from_numpy(X)).numpy()</span><br><span class="line"><span class="comment"># 计算AP</span></span><br><span class="line">ap = AffinityPropagation(preference=<span class="number">-50</span>, affinity=<span class="string">&#x27;precomputed&#x27;</span>).fit(distMat)</span><br><span class="line">cluster_centers_indices = ap.cluster_centers_indices_    <span class="comment"># 预测出的中心点的索引，如[123,23,34]</span></span><br><span class="line">labels = ap.labels_    <span class="comment"># 预测出的每个数据的类别标签,labels是一个NumPy数组</span></span><br><span class="line"></span><br><span class="line">n_clusters_ = len(cluster_centers_indices)    <span class="comment"># 预测聚类中心的个数</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;预测的聚类中心个数：%d&#x27;</span> % n_clusters_)</span><br><span class="line">print(<span class="string">&#x27;同质性：%0.3f&#x27;</span> % metrics.homogeneity_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;完整性：%0.3f&#x27;</span> % metrics.completeness_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;V-值： % 0.3f&#x27;</span> % metrics.v_measure_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;调整后的兰德指数：%0.3f&#x27;</span> % metrics.adjusted_rand_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;调整后的互信息： %0.3f&#x27;</span> % metrics.adjusted_mutual_info_score(labels_true, labels))</span><br><span class="line">print(<span class="string">&#x27;轮廓系数：%0.3f&#x27;</span> % metrics.silhouette_score(X, labels, metric=<span class="string">&#x27;sqeuclidean&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制图表展示</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line"></span><br><span class="line">plt.close(<span class="string">&#x27;all&#x27;</span>)    <span class="comment"># 关闭所有的图形</span></span><br><span class="line">plt.figure(<span class="number">1</span>)    <span class="comment"># 产生一个新的图形</span></span><br><span class="line">plt.clf()    <span class="comment"># 清空当前的图形</span></span><br><span class="line"></span><br><span class="line">colors = cycle(<span class="string">&#x27;bgrcmykbgrcmykbgrcmykbgrcmyk&#x27;</span>)</span><br><span class="line"><span class="comment"># 循环为每个类标记不同的颜色</span></span><br><span class="line"><span class="keyword">for</span> k, col <span class="keyword">in</span> zip(range(n_clusters_), colors):</span><br><span class="line">    <span class="comment"># labels == k 使用k与labels数组中的每个值进行比较</span></span><br><span class="line">    <span class="comment"># 如labels = [1,0],k=0,则‘labels==k’的结果为[False, True]</span></span><br><span class="line">    class_members = labels == k</span><br><span class="line">    cluster_center = X[cluster_centers_indices[k]]    <span class="comment"># 聚类中心的坐标</span></span><br><span class="line">    plt.plot(X[class_members, <span class="number">0</span>], X[class_members, <span class="number">1</span>], col + <span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">    plt.plot(cluster_center[<span class="number">0</span>], cluster_center[<span class="number">1</span>], markerfacecolor=col,</span><br><span class="line">             markeredgecolor=<span class="string">&#x27;k&#x27;</span>, markersize=<span class="number">14</span>)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> X[class_members]:</span><br><span class="line">        plt.plot([cluster_center[<span class="number">0</span>], x[<span class="number">0</span>]], [cluster_center[<span class="number">1</span>], x[<span class="number">1</span>]], col)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">&#x27;预测聚类中心个数：%d&#x27;</span> % n_clusters_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++前向引用声明</title>
     <url>/2020/10/12/C-%E5%89%8D%E5%90%91%E5%BC%95%E7%94%A8%E5%A3%B0%E6%98%8E/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><ul>
@@ -67,51 +118,6 @@
 <li><a href="https://blog.csdn.net/zy704599894/article/details/79699292">https://blog.csdn.net/zy704599894/article/details/79699292</a></li>
 </ul>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++插入迭代器</title>
-    <url>/2020/10/17/C-%E6%8F%92%E5%85%A5%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>三类插入迭代器与容器的绑定</li>
-<li>利用插入迭代器插入元素</li>
-</ul>
-<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>指定位置插入元素</p>
-<a id="more"></a>
-<h2 id="back-inserter"><a href="#back-inserter" class="headerlink" title="back_inserter"></a>back_inserter</h2><h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>其内部调用push_back()</p>
-<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>每次都在容器的尾端插入元素</p>
-<h3 id="使用限制"><a href="#使用限制" class="headerlink" title="使用限制"></a>使用限制</h3><p>只有提供了push_back()成员函数的容器中，back inserter才能派上用场。<br>适用：vector deque list</p>
-<h2 id="front-inserter"><a href="#front-inserter" class="headerlink" title="front_inserter"></a>front_inserter</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>其内部调用push_front()</p>
-<h3 id="功能-1"><a href="#功能-1" class="headerlink" title="功能"></a>功能</h3><p>每次都在容器的前端插入元素</p>
-<h3 id="使用限制-1"><a href="#使用限制-1" class="headerlink" title="使用限制"></a>使用限制</h3><p>只有提供了push_front()成员函数的容器中，front inserter才能派上用场<br>适用：deque list （由于vector不提供头插操作所以不能用） </p>
-<h2 id="inserter"><a href="#inserter" class="headerlink" title="inserter"></a>inserter</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>其内部调用insert()</p>
-<h3 id="功能-2"><a href="#功能-2" class="headerlink" title="功能"></a>功能</h3><p>在容器的指定位置插入元素；每次插入之后下一次插入的位置会向后移动一位</p>
-<h3 id="使用限制-2"><a href="#使用限制-2" class="headerlink" title="使用限制"></a>使用限制</h3><p>只有提供了inset()成员函数的容器中，inserter才能派上用场. 所有STL容器都提供了inset()函数.<br>适用：所有STL容器 </p>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">       <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">       <span class="keyword">auto</span> vi = inserter(v, v.begin() + <span class="number">1</span>);</span><br><span class="line">       *vi = <span class="number">2</span>;</span><br><span class="line">       *vi = <span class="number">3</span>;</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)</span><br><span class="line">       &#123;</span><br><span class="line">              <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++ std::copy用法</title>
-    <url>/2020/10/17/C-std-copy%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>把一个序列（sequence）拷贝到一个容器（container）中去。</p>
-<h2 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::copy(start, end, <span class="built_in">std</span>::back_inserter(container));</span><br></pre></td></tr></table></figure>
-<p>std::back_inserter可以替换成std::front_inserter和std::inserter</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">auto</span> vi = inserter(v, v.begin() + <span class="number">1</span>);</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">3</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line">	copy(v1.begin(), v1.end(), vi);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -153,6 +159,34 @@
 <li><a href="https://www.xuetangx.com/learn/THU08091000247/THU08091000247/5430764/video/7472287">https://www.xuetangx.com/learn/THU08091000247/THU08091000247/5430764/video/7472287</a></li>
 </ul>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++插入迭代器</title>
+    <url>/2020/10/17/C-%E6%8F%92%E5%85%A5%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>三类插入迭代器与容器的绑定</li>
+<li>利用插入迭代器插入元素</li>
+</ul>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>指定位置插入元素</p>
+<a id="more"></a>
+<h2 id="back-inserter"><a href="#back-inserter" class="headerlink" title="back_inserter"></a>back_inserter</h2><h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>其内部调用push_back()</p>
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>每次都在容器的尾端插入元素</p>
+<h3 id="使用限制"><a href="#使用限制" class="headerlink" title="使用限制"></a>使用限制</h3><p>只有提供了push_back()成员函数的容器中，back inserter才能派上用场。<br>适用：vector deque list</p>
+<h2 id="front-inserter"><a href="#front-inserter" class="headerlink" title="front_inserter"></a>front_inserter</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>其内部调用push_front()</p>
+<h3 id="功能-1"><a href="#功能-1" class="headerlink" title="功能"></a>功能</h3><p>每次都在容器的前端插入元素</p>
+<h3 id="使用限制-1"><a href="#使用限制-1" class="headerlink" title="使用限制"></a>使用限制</h3><p>只有提供了push_front()成员函数的容器中，front inserter才能派上用场<br>适用：deque list （由于vector不提供头插操作所以不能用） </p>
+<h2 id="inserter"><a href="#inserter" class="headerlink" title="inserter"></a>inserter</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>其内部调用insert()</p>
+<h3 id="功能-2"><a href="#功能-2" class="headerlink" title="功能"></a>功能</h3><p>在容器的指定位置插入元素；每次插入之后下一次插入的位置会向后移动一位</p>
+<h3 id="使用限制-2"><a href="#使用限制-2" class="headerlink" title="使用限制"></a>使用限制</h3><p>只有提供了inset()成员函数的容器中，inserter才能派上用场. 所有STL容器都提供了inset()函数.<br>适用：所有STL容器 </p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">       <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">       <span class="keyword">auto</span> vi = inserter(v, v.begin() + <span class="number">1</span>);</span><br><span class="line">       *vi = <span class="number">2</span>;</span><br><span class="line">       *vi = <span class="number">3</span>;</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)</span><br><span class="line">       &#123;</span><br><span class="line">              <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -419,36 +453,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python修饰器</title>
-    <url>/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>给函数增加一个统计运行时间的功能</p>
-<a id="more"></a>
-<h3 id="最简单的做法"><a href="#最简单的做法" class="headerlink" title="最简单的做法"></a>最简单的做法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">startTime = time.time()</span><br><span class="line">myAdd(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">totalTime = time.time() - startTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, totalTime)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0006561279296875</span></span><br></pre></td></tr></table></figure>
-<p>对于每个函数都要写相同的语句，很麻烦，可以用函数的方式来代替</p>
-<h3 id="用函数的形式"><a href="#用函数的形式" class="headerlink" title="用函数的形式"></a>用函数的形式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    func(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    totalTime = time.time() - startTime</span><br><span class="line">    <span class="keyword">return</span> totalTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, calculateTime(myAdd))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.000053644180298</span></span><br></pre></td></tr></table></figure>
-<p>但是这改变了函数的调用方式，本来调用myAdd，现在调用calculateTime</p>
-<h3 id="不改变函数调用方式"><a href="#不改变函数调用方式" class="headerlink" title="不改变函数调用方式"></a>不改变函数调用方式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">myAdd = calculateTime(myAdd)</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0000948905944824</span></span><br></pre></td></tr></table></figure>
-<p>需要增加myAdd = calculateTime(myAdd)这行代码，能否用更加简洁的形式代替？语法糖！</p>
-<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@calculateTime # myAdd = calculateTime(myAdd)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Matlab相机标定</title>
     <url>/2020/10/12/Matlab%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/</url>
     <content><![CDATA[<h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><ol>
@@ -491,14 +495,28 @@
       </tags>
   </entry>
   <entry>
-    <title>Python偏函数</title>
-    <url>/2020/10/01/Python%E5%81%8F%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>functools.partial的作用就是把一个函数的某些参数给固定住（设置默认值），返回一个新函数，调用这个函数会更加简单</li>
-</ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mod</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x % y</span><br><span class="line"></span><br><span class="line">mod100 = partial(mod, <span class="number">100</span>)</span><br><span class="line">print(mod100(<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">int2 = partial(int,base=<span class="number">2</span>)</span><br><span class="line">print(int2(<span class="string">&#x27;0101010010101&#x27;</span>))</span><br></pre></td></tr></table></figure>
+    <title>Python修饰器</title>
+    <url>/2020/10/03/Python%E4%BF%AE%E9%A5%B0%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在原有函数的基础上增加新的功能</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>给函数增加一个统计运行时间的功能</p>
+<a id="more"></a>
+<h3 id="最简单的做法"><a href="#最简单的做法" class="headerlink" title="最简单的做法"></a>最简单的做法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">startTime = time.time()</span><br><span class="line">myAdd(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">totalTime = time.time() - startTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, totalTime)</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2709</span></span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0006561279296875</span></span><br></pre></td></tr></table></figure>
+<p>对于每个函数都要写相同的语句，很麻烦，可以用函数的方式来代替</p>
+<h3 id="用函数的形式"><a href="#用函数的形式" class="headerlink" title="用函数的形式"></a>用函数的形式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    func(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    totalTime = time.time() - startTime</span><br><span class="line">    <span class="keyword">return</span> totalTime</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, calculateTime(myAdd))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.000053644180298</span></span><br></pre></td></tr></table></figure>
+<p>但是这改变了函数的调用方式，本来调用myAdd，现在调用calculateTime</p>
+<h3 id="不改变函数调用方式"><a href="#不改变函数调用方式" class="headerlink" title="不改变函数调用方式"></a>不改变函数调用方式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">myAdd = calculateTime(myAdd)</span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0000948905944824</span></span><br></pre></td></tr></table></figure>
+<p>需要增加myAdd = calculateTime(myAdd)这行代码，能否用更加简洁的形式代替？语法糖！</p>
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculateTime</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        startTime = time.time()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        totalTime = time.time() - startTime</span><br><span class="line">        <span class="keyword">return</span> totalTime</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@calculateTime # myAdd = calculateTime(myAdd)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myAdd</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="comment"># 因为运行速度太快，所以增加2s的休眠时间</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;运行时间为：&#x27;</span>, myAdd(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行时间为： <span class="number">2.0005946159362793</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -626,69 +644,14 @@
       </tags>
   </entry>
   <entry>
-    <title>Python多线程</title>
-    <url>/2020/09/28/Python%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ol>
-<li>进程、线程是什么？为什么要用多线程？</li>
-<li>如何创建多线程？</li>
-<li>主线程、父线程、子线程</li>
-<li>阻塞线程</li>
-<li>线程同步</li>
-</ol>
-<a id="more"></a>
-
-<h3 id="进程、线程是什么？为什么要用多线程？"><a href="#进程、线程是什么？为什么要用多线程？" class="headerlink" title="进程、线程是什么？为什么要用多线程？"></a>进程、线程是什么？为什么要用多线程？</h3><p>官话：<strong>进程是资源分配的最小单位，线程是CPU调度的最小单位</strong></p>
-<h3 id="如何创建多线程？"><a href="#如何创建多线程？" class="headerlink" title="如何创建多线程？"></a>如何创建多线程？</h3><p>Python3实现多线程的是threading模块，首先导入模块</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br></pre></td></tr></table></figure>
-
-<p>Python支持创建多线程：</p>
-<ul>
-<li>通过threading.Thread()创建</li>
-<li>通过继承threading.Thread类创建</li>
-<li>前者直接用Thread类实例化一个线程对象，后者继承Thread类，改写run方法，实现不同的功能</li>
+    <title>Python偏函数</title>
+    <url>/2020/10/01/Python%E5%81%8F%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>functools.partial的作用就是把一个函数的某些参数给固定住（设置默认值），返回一个新函数，调用这个函数会更加简单</li>
 </ul>
-<h4 id="用threading-Thread-创建"><a href="#用threading-Thread-创建" class="headerlink" title="用threading.Thread()创建"></a>用threading.Thread()创建</h4><p>Thread()语法为：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">threading.Thread(group=<span class="literal">None</span>, target=<span class="literal">None</span>, name=<span class="literal">None</span>, args=(), kwargs=(), *, daemon=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>group:一般为None</li>
-<li>target:线程调用的对象，就是目标函数</li>
-<li>name:给线程起名字，默认是Target-x，初始x=1</li>
-<li>args:函数实参，传入元组</li>
-<li>kwargs:为目标函数传入关键字参数，传入字典</li>
-<li>daemin:用来设置线程是否随主线程的退出而退出</li>
-</ul>
-<p>例子：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x, y):</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line">thread1 = threading.Thread(name=<span class="string">&#x27;t1&#x27;</span>, target=test, args=(<span class="number">1</span>, <span class="number">10</span>))</span><br><span class="line">thread2 = threading.Thread(name=<span class="string">&#x27;t2&#x27;</span>, target=test, args=(<span class="number">1</span>, <span class="number">20</span>))</span><br><span class="line">thread1.start()</span><br><span class="line">thread2.start()</span><br><span class="line">print(<span class="string">&#x27;线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mod</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x % y</span><br><span class="line"></span><br><span class="line">mod100 = partial(mod, <span class="number">100</span>)</span><br><span class="line">print(mod100(<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">int2 = partial(int,base=<span class="number">2</span>)</span><br><span class="line">print(int2(<span class="string">&#x27;0101010010101&#x27;</span>))</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">线程结束了</span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">24</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">38</span></span><br><span class="line"></span><br><span class="line"><span class="number">49</span></span><br><span class="line"></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">18</span></span><br><span class="line"><span class="number">19</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="继承threading-Thread类创建"><a href="#继承threading-Thread类创建" class="headerlink" title="继承threading.Thread类创建"></a>继承threading.Thread类创建</h4><p>定义一个类继承threading.Thread，然后重写父类的run()方法，会在线程启动(start())时自动执行。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a, b</span>):</span></span><br><span class="line">        super(MyThread, self).__init__()</span><br><span class="line">        self.a = a</span><br><span class="line">        self.b = b</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.a, self.b):</span><br><span class="line">            print(i)</span><br><span class="line"></span><br><span class="line">thread1 = MyThread(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">thread2 = MyThread(<span class="number">1</span>, <span class="number">20</span>)</span><br><span class="line">thread1.start()</span><br><span class="line">thread2.start()</span><br><span class="line">print(<span class="string">&#x27;线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span>线程结束了</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">18</span></span><br><span class="line"><span class="number">19</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="主线程、父线程、子线程"><a href="#主线程、父线程、子线程" class="headerlink" title="主线程、父线程、子线程"></a>主线程、父线程、子线程</h3><ul>
-<li>主线程=父线程</li>
-<li>如果线程A中启动了线程B，那么A是B的父线程，B是A的子线程</li>
-<li>daemon属性，当daemon为True时，主线程结束之后子线程立即停止；当daemon为False时，主线程结束之后，子线程可继续执行</li>
-</ul>
-<h3 id="阻塞线程"><a href="#阻塞线程" class="headerlink" title="阻塞线程"></a>阻塞线程</h3><p>join()方法，可以阻塞线程</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">join(timeout=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>timeout参数指定阻塞时间，如果没有设置就一直等待，直到被调用的线程完成为止，注意join不能与start在循环里连用</p>
-<h3 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h3><p>在访问共享资源的时候，不同线程会冲突，看下面的例子</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">global</span> x</span><br><span class="line">        x += <span class="number">10</span></span><br><span class="line">        print(self.name, x)</span><br><span class="line"></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line">threadList = [MyThread() <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> threadList:</span><br><span class="line">    i.start()</span><br><span class="line">print(<span class="string">&#x27;主线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>输出为：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span>Thread<span class="number">-2</span></span><br><span class="line"> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line"><span class="number">30</span>Thread<span class="number">-5</span> <span class="number">50</span></span><br><span class="line"></span><br><span class="line">主线程结束了</span><br></pre></td></tr></table></figure>
-
-<p>解决方法为加锁</p>
-<h4 id="Lock与Rlock"><a href="#Lock与Rlock" class="headerlink" title="Lock与Rlock"></a>Lock与Rlock</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用Lock加锁</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">global</span> x</span><br><span class="line">        lock.acquire()</span><br><span class="line">        x += <span class="number">10</span></span><br><span class="line">        print(self.name, x)</span><br><span class="line">        lock.release()</span><br><span class="line"></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line">threadList = [MyThread() <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">lock = threading.Lock()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> threadList:</span><br><span class="line">    i.start()</span><br></pre></td></tr></table></figure>
-
-<p>输出为：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span></span><br><span class="line">Thread<span class="number">-2</span> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> <span class="number">30</span></span><br><span class="line">Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line">Thread<span class="number">-5</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2709</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -794,6 +757,22 @@
       </tags>
   </entry>
   <entry>
+    <title>Python生成器</title>
+    <url>/2020/10/03/Python%E7%94%9F%E6%88%90%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在 Python 中，使用了 yield 的函数被称为生成器（generator）。<br>跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。在调用生成器运行的过程中，每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值, 并在下一次执行 next() 方法时从当前位置继续运行。<br>调用一个生成器函数，返回的是一个迭代器对象。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>使用yield关键字</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params">n</span>):</span> <span class="comment"># 生成器函数 - 斐波那契</span></span><br><span class="line">    a, b, counter = <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> (counter &gt; n):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        counter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">f = fibonacci(<span class="number">5</span>)</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">17</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(next(f))</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python正则表达式与re模块</title>
     <url>/2020/09/28/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8Ere%E6%A8%A1%E5%9D%97/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -809,22 +788,6 @@
 <h4 id="re-findall"><a href="#re-findall" class="headerlink" title="re.findall"></a>re.findall</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.findall(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>
 <p>找到所有匹配的子串</p>
 <h4 id="re-split"><a href="#re-split" class="headerlink" title="re.split"></a>re.split</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;\d+&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcb1ccba3bccc5cb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.split(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python生成器</title>
-    <url>/2020/10/03/Python%E7%94%9F%E6%88%90%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在 Python 中，使用了 yield 的函数被称为生成器（generator）。<br>跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。在调用生成器运行的过程中，每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值, 并在下一次执行 next() 方法时从当前位置继续运行。<br>调用一个生成器函数，返回的是一个迭代器对象。</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>使用yield关键字</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params">n</span>):</span> <span class="comment"># 生成器函数 - 斐波那契</span></span><br><span class="line">    a, b, counter = <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> (counter &gt; n):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        counter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">f = fibonacci(<span class="number">5</span>)</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br><span class="line">print(next(f))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test2.py&quot;</span>, line <span class="number">17</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(next(f))</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -868,60 +831,74 @@
       </tags>
   </entry>
   <entry>
-    <title>Python自动给数字前面补0</title>
-    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>zfill方法</li>
-<li>格式化</li>
-</ul>
-<a id="more"></a>
-
-<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-<p>也可以用format</p>
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记</title>
-    <url>/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage，在conservative stage用triplet loss来优化网络参数得到相对可信的标签，在promoting stage用cross entropy loss充分利用全局信息。</li>
-<li>提出一种ranking-based triplet loss，这个loss不依赖聚类产生的伪标签。而是利用特征相似性。</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="https://img-blog.csdnimg.cn/20191210222137389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Framework-Overview"><a href="#Framework-Overview" class="headerlink" title="Framework Overview"></a>Framework Overview</h2><ol>
-<li>首先用source domian上带标签的数据来初始化CNN模型M，用模型M提取target domain上图片特征F。</li>
-<li>在conservative stage用HDBSCAN聚类算法得到相对可信的子类Tu，用CTL(clustering-based triplet loss)和RTL(ranking-based triplet loss)优化网络参数。前者依赖于子类Tu，后者依赖于特征相似性。用优化后的网络提取特征得到Fu。</li>
-<li>在promoting stage用HDBSCAN聚类算法对新的Fu特征聚类，将cluster的个数是为ID个数，用cross entropy loss计算损失，更新网络参数。</li>
+    <title>Python多线程</title>
+    <url>/2020/09/28/Python%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ol>
+<li>进程、线程是什么？为什么要用多线程？</li>
+<li>如何创建多线程？</li>
+<li>主线程、父线程、子线程</li>
+<li>阻塞线程</li>
+<li>线程同步</li>
 </ol>
-<h2 id="Conservative-Stage"><a href="#Conservative-Stage" class="headerlink" title="Conservative Stage"></a>Conservative Stage</h2><p>主要为两个损失函数CTL和RTL，都很直白。</p>
-<h3 id="CTL"><a href="#CTL" class="headerlink" title="CTL"></a>CTL</h3><p>CTL将每个cluster视为一类，每次取P个cluster，每个cluster取K张图的特征，然后用hard triplet计算loss，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100117776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h3><p>RTL将每张图根据特征相似性(Jaccard 距离)对所有图排序，取$[ 1, \eta]$为positive sample，取$(\eta, 2\eta]$为negative sample(为啥不取的更加远一些-_-)损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100900404.png" alt="在这里插入图片描述"><br>$P_p$和$P_n$分别为$x_p$和$x_n$相对于$x_a$的ranking位置，值得注意的是这个一个soft margin，$x_p$和$x_n$相距越近margin应该越小，符合常理。</p>
-<h2 id="Promoting-Stage"><a href="#Promoting-Stage" class="headerlink" title="Promoting Stage"></a>Promoting Stage</h2><p>只用三元组损失函数容易陷入局部最优解，所以依然需要cross entropy loss来充分利用全局信息。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211152657967.png" alt="在这里插入图片描述"><br>$\hat{y_i}$为$x_i$的伪标签，这个伪标签由HDBSCAN对Fu(模型经过CTL和RTL优化之后重新对target domain上的图像提取特征)聚类得到，C为cluster的数量。值得注意的是$W_c^T$用每一类的特征均值做初始化，因为分类器每一类的参数实际上是这一类的模板，所以这么做可以加快收敛。</p>
-<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Ablation-Study"><a href="#Ablation-Study" class="headerlink" title="Ablation Study"></a>Ablation Study</h3><p><img src="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="不同的聚类方法"><a href="#不同的聚类方法" class="headerlink" title="不同的聚类方法"></a>不同的聚类方法</h3><p><img src="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="SOTA"><a href="#SOTA" class="headerlink" title="SOTA"></a>SOTA</h3><p><img src="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
+
+<h3 id="进程、线程是什么？为什么要用多线程？"><a href="#进程、线程是什么？为什么要用多线程？" class="headerlink" title="进程、线程是什么？为什么要用多线程？"></a>进程、线程是什么？为什么要用多线程？</h3><p>官话：<strong>进程是资源分配的最小单位，线程是CPU调度的最小单位</strong></p>
+<h3 id="如何创建多线程？"><a href="#如何创建多线程？" class="headerlink" title="如何创建多线程？"></a>如何创建多线程？</h3><p>Python3实现多线程的是threading模块，首先导入模块</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br></pre></td></tr></table></figure>
+
+<p>Python支持创建多线程：</p>
+<ul>
+<li>通过threading.Thread()创建</li>
+<li>通过继承threading.Thread类创建</li>
+<li>前者直接用Thread类实例化一个线程对象，后者继承Thread类，改写run方法，实现不同的功能</li>
+</ul>
+<h4 id="用threading-Thread-创建"><a href="#用threading-Thread-创建" class="headerlink" title="用threading.Thread()创建"></a>用threading.Thread()创建</h4><p>Thread()语法为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">threading.Thread(group=<span class="literal">None</span>, target=<span class="literal">None</span>, name=<span class="literal">None</span>, args=(), kwargs=(), *, daemon=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>group:一般为None</li>
+<li>target:线程调用的对象，就是目标函数</li>
+<li>name:给线程起名字，默认是Target-x，初始x=1</li>
+<li>args:函数实参，传入元组</li>
+<li>kwargs:为目标函数传入关键字参数，传入字典</li>
+<li>daemin:用来设置线程是否随主线程的退出而退出</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x, y):</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line">thread1 = threading.Thread(name=<span class="string">&#x27;t1&#x27;</span>, target=test, args=(<span class="number">1</span>, <span class="number">10</span>))</span><br><span class="line">thread2 = threading.Thread(name=<span class="string">&#x27;t2&#x27;</span>, target=test, args=(<span class="number">1</span>, <span class="number">20</span>))</span><br><span class="line">thread1.start()</span><br><span class="line">thread2.start()</span><br><span class="line">print(<span class="string">&#x27;线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">线程结束了</span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">24</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">38</span></span><br><span class="line"></span><br><span class="line"><span class="number">49</span></span><br><span class="line"></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">18</span></span><br><span class="line"><span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="继承threading-Thread类创建"><a href="#继承threading-Thread类创建" class="headerlink" title="继承threading.Thread类创建"></a>继承threading.Thread类创建</h4><p>定义一个类继承threading.Thread，然后重写父类的run()方法，会在线程启动(start())时自动执行。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a, b</span>):</span></span><br><span class="line">        super(MyThread, self).__init__()</span><br><span class="line">        self.a = a</span><br><span class="line">        self.b = b</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.a, self.b):</span><br><span class="line">            print(i)</span><br><span class="line"></span><br><span class="line">thread1 = MyThread(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">thread2 = MyThread(<span class="number">1</span>, <span class="number">20</span>)</span><br><span class="line">thread1.start()</span><br><span class="line">thread2.start()</span><br><span class="line">print(<span class="string">&#x27;线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span>线程结束了</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">18</span></span><br><span class="line"><span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="主线程、父线程、子线程"><a href="#主线程、父线程、子线程" class="headerlink" title="主线程、父线程、子线程"></a>主线程、父线程、子线程</h3><ul>
+<li>主线程=父线程</li>
+<li>如果线程A中启动了线程B，那么A是B的父线程，B是A的子线程</li>
+<li>daemon属性，当daemon为True时，主线程结束之后子线程立即停止；当daemon为False时，主线程结束之后，子线程可继续执行</li>
+</ul>
+<h3 id="阻塞线程"><a href="#阻塞线程" class="headerlink" title="阻塞线程"></a>阻塞线程</h3><p>join()方法，可以阻塞线程</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">join(timeout=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>timeout参数指定阻塞时间，如果没有设置就一直等待，直到被调用的线程完成为止，注意join不能与start在循环里连用</p>
+<h3 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h3><p>在访问共享资源的时候，不同线程会冲突，看下面的例子</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">global</span> x</span><br><span class="line">        x += <span class="number">10</span></span><br><span class="line">        print(self.name, x)</span><br><span class="line"></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line">threadList = [MyThread() <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> threadList:</span><br><span class="line">    i.start()</span><br><span class="line">print(<span class="string">&#x27;主线程结束了&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span>Thread<span class="number">-2</span></span><br><span class="line"> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line"><span class="number">30</span>Thread<span class="number">-5</span> <span class="number">50</span></span><br><span class="line"></span><br><span class="line">主线程结束了</span><br></pre></td></tr></table></figure>
+
+<p>解决方法为加锁</p>
+<h4 id="Lock与Rlock"><a href="#Lock与Rlock" class="headerlink" title="Lock与Rlock"></a>Lock与Rlock</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用Lock加锁</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">global</span> x</span><br><span class="line">        lock.acquire()</span><br><span class="line">        x += <span class="number">10</span></span><br><span class="line">        print(self.name, x)</span><br><span class="line">        lock.release()</span><br><span class="line"></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line">threadList = [MyThread() <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">lock = threading.Lock()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> threadList:</span><br><span class="line">    i.start()</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span></span><br><span class="line">Thread<span class="number">-2</span> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> <span class="number">30</span></span><br><span class="line">Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line">Thread<span class="number">-5</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -962,50 +939,31 @@
       </tags>
   </entry>
   <entry>
-    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
+    <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记</title>
+    <url>/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
 <h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
-<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
+<li>现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage，在conservative stage用triplet loss来优化网络参数得到相对可信的标签，在promoting stage用cross entropy loss充分利用全局信息。</li>
+<li>提出一种ranking-based triplet loss，这个loss不依赖聚类产生的伪标签。而是利用特征相似性。</li>
 </ul>
 <a id="more"></a>
 
-<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-        <tag>数据集</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一种新颖的viewpoint-aware metric learning approach</li>
-<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
-<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
-<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
-<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
-</ul>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="https://img-blog.csdnimg.cn/20191210222137389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework-Overview"><a href="#Framework-Overview" class="headerlink" title="Framework Overview"></a>Framework Overview</h2><ol>
+<li>首先用source domian上带标签的数据来初始化CNN模型M，用模型M提取target domain上图片特征F。</li>
+<li>在conservative stage用HDBSCAN聚类算法得到相对可信的子类Tu，用CTL(clustering-based triplet loss)和RTL(ranking-based triplet loss)优化网络参数。前者依赖于子类Tu，后者依赖于特征相似性。用优化后的网络提取特征得到Fu。</li>
+<li>在promoting stage用HDBSCAN聚类算法对新的Fu特征聚类，将cluster的个数是为ID个数，用cross entropy loss计算损失，更新网络参数。</li>
+</ol>
+<h2 id="Conservative-Stage"><a href="#Conservative-Stage" class="headerlink" title="Conservative Stage"></a>Conservative Stage</h2><p>主要为两个损失函数CTL和RTL，都很直白。</p>
+<h3 id="CTL"><a href="#CTL" class="headerlink" title="CTL"></a>CTL</h3><p>CTL将每个cluster视为一类，每次取P个cluster，每个cluster取K张图的特征，然后用hard triplet计算loss，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100117776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h3><p>RTL将每张图根据特征相似性(Jaccard 距离)对所有图排序，取$[ 1, \eta]$为positive sample，取$(\eta, 2\eta]$为negative sample(为啥不取的更加远一些-_-)损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100900404.png" alt="在这里插入图片描述"><br>$P_p$和$P_n$分别为$x_p$和$x_n$相对于$x_a$的ranking位置，值得注意的是这个一个soft margin，$x_p$和$x_n$相距越近margin应该越小，符合常理。</p>
+<h2 id="Promoting-Stage"><a href="#Promoting-Stage" class="headerlink" title="Promoting Stage"></a>Promoting Stage</h2><p>只用三元组损失函数容易陷入局部最优解，所以依然需要cross entropy loss来充分利用全局信息。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211152657967.png" alt="在这里插入图片描述"><br>$\hat{y_i}$为$x_i$的伪标签，这个伪标签由HDBSCAN对Fu(模型经过CTL和RTL优化之后重新对target domain上的图像提取特征)聚类得到，C为cluster的数量。值得注意的是$W_c^T$用每一类的特征均值做初始化，因为分类器每一类的参数实际上是这一类的模板，所以这么做可以加快收敛。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Ablation-Study"><a href="#Ablation-Study" class="headerlink" title="Ablation Study"></a>Ablation Study</h3><p><img src="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="不同的聚类方法"><a href="#不同的聚类方法" class="headerlink" title="不同的聚类方法"></a>不同的聚类方法</h3><p><img src="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="SOTA"><a href="#SOTA" class="headerlink" title="SOTA"></a>SOTA</h3><p><img src="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1125,26 +1083,6 @@
       </tags>
   </entry>
   <entry>
-    <title>defaultdict用法</title>
-    <url>/2020/09/30/defaultdict%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>当我使用普通的字典时，用法一般是dict={},添加元素的只需要dict[element] =value即，调用的时候也是如此，dict[element] = xxx,但前提是element字典里，如果不在字典里就会报错(可以用get方法设置缺省值)</p>
-<a id="more"></a>
-
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>defaultdict接受一个工厂函数作为参数，如下来构造</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">dict</span> =defaultdict( factory_function)</span><br></pre></td></tr></table></figure>
-
-<p>这个factory_function可以是list、set、str等等，作用是当key不存在时，返回的是工厂函数的默认值，比如list对应[ ]，str对应的是空字符串，set对应set( )，int对应0，如下举例：</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections import defaultdict</span><br><span class="line"></span><br><span class="line">dict1 = defaultdict(int)</span><br><span class="line">dict2 = defaultdict(set)</span><br><span class="line">dict3 = defaultdict(str)</span><br><span class="line">dict4 = defaultdict(list)</span><br><span class="line">dict1[2] =<span class="string">&#x27;two&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="builtin-name">print</span>(dict1[1])<span class="builtin-name">print</span>(dict2[1])<span class="builtin-name">print</span>(dict3[1])<span class="builtin-name">print</span>(dict4[1])</span><br></pre></td></tr></table></figure>
-<p>输出</p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">set</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>__delattr__和__del__</title>
     <url>/2020/10/02/delattr-%E5%92%8C-del/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -1162,6 +1100,26 @@
 <p>输出：</p>
 <figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">running</span></span> __del__...</span><br><span class="line"><span class="function"><span class="title">can</span></span> <span class="keyword">not</span> delete instance...</span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>defaultdict用法</title>
+    <url>/2020/09/30/defaultdict%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>当我使用普通的字典时，用法一般是dict={},添加元素的只需要dict[element] =value即，调用的时候也是如此，dict[element] = xxx,但前提是element字典里，如果不在字典里就会报错(可以用get方法设置缺省值)</p>
+<a id="more"></a>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>defaultdict接受一个工厂函数作为参数，如下来构造</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">dict</span> =defaultdict( factory_function)</span><br></pre></td></tr></table></figure>
+
+<p>这个factory_function可以是list、set、str等等，作用是当key不存在时，返回的是工厂函数的默认值，比如list对应[ ]，str对应的是空字符串，set对应set( )，int对应0，如下举例：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections import defaultdict</span><br><span class="line"></span><br><span class="line">dict1 = defaultdict(int)</span><br><span class="line">dict2 = defaultdict(set)</span><br><span class="line">dict3 = defaultdict(str)</span><br><span class="line">dict4 = defaultdict(list)</span><br><span class="line">dict1[2] =<span class="string">&#x27;two&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="builtin-name">print</span>(dict1[1])<span class="builtin-name">print</span>(dict2[1])<span class="builtin-name">print</span>(dict3[1])<span class="builtin-name">print</span>(dict4[1])</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">set</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1224,20 +1182,57 @@
       </tags>
   </entry>
   <entry>
-    <title>__getattr__</title>
-    <url>/2020/10/02/getattr/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>该方法会在读取或者修改未定义的成员属性的时候调用</li>
+    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
+<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
 </ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;&#123;&#125; is not defined&#x27;</span>.format(item))</span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(stu1.lab)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 
-<p>输出：</p>
-<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lab</span> is not defined</span><br><span class="line"><span class="keyword">lab</span></span><br></pre></td></tr></table></figure>]]></content>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
+        <tag>数据集</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种新颖的viewpoint-aware metric learning approach</li>
+<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
+<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
+<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
+<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1272,20 +1267,17 @@
       </tags>
   </entry>
   <entry>
-    <title>__getitem__</title>
-    <url>/2020/10/02/getitem/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>下标索引时调用</li>
-</ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReverseNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, num</span>):</span></span><br><span class="line">        self.rangeList = list(range(num))</span><br><span class="line">        self.num = num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.rangeList[self.num - item - <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">reverseNum = ReverseNum(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(reverseNum[i])</span><br></pre></td></tr></table></figure>
+    <title>np.reshape</title>
+    <url>/2020/10/05/np-reshape/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>改变numpy数组形状</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line">print(aa)</span><br><span class="line">print(aa.reshape(<span class="number">-1</span>))</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line"> [<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line"> [<span class="number">6</span> <span class="number">7</span>]]</span><br><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>Numpy</tag>
       </tags>
   </entry>
   <entry>
@@ -1300,20 +1292,6 @@
 </ul>
 <h2 id="np-where-condition"><a href="#np-where-condition" class="headerlink" title="np.where(condition)"></a>np.where(condition)</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>只有条件 (condition)，没有x和y，则输出满足条件 (即非0) 元素的坐标 (等价于numpy.nonzero)。这里的坐标以tuple的形式给出，通常原数组有多少维，输出的tuple中就包含几个数组，分别对应符合条件元素的各维坐标。</p>
 <h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(a &gt; <span class="number">5</span>)             <span class="comment"># 返回索引</span></span><br><span class="line">(array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]),)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[np.where(a &gt; <span class="number">5</span>)]              <span class="comment"># 等价于 a[a&gt;5]，因为花式索引有两种，一种是下标，另一种是true false数组</span></span><br><span class="line">array([ <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">1</span>]), array([<span class="number">1</span>, <span class="number">0</span>]))</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>np.reshape</title>
-    <url>/2020/10/05/np-reshape/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>改变numpy数组形状</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line">print(aa)</span><br><span class="line">print(aa.reshape(<span class="number">-1</span>))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line"> [<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line"> [<span class="number">6</span> <span class="number">7</span>]]</span><br><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1357,6 +1335,31 @@
       </tags>
   </entry>
   <entry>
+    <title>numpy中setdiff1d的用法</title>
+    <url>/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">setdiff1d(ar1, ar2, assume_unique=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>作用：找到2个数组中集合元素的差异。</li>
+<li>返回：在ar1中但不在ar2中的<strong>已排序</strong>的<strong>唯一值</strong>。</li>
+<li>参数：<ul>
+<li>ar1：array_like 输入数组。</li>
+<li>ar2：array_like 输入比较数组。</li>
+<li>assume_unique：bool。如果为True，则假定输入数组是唯一的，即可以加快计算速度。 默认值为False。<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.array([<span class="number">8</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">1</span>])</span><br><span class="line">b = np.array([<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">3</span>])</span><br><span class="line">c = np.setdiff1d(a, b)</span><br><span class="line">print(c)<span class="comment">#[1 2 8]</span></span><br></pre></td></tr></table></figure>
+可以从最后看出返回的值<strong>从小到大排序</strong>，并且<strong>唯一</strong>。（8在a的第1位，2在a中重复了2次）</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>numpy广播</title>
     <url>/2020/10/05/numpy%E5%B9%BF%E6%92%AD/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>广播(Broadcast)是 numpy 对不同形状(shape)的数组进行数值计算的方式， 对数组的算术运算通常在相应的元素上进行。</p>
@@ -1372,6 +1375,20 @@
 <p>（2，3）与（2，3，4）后缘维度不相同</p>
 <h3 id="规则二"><a href="#规则二" class="headerlink" title="规则二"></a>规则二</h3><p>有一方的长度为1<br>比如两个数组的维度分别是(2,1,4,1)和(2,3,4,5)，则可以广播</p>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>numpy数组增加一个新的轴</title>
+    <url>/2020/10/05/numpy%E6%95%B0%E7%BB%84%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E8%BD%B4/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>np.newaxis可以给一个数组增加一个新的轴。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.empty((<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">aa = aa[:, np.newaxis, ...]</span><br><span class="line">print(aa.shape)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1408,20 +1425,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>numpy数组增加一个新的轴</title>
-    <url>/2020/10/05/numpy%E6%95%B0%E7%BB%84%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E8%BD%B4/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>np.newaxis可以给一个数组增加一个新的轴。</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.empty((<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">aa = aa[:, np.newaxis, ...]</span><br><span class="line">print(aa.shape)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>numpy索引技巧</title>
     <url>/2020/10/05/numpy%E7%B4%A2%E5%BC%95%E6%8A%80%E5%B7%A7/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>NumPy提供比常规Python序列更多的索引功能。除了通过整数和切片进行索引之外，正如我们之前看到的，数组可以由整数数组和布尔数组索引。</p>
@@ -1450,38 +1453,25 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>pycharm中配置远程docker解释器</title>
-    <url>/2020/10/02/pycharm%E4%B8%AD%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8Bdocker%E8%A7%A3%E9%87%8A%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="远程服务器配置"><a href="#远程服务器配置" class="headerlink" title="远程服务器配置"></a>远程服务器配置</h2><h3 id="启动一个新容器"><a href="#启动一个新容器" class="headerlink" title="启动一个新容器"></a>启动一个新容器</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -itd --gpus all --user $(id -u $&#123;USER&#125;):$(id -g $&#123;USER&#125;) --shm-size 16G --name shensj_reid -p 3333:22 -p 3334:6006 -p 3335:8888 -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /etc/shadow:/etc/shadow:ro -v /home/shensj:/home/shensj -v /data/shensj:/data/shensj yolomax/pytorch:1.6.0</span><br></pre></td></tr></table></figure>
-<ul>
-<li>-itd表示以交互命令的方式打开docker，并且后台运行</li>
-<li>–gpus表示用使用哪几块GPU卡</li>
-<li>–shm-size表示交换内存，设置太小会导致dalaloader出问题</li>
-<li>–name为container名称</li>
-<li>-p为端口映射</li>
-<li>-v为挂在系统目录<a id="more"></a>
-<h3 id="进入容器启动SSH"><a href="#进入容器启动SSH" class="headerlink" title="进入容器启动SSH"></a>进入容器启动SSH</h3><h4 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h4><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">docker exec -it shensj_reid <span class="regexp">/bin/</span>bash</span><br></pre></td></tr></table></figure>
-<h4 id="安装SSH"><a href="#安装SSH" class="headerlink" title="安装SSH"></a>安装SSH</h4><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> <span class="keyword">update</span></span><br><span class="line">apt-<span class="keyword">get</span> install openssh-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
-<h4 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h4>使用vim打开并修改配置文件，找到PermitRootLogin prohibit-password这一行，修改为PermitRootLogin yes，允许通过ssh远程访问docker<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/</span>ssh/sshd_config</span><br></pre></td></tr></table></figure>
-
-</li>
+    <title>Python自动给数字前面补0</title>
+    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>zfill方法</li>
+<li>格式化</li>
 </ul>
-<h4 id="修改DOCKER密码"><a href="#修改DOCKER密码" class="headerlink" title="修改DOCKER密码"></a>修改DOCKER密码</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 
-<h4 id="重启SSH"><a href="#重启SSH" class="headerlink" title="重启SSH"></a>重启SSH</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service ssh restart</span></span><br></pre></td></tr></table></figure>
+<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
 
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>测试docker container中ssh服务端口在远程服务器上的映射</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 此操作在远程服务器 </span></span><br><span class="line">$ docker<span class="built_in"> port </span>&lt;your container name&gt; 22 </span><br><span class="line"><span class="comment"># 此操作将查看docker container中端口22，在远程服务器上端口的映射 </span></span><br><span class="line"><span class="comment"># 输出结果如下所示 </span></span><br><span class="line">22/tcp -&gt; 0.0.0.0:3333</span><br><span class="line"><span class="comment"># 表明只要ssh链接远程服务器的8022端口，实际是链接docker container中的22端口。</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Pycharm客户端配置"><a href="#Pycharm客户端配置" class="headerlink" title="Pycharm客户端配置"></a>Pycharm客户端配置</h2><h3 id="代码同步"><a href="#代码同步" class="headerlink" title="代码同步"></a>代码同步</h3><p>在导航栏中 Tools&gt;Depolyment&gt;Configuration中添加配置SFTP。<br><img src="https://s1.ax1x.com/2020/10/02/0ll3Ss.png" alt="添加SFTP"></p>
-<h3 id="配置远程解释器"><a href="#配置远程解释器" class="headerlink" title="配置远程解释器"></a>配置远程解释器</h3><p><img src="https://s1.ax1x.com/2020/10/02/0ll8ln.png" alt="配置远程解释器"><br><img src="https://s1.ax1x.com/2020/10/02/0llGyq.png" alt="配置远程解释器"></p>
-]]></content>
+<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+<p>也可以用format</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>Pycharm</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -1618,6 +1608,23 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>内置filter函数</title>
+    <url>/2020/09/28/%E5%86%85%E7%BD%AEfilter%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>filter() 函数用于<strong>过滤序列</strong>，过滤掉不符合条件的元素，返回一个迭代器对象，如果要转换为列表，可以使用 list() 来转换。</p>
+<a id="more"></a>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># function -- 判断函数</span></span><br><span class="line"><span class="comment"># iterable -- 可迭代对象</span></span><br><span class="line"><span class="comment"># return -- 迭代器</span></span><br><span class="line">filter(function, iterable)</span><br></pre></td></tr></table></figure>
+<p>该接收两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判，然后返回 True 或 False，最后将返回 True 的元素放到新列表中。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjMRg.png" alt="例子"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>内置map函数</title>
     <url>/2020/09/28/%E5%86%85%E7%BD%AEmap%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>map() 会根据提供的函数对指定序列做<strong>映射</strong>。</p>
@@ -1647,20 +1654,25 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>内置filter函数</title>
-    <url>/2020/09/28/%E5%86%85%E7%BD%AEfilter%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>filter() 函数用于<strong>过滤序列</strong>，过滤掉不符合条件的元素，返回一个迭代器对象，如果要转换为列表，可以使用 list() 来转换。</p>
-<a id="more"></a>
-
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># function -- 判断函数</span></span><br><span class="line"><span class="comment"># iterable -- 可迭代对象</span></span><br><span class="line"><span class="comment"># return -- 迭代器</span></span><br><span class="line">filter(function, iterable)</span><br></pre></td></tr></table></figure>
-<p>该接收两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判，然后返回 True 或 False，最后将返回 True 的元素放到新列表中。</p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://s1.ax1x.com/2020/09/28/0VjMRg.png" alt="例子"></p>
+    <title>创建numpy数组的几种常用方式</title>
+    <url>/2020/10/05/%E5%88%9B%E5%BB%BAnumpy%E6%95%B0%E7%BB%84%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="常用方式"><a href="#常用方式" class="headerlink" title="常用方式"></a>常用方式</h2><ul>
+<li>np.array()</li>
+<li>np.zeros()</li>
+<li>np.ones()</li>
+<li>np.empty()</li>
+<li>np.arange()</li>
+<li>np.linspace()</li>
+<li>np.zeros_like()</li>
+<li>np.ones_like()</li>
+<li>np.empty_like()</li>
+</ul>
 ]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>Numpy</tag>
       </tags>
   </entry>
   <entry>
@@ -1686,28 +1698,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </categories>
       <tags>
         <tag>网站搭建</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>创建numpy数组的几种常用方式</title>
-    <url>/2020/10/05/%E5%88%9B%E5%BB%BAnumpy%E6%95%B0%E7%BB%84%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="常用方式"><a href="#常用方式" class="headerlink" title="常用方式"></a>常用方式</h2><ul>
-<li>np.array()</li>
-<li>np.zeros()</li>
-<li>np.ones()</li>
-<li>np.empty()</li>
-<li>np.arange()</li>
-<li>np.linspace()</li>
-<li>np.zeros_like()</li>
-<li>np.ones_like()</li>
-<li>np.empty_like()</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
       </tags>
   </entry>
   <entry>
@@ -1796,6 +1786,21 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>矩阵乘法和对应元素相乘</title>
+    <url>/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; = 3.5中）或dot函数或方法执行：</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">bb = np.array([[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"></span><br><span class="line">print(aa*bb)</span><br><span class="line">print(aa@bb)</span><br><span class="line">print(aa.dot(bb))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">4</span> <span class="number">10</span>]</span><br><span class="line"> [<span class="number">18</span> <span class="number">28</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第三方库pathlib</title>
     <url>/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>Path类：from pathlib import Path</p>
@@ -1825,26 +1830,80 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>矩阵乘法和对应元素相乘</title>
-    <url>/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; = 3.5中）或dot函数或方法执行：</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">bb = np.array([[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"></span><br><span class="line">print(aa*bb)</span><br><span class="line">print(aa@bb)</span><br><span class="line">print(aa.dot(bb))</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">4</span> <span class="number">10</span>]</span><br><span class="line"> [<span class="number">18</span> <span class="number">28</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br><span class="line">[[<span class="number">16</span> <span class="number">19</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">43</span>]]</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>自定义异常</title>
     <url>/2020/10/02/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>实际开发中，有时候系统提供的异常类型不能满足开发的需求。这时候你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承。</p>
 <a id="more"></a>
 <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#1.用户自定义异常类型，只要该类继承了Exception类即可，至于类的主题内容用户自定义，可参考官方异常类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TooLongExceptin</span>(<span class="params">Exception</span>):</span></span><br><span class="line">    <span class="string">&quot;this is user&#x27;s Exception for check the length of name &quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,leng</span>):</span></span><br><span class="line">        self.leng = leng</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;姓名长度是&quot;</span>+str(self.leng)+<span class="string">&quot;，超过长度了&quot;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pycharm中配置远程docker解释器</title>
+    <url>/2020/10/02/pycharm%E4%B8%AD%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8Bdocker%E8%A7%A3%E9%87%8A%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="远程服务器配置"><a href="#远程服务器配置" class="headerlink" title="远程服务器配置"></a>远程服务器配置</h2><h3 id="启动一个新容器"><a href="#启动一个新容器" class="headerlink" title="启动一个新容器"></a>启动一个新容器</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -itd --gpus all --user $(id -u $&#123;USER&#125;):$(id -g $&#123;USER&#125;) --shm-size 16G --name shensj_reid -p 3333:22 -p 3334:6006 -p 3335:8888 -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /etc/shadow:/etc/shadow:ro -v /home/shensj:/home/shensj -v /data/shensj:/data/shensj yolomax/pytorch:1.6.0</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-itd表示以交互命令的方式打开docker，并且后台运行</li>
+<li>–gpus表示用使用哪几块GPU卡</li>
+<li>–shm-size表示交换内存，设置太小会导致dalaloader出问题</li>
+<li>–name为container名称</li>
+<li>-p为端口映射</li>
+<li>-v为挂在系统目录<a id="more"></a>
+<h3 id="进入容器启动SSH"><a href="#进入容器启动SSH" class="headerlink" title="进入容器启动SSH"></a>进入容器启动SSH</h3><h4 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h4><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">docker exec -it shensj_reid <span class="regexp">/bin/</span>bash</span><br></pre></td></tr></table></figure>
+<h4 id="安装SSH"><a href="#安装SSH" class="headerlink" title="安装SSH"></a>安装SSH</h4><figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">apt-<span class="keyword">get</span> <span class="keyword">update</span></span><br><span class="line">apt-<span class="keyword">get</span> install openssh-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h4>使用vim打开并修改配置文件，找到PermitRootLogin prohibit-password这一行，修改为PermitRootLogin yes，允许通过ssh远程访问docker<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/</span>ssh/sshd_config</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="修改DOCKER密码"><a href="#修改DOCKER密码" class="headerlink" title="修改DOCKER密码"></a>修改DOCKER密码</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="重启SSH"><a href="#重启SSH" class="headerlink" title="重启SSH"></a>重启SSH</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">service ssh restart</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>测试docker container中ssh服务端口在远程服务器上的映射</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 此操作在远程服务器 </span></span><br><span class="line">$ docker<span class="built_in"> port </span>&lt;your container name&gt; 22 </span><br><span class="line"><span class="comment"># 此操作将查看docker container中端口22，在远程服务器上端口的映射 </span></span><br><span class="line"><span class="comment"># 输出结果如下所示 </span></span><br><span class="line">22/tcp -&gt; 0.0.0.0:3333</span><br><span class="line"><span class="comment"># 表明只要ssh链接远程服务器的8022端口，实际是链接docker container中的22端口。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Pycharm客户端配置"><a href="#Pycharm客户端配置" class="headerlink" title="Pycharm客户端配置"></a>Pycharm客户端配置</h2><h3 id="代码同步"><a href="#代码同步" class="headerlink" title="代码同步"></a>代码同步</h3><p>在导航栏中 Tools&gt;Depolyment&gt;Configuration中添加配置SFTP。<br><img src="https://s1.ax1x.com/2020/10/02/0ll3Ss.png" alt="添加SFTP"></p>
+<h3 id="配置远程解释器"><a href="#配置远程解释器" class="headerlink" title="配置远程解释器"></a>配置远程解释器</h3><p><img src="https://s1.ax1x.com/2020/10/02/0ll8ln.png" alt="配置远程解释器"><br><img src="https://s1.ax1x.com/2020/10/02/0llGyq.png" alt="配置远程解释器"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>Pycharm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>__getattr__</title>
+    <url>/2020/10/02/getattr/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>该方法会在读取或者修改未定义的成员属性的时候调用</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;&#123;&#125; is not defined&#x27;</span>.format(item))</span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(stu1.lab)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lab</span> is not defined</span><br><span class="line"><span class="keyword">lab</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>__getitem__</title>
+    <url>/2020/10/02/getitem/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>下标索引时调用</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReverseNum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, num</span>):</span></span><br><span class="line">        self.rangeList = list(range(num))</span><br><span class="line">        self.num = num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.rangeList[self.num - item - <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">reverseNum = ReverseNum(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(reverseNum[i])</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
