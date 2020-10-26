@@ -24,29 +24,6 @@
       </tags>
   </entry>
   <entry>
-    <title>AD-Cluster: Augmented Discriminative Clustering for Domain Adaptive Person Re-identification 论文笔记</title>
-    <url>/2020/10/12/AD-Cluster-Augmented-Discriminative-Clustering-for-Domain-Adaptive-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Yunpeng Zhai</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2020</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>用一般的聚类方式会丢弃掉很多离群点，这些离群点是困难样本包含很多信息，那么既然聚类只能保留较为简单的样本，那么不妨那这些样本用GAN来生成困难样本，辅助网络的训练。</p>
-<a id="more"></a>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>it proposes a novel discriminative clustering method that addresses domain adaptive person re-ID by density-based clustering, adaptive sample augmentation, and discriminative feature learning. </p>
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012084312.png"><br>整个pipeline分三个部分，第一个部分是聚类Density-based Clustering，很常规；第二部分是 Adaptive Sample Augmentation，实际上就是StarGAN，将一个摄像头的图片迁移到其它摄像头下，生成的时候希望图片的类内距离尽可能大，第三部分拿了第一部分的CNN作为backbone，后面接个分类器用Triplet loss约束训练，实际上是在最小化类内距离。第二部分和第三部分要交替进行，最终我们的测试模型是CNN backbone。</p>
-<h3 id="Density-based-Clustering"><a href="#Density-based-Clustering" class="headerlink" title=" Density-based Clustering"></a> Density-based Clustering</h3><p>用了一种基于密度的聚类方法，由于不是paper的创新点，所以不讲了</p>
-<h3 id="Adaptive-Sample-Augmentation"><a href="#Adaptive-Sample-Augmentation" class="headerlink" title=" Adaptive Sample Augmentation"></a> Adaptive Sample Augmentation</h3><p>用StarGAN迁移图片，大家可以看看StarGAN的原文，也可以看看HHL方法。<br>用StarGAM迁移完图片之后，我们就有了:<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012085051.png"><br>注意这个image generator（stargan）训练的时候要提高图片多样性，也就是说要hard一些；首先定义多样性：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012085319.png"><br>$x_{t,i}$为数据集上的第i张真图，g为StarGAN，f为CNN backbone，$a(i,j)$表示$x_{t,i}$和$x_{t,j}$如果是同一个ID那么为1，不同ID为0（这个ID是聚类得到的）。$x_{t,i}$通过g（StarGAN）生成很多假图，用f（CNN backbone）提特征，然后算到类别中心的距离，把这个距离当成是多样性，距离越大表示多样性越大。值得注意的是公式好像<strong>写错了</strong>，最后的那个$f(x_{t,i})$应该是$f(x_{t,j})$，不然的话$a(i,j)$就可以直接消掉了……迷惑……<br>因为我们要最大化多样性，所以定义Loss为：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012090002.png"><br>这样的话，最小化loss就相当于是最大化多样性。</p>
-<h3 id="Discriminative-Learning"><a href="#Discriminative-Learning" class="headerlink" title="Discriminative Learning"></a>Discriminative Learning</h3><p>这部分很简单，复用最左边的CNN backbone，然后将输出的特征用三元组损失函数训练就行。</p>
-<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012090317.png"></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012090350.png"><br>性能很好~</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>AP聚类</title>
     <url>/2020/10/19/AP%E8%81%9A%E7%B1%BB/</url>
     <content><![CDATA[<h2 id="sklearn包中的AP算法"><a href="#sklearn包中的AP算法" class="headerlink" title="sklearn包中的AP算法"></a>sklearn包中的AP算法</h2><h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">cluster</span>.<span class="title">AffinityPropagation</span>(<span class="params">*, damping=<span class="number">0.5</span>, max_iter=<span class="number">200</span>, convergence_iter=<span class="number">15</span>, copy=True, preference=None, affinity=<span class="string">&#x27;euclidean&#x27;</span>, verbose=False, random_state=<span class="string">&#x27;warn&#x27;</span></span>)</span></span><br></pre></td></tr></table></figure>
@@ -78,6 +55,66 @@
       </categories>
       <tags>
         <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AD-Cluster: Augmented Discriminative Clustering for Domain Adaptive Person Re-identification 论文笔记</title>
+    <url>/2020/10/12/AD-Cluster-Augmented-Discriminative-Clustering-for-Domain-Adaptive-Person-Re-identification-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Yunpeng Zhai</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2020</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>用一般的聚类方式会丢弃掉很多离群点，这些离群点是困难样本包含很多信息，那么既然聚类只能保留较为简单的样本，那么不妨那这些样本用GAN来生成困难样本，辅助网络的训练。</p>
+<a id="more"></a>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>it proposes a novel discriminative clustering method that addresses domain adaptive person re-ID by density-based clustering, adaptive sample augmentation, and discriminative feature learning. </p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012084312.png"><br>整个pipeline分三个部分，第一个部分是聚类Density-based Clustering，很常规；第二部分是 Adaptive Sample Augmentation，实际上就是StarGAN，将一个摄像头的图片迁移到其它摄像头下，生成的时候希望图片的类内距离尽可能大，第三部分拿了第一部分的CNN作为backbone，后面接个分类器用Triplet loss约束训练，实际上是在最小化类内距离。第二部分和第三部分要交替进行，最终我们的测试模型是CNN backbone。</p>
+<h3 id="Density-based-Clustering"><a href="#Density-based-Clustering" class="headerlink" title=" Density-based Clustering"></a> Density-based Clustering</h3><p>用了一种基于密度的聚类方法，由于不是paper的创新点，所以不讲了</p>
+<h3 id="Adaptive-Sample-Augmentation"><a href="#Adaptive-Sample-Augmentation" class="headerlink" title=" Adaptive Sample Augmentation"></a> Adaptive Sample Augmentation</h3><p>用StarGAN迁移图片，大家可以看看StarGAN的原文，也可以看看HHL方法。<br>用StarGAM迁移完图片之后，我们就有了:<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012085051.png"><br>注意这个image generator（stargan）训练的时候要提高图片多样性，也就是说要hard一些；首先定义多样性：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012085319.png"><br>$x_{t,i}$为数据集上的第i张真图，g为StarGAN，f为CNN backbone，$a(i,j)$表示$x_{t,i}$和$x_{t,j}$如果是同一个ID那么为1，不同ID为0（这个ID是聚类得到的）。$x_{t,i}$通过g（StarGAN）生成很多假图，用f（CNN backbone）提特征，然后算到类别中心的距离，把这个距离当成是多样性，距离越大表示多样性越大。值得注意的是公式好像<strong>写错了</strong>，最后的那个$f(x_{t,i})$应该是$f(x_{t,j})$，不然的话$a(i,j)$就可以直接消掉了……迷惑……<br>因为我们要最大化多样性，所以定义Loss为：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012090002.png"><br>这样的话，最小化loss就相当于是最大化多样性。</p>
+<h3 id="Discriminative-Learning"><a href="#Discriminative-Learning" class="headerlink" title="Discriminative Learning"></a>Discriminative Learning</h3><p>这部分很简单，复用最左边的CNN backbone，然后将输出的特征用三元组损失函数训练就行。</p>
+<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012090317.png"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog/clipboard_20201012090350.png"><br>性能很好~</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ STL之Queue</title>
+    <url>/2020/10/26/C-STL%E4%B9%8BQueue/</url>
+    <content><![CDATA[<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><ul>
+<li>q.empty()：判断队列是否为空</li>
+<li>q.front()：返回队列头部元素</li>
+<li>q.back()：返回队列尾部元素</li>
+<li>q.pop()：弹出队列头部元素，注意返回为void，而不是头部元素</li>
+<li>q.push()：讲x添加至队尾</li>
+<li>q.size()：返回队列的存储元素个数</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ STL之Stack</title>
+    <url>/2020/10/26/C-STL%E4%B9%8BStack/</url>
+    <content><![CDATA[<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><ul>
+<li>s.top()：取出栈顶</li>
+<li>s.empty()：判断栈是否为空</li>
+<li>s.push(x)：讲x添加至栈</li>
+<li>s.pop()：弹出栈顶，<strong>注意返回为void，而不是栈顶元素</strong></li>
+<li>s.size()：栈的存储元素个数</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -611,6 +648,23 @@
       </tags>
   </entry>
   <entry>
+    <title>Python处理pickle文件</title>
+    <url>/2020/10/03/Python%E5%A4%84%E7%90%86pickle%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>python的pickle模块实现了基本的数据序列和反序列化。<br>通过pickle模块的序列化操作我们能够将程序中运行的对象信息保存到文件中去，永久存储。<br>通过pickle模块的反序列化操作，我们能够从文件中创建上一次程序保存的对象。</p>
+<a id="more"></a>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = &#123;<span class="number">1</span>:<span class="number">2</span>, <span class="number">2</span>:<span class="number">3</span>&#125;</span><br><span class="line">    pickle.dump(data, f)</span><br></pre></td></tr></table></figure>
+
+<h2 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = pickle.load(f)</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="number">1</span>: <span class="number">2</span>, <span class="number">2</span>: <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python处理文件</title>
     <url>/2020/10/03/Python%E5%A4%84%E7%90%86%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -654,44 +708,6 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;UTF-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ss = <span class="string">&#x27;春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。\n&#x27;</span>,<span class="string">&#x27;雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。\n&#x27;</span></span><br><span class="line">    f.writelines(ss)</span><br></pre></td></tr></table></figure>
 <p>file文件：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。</span><br><span class="line">雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python处理pickle文件</title>
-    <url>/2020/10/03/Python%E5%A4%84%E7%90%86pickle%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>python的pickle模块实现了基本的数据序列和反序列化。<br>通过pickle模块的序列化操作我们能够将程序中运行的对象信息保存到文件中去，永久存储。<br>通过pickle模块的反序列化操作，我们能够从文件中创建上一次程序保存的对象。</p>
-<a id="more"></a>
-<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = &#123;<span class="number">1</span>:<span class="number">2</span>, <span class="number">2</span>:<span class="number">3</span>&#125;</span><br><span class="line">    pickle.dump(data, f)</span><br></pre></td></tr></table></figure>
-
-<h2 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;file.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = pickle.load(f)</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
-<p>输出为：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="number">1</span>: <span class="number">2</span>, <span class="number">2</span>: <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python字符串前面的u,r,b含义</title>
-    <url>/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/</url>
-    <content><![CDATA[<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
-<li>加r是取消转义，保留原始字符串</li>
-<li>加u是采用Unicode编码</li>
-<li>加b是表示后面的字符串是bytes类型，用于网络编程中收发数据</li>
-</ul>
-<a id="more"></a>
-
-<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>1、字符串前加 u<br>例：u”我是含有中文字符组成的字符串。”<br>作用：后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。 </p>
-<p>2、字符串前加 r<br>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。<br>作用：去掉反斜杠的转义机制。（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）<br>应用：常用于正则表达式，对应着re模块。 </p>
-<p>3、字符串前加 b<br>例: response = b’<h1>Hello World!</h1>‘     # b’ ‘ 表示这是一个 bytes 对象<br>作用：b” “前缀表示：后面字符串是bytes 类型。<br>应用：网络编程中，服务器和浏览器只认bytes 类型数据。如：send 函数的参数和 recv 函数的返回值都是 bytes 类型<br>附：在 Python3 中，bytes 和 str 的互相转换方式是</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -763,6 +779,27 @@
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Thread<span class="number">-1</span> <span class="number">10</span></span><br><span class="line">Thread<span class="number">-2</span> <span class="number">20</span></span><br><span class="line">Thread<span class="number">-3</span> <span class="number">30</span></span><br><span class="line">Thread<span class="number">-4</span> <span class="number">40</span></span><br><span class="line">Thread<span class="number">-5</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python字符串前面的u,r,b含义</title>
+    <url>/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/</url>
+    <content><![CDATA[<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ul>
+<li>加r是取消转义，保留原始字符串</li>
+<li>加u是采用Unicode编码</li>
+<li>加b是表示后面的字符串是bytes类型，用于网络编程中收发数据</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>1、字符串前加 u<br>例：u”我是含有中文字符组成的字符串。”<br>作用：后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。 </p>
+<p>2、字符串前加 r<br>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。<br>作用：去掉反斜杠的转义机制。（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）<br>应用：常用于正则表达式，对应着re模块。 </p>
+<p>3、字符串前加 b<br>例: response = b’<h1>Hello World!</h1>‘     # b’ ‘ 表示这是一个 bytes 对象<br>作用：b” “前缀表示：后面字符串是bytes 类型。<br>应用：网络编程中，服务器和浏览器只认bytes 类型数据。如：send 函数的参数和 recv 函数的返回值都是 bytes 类型<br>附：在 Python3 中，bytes 和 str 的互相转换方式是</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">bytes.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -870,6 +907,28 @@
       </tags>
   </entry>
   <entry>
+    <title>Python自动给数字前面补0</title>
+    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>zfill方法</li>
+<li>格式化</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+<p>也可以用format</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python生成器</title>
     <url>/2020/10/03/Python%E7%94%9F%E6%88%90%E5%99%A8/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>在 Python 中，使用了 yield 的函数被称为生成器（generator）。<br>跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。在调用生成器运行的过程中，每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值, 并在下一次执行 next() 方法时从当前位置继续运行。<br>调用一个生成器函数，返回的是一个迭代器对象。</p>
@@ -921,25 +980,38 @@
       </tags>
   </entry>
   <entry>
-    <title>Python自动给数字前面补0</title>
-    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>zfill方法</li>
-<li>格式化</li>
+    <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记</title>
+    <url>/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage，在conservative stage用triplet loss来优化网络参数得到相对可信的标签，在promoting stage用cross entropy loss充分利用全局信息。</li>
+<li>提出一种ranking-based triplet loss，这个loss不依赖聚类产生的伪标签。而是利用特征相似性。</li>
 </ul>
 <a id="more"></a>
 
-<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-<p>也可以用format</p>
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="https://img-blog.csdnimg.cn/20191210222137389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework-Overview"><a href="#Framework-Overview" class="headerlink" title="Framework Overview"></a>Framework Overview</h2><ol>
+<li>首先用source domian上带标签的数据来初始化CNN模型M，用模型M提取target domain上图片特征F。</li>
+<li>在conservative stage用HDBSCAN聚类算法得到相对可信的子类Tu，用CTL(clustering-based triplet loss)和RTL(ranking-based triplet loss)优化网络参数。前者依赖于子类Tu，后者依赖于特征相似性。用优化后的网络提取特征得到Fu。</li>
+<li>在promoting stage用HDBSCAN聚类算法对新的Fu特征聚类，将cluster的个数是为ID个数，用cross entropy loss计算损失，更新网络参数。</li>
+</ol>
+<h2 id="Conservative-Stage"><a href="#Conservative-Stage" class="headerlink" title="Conservative Stage"></a>Conservative Stage</h2><p>主要为两个损失函数CTL和RTL，都很直白。</p>
+<h3 id="CTL"><a href="#CTL" class="headerlink" title="CTL"></a>CTL</h3><p>CTL将每个cluster视为一类，每次取P个cluster，每个cluster取K张图的特征，然后用hard triplet计算loss，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100117776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h3><p>RTL将每张图根据特征相似性(Jaccard 距离)对所有图排序，取$[ 1, \eta]$为positive sample，取$(\eta, 2\eta]$为negative sample(为啥不取的更加远一些-_-)损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100900404.png" alt="在这里插入图片描述"><br>$P_p$和$P_n$分别为$x_p$和$x_n$相对于$x_a$的ranking位置，值得注意的是这个一个soft margin，$x_p$和$x_n$相距越近margin应该越小，符合常理。</p>
+<h2 id="Promoting-Stage"><a href="#Promoting-Stage" class="headerlink" title="Promoting Stage"></a>Promoting Stage</h2><p>只用三元组损失函数容易陷入局部最优解，所以依然需要cross entropy loss来充分利用全局信息。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211152657967.png" alt="在这里插入图片描述"><br>$\hat{y_i}$为$x_i$的伪标签，这个伪标签由HDBSCAN对Fu(模型经过CTL和RTL优化之后重新对target domain上的图像提取特征)聚类得到，C为cluster的数量。值得注意的是$W_c^T$用每一类的特征均值做初始化，因为分类器每一类的参数实际上是这一类的模板，所以这么做可以加快收敛。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Ablation-Study"><a href="#Ablation-Study" class="headerlink" title="Ablation Study"></a>Ablation Study</h3><p><img src="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="不同的聚类方法"><a href="#不同的聚类方法" class="headerlink" title="不同的聚类方法"></a>不同的聚类方法</h3><p><img src="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="SOTA"><a href="#SOTA" class="headerlink" title="SOTA"></a>SOTA</h3><p><img src="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -980,31 +1052,77 @@
       </tags>
   </entry>
   <entry>
-    <title>Self-Training With Progressive Augmentation for Unsupervised Cross-Domain Person Re-Identification论文笔记</title>
-    <url>/2020/08/27/Self-Training-With-Progressive-Augmentation-for-Unsupervised-Cross-Domain-Person-Re-Identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Xinyu Zhang Jiewei Cao</p>
+    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
 <h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>现有的pseudo label estimation高度依赖于聚类结果，所以需要一种渐进的方式来逐步学到可信的伪标签。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一种self-train的渐近式的framwork，总共分成两步conservative stage和promoting stage，在conservative stage用triplet loss来优化网络参数得到相对可信的标签，在promoting stage用cross entropy loss充分利用全局信息。</li>
-<li>提出一种ranking-based triplet loss，这个loss不依赖聚类产生的伪标签。而是利用特征相似性。</li>
+<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
+<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
 </ul>
 <a id="more"></a>
 
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20191210222004400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="https://img-blog.csdnimg.cn/20191210222137389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Framework-Overview"><a href="#Framework-Overview" class="headerlink" title="Framework Overview"></a>Framework Overview</h2><ol>
-<li>首先用source domian上带标签的数据来初始化CNN模型M，用模型M提取target domain上图片特征F。</li>
-<li>在conservative stage用HDBSCAN聚类算法得到相对可信的子类Tu，用CTL(clustering-based triplet loss)和RTL(ranking-based triplet loss)优化网络参数。前者依赖于子类Tu，后者依赖于特征相似性。用优化后的网络提取特征得到Fu。</li>
-<li>在promoting stage用HDBSCAN聚类算法对新的Fu特征聚类，将cluster的个数是为ID个数，用cross entropy loss计算损失，更新网络参数。</li>
-</ol>
-<h2 id="Conservative-Stage"><a href="#Conservative-Stage" class="headerlink" title="Conservative Stage"></a>Conservative Stage</h2><p>主要为两个损失函数CTL和RTL，都很直白。</p>
-<h3 id="CTL"><a href="#CTL" class="headerlink" title="CTL"></a>CTL</h3><p>CTL将每个cluster视为一类，每次取P个cluster，每个cluster取K张图的特征，然后用hard triplet计算loss，损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100117776.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h3><p>RTL将每张图根据特征相似性(Jaccard 距离)对所有图排序，取$[ 1, \eta]$为positive sample，取$(\eta, 2\eta]$为negative sample(为啥不取的更加远一些-_-)损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211100900404.png" alt="在这里插入图片描述"><br>$P_p$和$P_n$分别为$x_p$和$x_n$相对于$x_a$的ranking位置，值得注意的是这个一个soft margin，$x_p$和$x_n$相距越近margin应该越小，符合常理。</p>
-<h2 id="Promoting-Stage"><a href="#Promoting-Stage" class="headerlink" title="Promoting Stage"></a>Promoting Stage</h2><p>只用三元组损失函数容易陷入局部最优解，所以依然需要cross entropy loss来充分利用全局信息。损失函数如下：<br><img src="https://img-blog.csdnimg.cn/20191211152657967.png" alt="在这里插入图片描述"><br>$\hat{y_i}$为$x_i$的伪标签，这个伪标签由HDBSCAN对Fu(模型经过CTL和RTL优化之后重新对target domain上的图像提取特征)聚类得到，C为cluster的数量。值得注意的是$W_c^T$用每一类的特征均值做初始化，因为分类器每一类的参数实际上是这一类的模板，所以这么做可以加快收敛。</p>
-<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Ablation-Study"><a href="#Ablation-Study" class="headerlink" title="Ablation Study"></a>Ablation Study</h3><p><img src="https://img-blog.csdnimg.cn/20191211153713198.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="不同的聚类方法"><a href="#不同的聚类方法" class="headerlink" title="不同的聚类方法"></a>不同的聚类方法</h3><p><img src="https://img-blog.csdnimg.cn/20191211154307135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="SOTA"><a href="#SOTA" class="headerlink" title="SOTA"></a>SOTA</h3><p><img src="https://img-blog.csdnimg.cn/2019121115445315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
+        <tag>数据集</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
+    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出一种新颖的viewpoint-aware metric learning approach</li>
+<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
+<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
+<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
+<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
+<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>ReID</tag>
+        <tag>论文笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>View Confusion Feature Learning for Person Re-identification论文笔记</title>
+    <url>/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
+<li>用SIFT特征来指导模型训练。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
+<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
+<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
+<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1075,30 +1193,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Peng Wang</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>现有数据集规模太小。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一个大的车辆重识别数据集，并且手动标注属性。</li>
-<li>提出一个新的车辆重识别算法，该算法能够充分利用属性。</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>VeRi数据集统计信息<br><img src="https://img-blog.csdnimg.cn/20200310104420651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200310104435982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">双路网络，上面的branch为全局支路，下面的branch为属性支路</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-        <tag>数据集</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>__call__</title>
     <url>/2020/10/02/call/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -1113,6 +1207,21 @@
 <h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, a, b</span>):</span></span><br><span class="line">        self.a = a</span><br><span class="line">        self.b = b</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_print</span>(<span class="params">self,</span>):</span></span><br><span class="line">        print(<span class="string">&quot;a = &quot;</span>, self.a, <span class="string">&quot;b = &quot;</span>, self.b)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, *args, **kwargs</span>):</span></span><br><span class="line">        self.a = args[<span class="number">0</span>]</span><br><span class="line">        self.b = args[<span class="number">1</span>]</span><br><span class="line">        print(<span class="string">&quot;call: a = &quot;</span>, self.a, <span class="string">&quot;b = &quot;</span>, self.b)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    demo = Demo(<span class="number">10</span>, <span class="number">20</span>)</span><br><span class="line">    demo.my_print()</span><br><span class="line"></span><br><span class="line">    demo(<span class="number">50</span>, <span class="number">60</span>)</span><br></pre></td></tr></table></figure>
 <p>输出为：</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">a</span> <span class="string">=</span>  <span class="number">10</span> <span class="string">b</span> <span class="string">=</span>  <span class="number">20</span></span><br><span class="line"><span class="attr">call:</span> <span class="string">a</span> <span class="string">=</span>  <span class="number">50</span> <span class="string">b</span> <span class="string">=</span>  <span class="number">60</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>copy()与deepcopy()</title>
+    <url>/2020/10/19/copy-%E4%B8%8Edeepcopy/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>都是复制，但对复杂结构(比如list里面嵌套list)不同</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">b = a.copy()</span><br><span class="line">c = copy.deepcopy(a)</span><br><span class="line">print(<span class="string">&#x27;a=&#x27;</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(<span class="string">&#x27;b=&#x27;</span>)</span><br><span class="line">print(b)</span><br><span class="line">print(<span class="string">&#x27;c=&#x27;</span>)</span><br><span class="line">print(c)</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">20</span>)</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">print(<span class="string">&#x27;a=&#x27;</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(<span class="string">&#x27;b=&#x27;</span>)</span><br><span class="line">print(b)</span><br><span class="line">print(<span class="string">&#x27;c=&#x27;</span>)</span><br><span class="line">print(c)</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">20</span>)</span><br><span class="line">a[<span class="number">2</span>][<span class="number">1</span>] = <span class="number">33</span></span><br><span class="line">print(<span class="string">&#x27;a=&#x27;</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(<span class="string">&#x27;b=&#x27;</span>)</span><br><span class="line">print(b)</span><br><span class="line">print(<span class="string">&#x27;c=&#x27;</span>)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">a=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">b=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">c=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">--------------------</span><br><span class="line">a=</span><br><span class="line">[<span class="number">11</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">b=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">c=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">--------------------</span><br><span class="line">a=</span><br><span class="line">[<span class="number">11</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">33</span>]]</span><br><span class="line">b=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">33</span>]]</span><br><span class="line">c=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1141,21 +1250,6 @@
       </tags>
   </entry>
   <entry>
-    <title>copy()与deepcopy()</title>
-    <url>/2020/10/19/copy-%E4%B8%8Edeepcopy/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>都是复制，但对复杂结构(比如list里面嵌套list)不同</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line">b = a.copy()</span><br><span class="line">c = copy.deepcopy(a)</span><br><span class="line">print(<span class="string">&#x27;a=&#x27;</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(<span class="string">&#x27;b=&#x27;</span>)</span><br><span class="line">print(b)</span><br><span class="line">print(<span class="string">&#x27;c=&#x27;</span>)</span><br><span class="line">print(c)</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">20</span>)</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">print(<span class="string">&#x27;a=&#x27;</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(<span class="string">&#x27;b=&#x27;</span>)</span><br><span class="line">print(b)</span><br><span class="line">print(<span class="string">&#x27;c=&#x27;</span>)</span><br><span class="line">print(c)</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">20</span>)</span><br><span class="line">a[<span class="number">2</span>][<span class="number">1</span>] = <span class="number">33</span></span><br><span class="line">print(<span class="string">&#x27;a=&#x27;</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(<span class="string">&#x27;b=&#x27;</span>)</span><br><span class="line">print(b)</span><br><span class="line">print(<span class="string">&#x27;c=&#x27;</span>)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">a=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">b=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">c=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">--------------------</span><br><span class="line">a=</span><br><span class="line">[<span class="number">11</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">b=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">c=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">--------------------</span><br><span class="line">a=</span><br><span class="line">[<span class="number">11</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">33</span>]]</span><br><span class="line">b=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">33</span>]]</span><br><span class="line">c=</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>__delattr__和__del__</title>
     <url>/2020/10/02/delattr-%E5%92%8C-del/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -1172,6 +1266,34 @@
 <h2 id="del-self"><a href="#del-self" class="headerlink" title="__del__(self)"></a>__del__(self)</h2><h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __delattr___...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;del attribute &#123;&#125;&#x27;</span>.format(item))</span><br><span class="line">        object.__delattr__(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __del__...&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;can not delete instance...&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> stu1</span><br><span class="line"></span><br><span class="line">time.sleep(<span class="number">100000</span>)</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">running</span></span> __del__...</span><br><span class="line"><span class="function"><span class="title">can</span></span> <span class="keyword">not</span> delete instance...</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dict类的get方法</title>
+    <url>/2020/09/30/dict%E7%B1%BB%E7%9A%84get%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>Python 字典(Dictionary) get() 函数返回指定键的值，如果值不在字典中返回默认值。</p>
+<a id="more"></a>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>get()方法语法：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">dict.<span class="builtin-name">get</span>(key, <span class="attribute">default</span>=None)</span><br></pre></td></tr></table></figure>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><ul>
+<li>key – 字典中要查找的键。</li>
+<li>default – 如果指定键的值不存在时，返回该默认值。</li>
+</ul>
+<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回指定键的值，如果值不在字典中返回默认值None。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">aa = &#123;<span class="string">&#x27;lab&#x27;</span>:<span class="string">&#x27;mcc&#x27;</span>, <span class="string">&#x27;school&#x27;</span>:<span class="string">&#x27;ustc&#x27;</span>&#125;</span><br><span class="line"><span class="builtin-name">print</span>(aa.<span class="builtin-name">get</span>(<span class="string">&#x27;school&#x27;</span>, <span class="string">&#x27;not find&#x27;</span>))</span><br><span class="line"><span class="builtin-name">print</span>(aa.<span class="builtin-name">get</span>(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;not find&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">ustc</span><br><span class="line"><span class="keyword">not</span> <span class="built_in">find</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h2><ul>
+<li>defaultdict也可以默认设置缺省值</li>
+</ul>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1207,26 +1329,15 @@
       </tags>
   </entry>
   <entry>
-    <title>dict类的get方法</title>
-    <url>/2020/09/30/dict%E7%B1%BB%E7%9A%84get%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>Python 字典(Dictionary) get() 函数返回指定键的值，如果值不在字典中返回默认值。</p>
-<a id="more"></a>
-
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>get()方法语法：</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">dict.<span class="builtin-name">get</span>(key, <span class="attribute">default</span>=None)</span><br></pre></td></tr></table></figure>
-<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><ul>
-<li>key – 字典中要查找的键。</li>
-<li>default – 如果指定键的值不存在时，返回该默认值。</li>
+    <title>__getattr__</title>
+    <url>/2020/10/02/getattr/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>该方法会在读取或者修改未定义的成员属性的时候调用</li>
 </ul>
-<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回指定键的值，如果值不在字典中返回默认值None。</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">aa = &#123;<span class="string">&#x27;lab&#x27;</span>:<span class="string">&#x27;mcc&#x27;</span>, <span class="string">&#x27;school&#x27;</span>:<span class="string">&#x27;ustc&#x27;</span>&#125;</span><br><span class="line"><span class="builtin-name">print</span>(aa.<span class="builtin-name">get</span>(<span class="string">&#x27;school&#x27;</span>, <span class="string">&#x27;not find&#x27;</span>))</span><br><span class="line"><span class="builtin-name">print</span>(aa.<span class="builtin-name">get</span>(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;not find&#x27;</span>))</span><br></pre></td></tr></table></figure>
-<p>输出</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">ustc</span><br><span class="line"><span class="keyword">not</span> <span class="built_in">find</span></span><br></pre></td></tr></table></figure>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;&#123;&#125; is not defined&#x27;</span>.format(item))</span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(stu1.lab)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h2><ul>
-<li>defaultdict也可以默认设置缺省值</li>
-</ul>
-]]></content>
+<p>输出：</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lab</span> is not defined</span><br><span class="line"><span class="keyword">lab</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1244,23 +1355,6 @@
 <p>输出：</p>
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>__getattr__</title>
-    <url>/2020/10/02/getattr/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>该方法会在读取或者修改未定义的成员属性的时候调用</li>
-</ul>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;&#123;&#125; is not defined&#x27;</span>.format(item))</span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"></span><br><span class="line">print(stu1.lab)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lab</span> is not defined</span><br><span class="line"><span class="keyword">lab</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1308,25 +1402,6 @@
 <li>注意默认不包含结束值</li>
 </ul>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>np.where的用法</title>
-    <url>/2020/10/09/np-where%E7%9A%84%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>第一种用法np.where(condition, x, y)</li>
-<li>第二种用法np.where(condition)<a id="more"></a>
-<h2 id="np-where-condition-x-y"><a href="#np-where-condition-x-y" class="headerlink" title="np.where(condition, x, y)"></a>np.where(condition, x, y)</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3>满足条件(condition)，输出x，不满足输出y。<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>aa = np.arange(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])  <span class="comment"># 0为False，所以第一个输出-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa &gt; <span class="number">5</span>,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="literal">True</span>,<span class="literal">False</span>], [<span class="literal">True</span>,<span class="literal">True</span>]],    <span class="comment"># 官网上的例子</span></span><br><span class="line">             [[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]],</span><br><span class="line">             [[<span class="number">9</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">6</span>]])</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">8</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="np-where-condition"><a href="#np-where-condition" class="headerlink" title="np.where(condition)"></a>np.where(condition)</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>只有条件 (condition)，没有x和y，则输出满足条件 (即非0) 元素的坐标 (等价于numpy.nonzero)。这里的坐标以tuple的形式给出，通常原数组有多少维，输出的tuple中就包含几个数组，分别对应符合条件元素的各维坐标。</p>
-<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(a &gt; <span class="number">5</span>)             <span class="comment"># 返回索引</span></span><br><span class="line">(array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]),)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[np.where(a &gt; <span class="number">5</span>)]              <span class="comment"># 等价于 a[a&gt;5]，因为花式索引有两种，一种是下标，另一种是true false数组</span></span><br><span class="line">array([ <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">1</span>]), array([<span class="number">1</span>, <span class="number">0</span>]))</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1384,23 +1459,17 @@
       </tags>
   </entry>
   <entry>
-    <title>numpy中setdiff1d的用法</title>
-    <url>/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">setdiff1d(ar1, ar2, assume_unique=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+    <title>np.where的用法</title>
+    <url>/2020/10/09/np-where%E7%9A%84%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>第一种用法np.where(condition, x, y)</li>
+<li>第二种用法np.where(condition)<a id="more"></a>
+<h2 id="np-where-condition-x-y"><a href="#np-where-condition-x-y" class="headerlink" title="np.where(condition, x, y)"></a>np.where(condition, x, y)</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3>满足条件(condition)，输出x，不满足输出y。<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>aa = np.arange(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])  <span class="comment"># 0为False，所以第一个输出-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(aa &gt; <span class="number">5</span>,<span class="number">1</span>,<span class="number">-1</span>)</span><br><span class="line">array([<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="literal">True</span>,<span class="literal">False</span>], [<span class="literal">True</span>,<span class="literal">True</span>]],    <span class="comment"># 官网上的例子</span></span><br><span class="line">             [[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]],</span><br><span class="line">             [[<span class="number">9</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">6</span>]])</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">8</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>作用：找到2个数组中集合元素的差异。</li>
-<li>返回：在ar1中但不在ar2中的<strong>已排序</strong>的<strong>唯一值</strong>。</li>
-<li>参数：<ul>
-<li>ar1：array_like 输入数组。</li>
-<li>ar2：array_like 输入比较数组。</li>
-<li>assume_unique：bool。如果为True，则假定输入数组是唯一的，即可以加快计算速度。 默认值为False。<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.array([<span class="number">8</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">1</span>])</span><br><span class="line">b = np.array([<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">3</span>])</span><br><span class="line">c = np.setdiff1d(a, b)</span><br><span class="line">print(c)<span class="comment">#[1 2 8]</span></span><br></pre></td></tr></table></figure>
-可以从最后看出返回的值<strong>从小到大排序</strong>，并且<strong>唯一</strong>。（8在a的第1位，2在a中重复了2次）</li>
-</ul>
 </li>
 </ul>
-]]></content>
+<h2 id="np-where-condition"><a href="#np-where-condition" class="headerlink" title="np.where(condition)"></a>np.where(condition)</h2><h3 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h3><p>只有条件 (condition)，没有x和y，则输出满足条件 (即非0) 元素的坐标 (等价于numpy.nonzero)。这里的坐标以tuple的形式给出，通常原数组有多少维，输出的tuple中就包含几个数组，分别对应符合条件元素的各维坐标。</p>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where(a &gt; <span class="number">5</span>)             <span class="comment"># 返回索引</span></span><br><span class="line">(array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]),)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[np.where(a &gt; <span class="number">5</span>)]              <span class="comment"># 等价于 a[a&gt;5]，因为花式索引有两种，一种是下标，另一种是true false数组</span></span><br><span class="line">array([ <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.where([[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">1</span>]), array([<span class="number">1</span>, <span class="number">0</span>]))</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1423,6 +1492,31 @@
 <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">6</span>  <span class="number">9</span>  <span class="number">5</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span>  <span class="number">2</span>  <span class="number">2</span> <span class="number">14</span>]</span><br><span class="line">  [ <span class="number">4</span>  <span class="number">9</span>  <span class="number">7</span>  <span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">19</span>  <span class="number">7</span> <span class="number">15</span> <span class="number">12</span>]</span><br><span class="line">  [ <span class="number">3</span>  <span class="number">8</span>  <span class="number">1</span>  <span class="number">8</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">11</span> <span class="number">13</span> <span class="number">17</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[ <span class="number">5</span> <span class="number">10</span> <span class="number">10</span>]</span><br><span class="line"> [ <span class="number">9</span>  <span class="number">2</span> <span class="number">18</span>]]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br><span class="line">ValueError: operands could <span class="keyword">not</span> be broadcast together with shapes (<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>) (<span class="number">2</span>,<span class="number">3</span>) </span><br></pre></td></tr></table></figure>
 <p>（2，3）与（2，3，4）后缘维度不相同</p>
 <h3 id="规则二"><a href="#规则二" class="headerlink" title="规则二"></a>规则二</h3><p>有一方的长度为1<br>比如两个数组的维度分别是(2,1,4,1)和(2,3,4,5)，则可以广播</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>numpy中setdiff1d的用法</title>
+    <url>/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">setdiff1d(ar1, ar2, assume_unique=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>作用：找到2个数组中集合元素的差异。</li>
+<li>返回：在ar1中但不在ar2中的<strong>已排序</strong>的<strong>唯一值</strong>。</li>
+<li>参数：<ul>
+<li>ar1：array_like 输入数组。</li>
+<li>ar2：array_like 输入比较数组。</li>
+<li>assume_unique：bool。如果为True，则假定输入数组是唯一的，即可以加快计算速度。 默认值为False。<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.array([<span class="number">8</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">1</span>])</span><br><span class="line">b = np.array([<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">3</span>])</span><br><span class="line">c = np.setdiff1d(a, b)</span><br><span class="line">print(c)<span class="comment">#[1 2 8]</span></span><br></pre></td></tr></table></figure>
+可以从最后看出返回的值<strong>从小到大排序</strong>，并且<strong>唯一</strong>。（8在a的第1位，2在a中重复了2次）</li>
+</ul>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1574,30 +1668,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>__setattr__</title>
-    <url>/2020/10/02/setattr/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
-<li>在对成员属性赋值时会调用</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, key, value</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __setattr__ meathod&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;key = &#123;&#125;, value = &#123;&#125;&#x27;</span>.format(key, value))</span><br><span class="line">        self.__dict__[key] = value</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = age, <span class="keyword">value</span> = male</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = sex, <span class="keyword">value</span> = <span class="number">38</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> count</span>, <span class="keyword">value</span> = <span class="number">1</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> name</span>, <span class="keyword">value</span> = jinxin</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = age, <span class="keyword">value</span> = female</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = sex, <span class="keyword">value</span> = <span class="number">78</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> count</span>, <span class="keyword">value</span> = <span class="number">1</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> name</span>, <span class="keyword">value</span> = Egon</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = age, <span class="keyword">value</span> = male</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = sex, <span class="keyword">value</span> = <span class="number">18</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> count</span>, <span class="keyword">value</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="反例"><a href="#反例" class="headerlink" title="反例"></a>反例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        <span class="comment"># self.age = age</span></span><br><span class="line">        <span class="comment"># self.sex = sex</span></span><br><span class="line">        <span class="comment"># self.count += 1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, key, value</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __setattr__ meathod&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;key = &#123;&#125;, value = &#123;&#125;&#x27;</span>.format(key, value))</span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">running __setattr__ meathod</span><br><span class="line">key = <span class="type">name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">running __setattr__ meathod</span><br><span class="line">key = <span class="type">name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> last):</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">20</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    stu1 = Student(<span class="string">&#x27;alex&#x27;</span>)</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">6</span>, <span class="keyword">in</span> __init__</span><br><span class="line">    self.name = <span class="type">name</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  [Previous <span class="type">line</span> repeated <span class="number">991</span> more times]</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">12</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    print(<span class="string">&#x27;running __setattr__ meathod&#x27;</span>)</span><br><span class="line">RecursionError: maximum recursion depth exceeded <span class="keyword">while</span> calling a Python <span class="keyword">object</span></span><br></pre></td></tr></table></figure>
-<p>这是因为无线循环调用了__setattr__方法</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>__str__和__repr__</title>
     <url>/2020/10/02/str-%E5%92%8C-repr/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -1618,6 +1688,30 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <p>输出：</p>
 <figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">repr:</span> alex</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>__setattr__</title>
+    <url>/2020/10/02/setattr/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>在对成员属性赋值时会调用</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name, age, sex</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.sex = sex</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, key, value</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __setattr__ meathod&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;key = &#123;&#125;, value = &#123;&#125;&#x27;</span>.format(key, value))</span><br><span class="line">        self.__dict__[key] = value</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">38</span>)</span><br><span class="line">stu2 = Student(<span class="string">&#x27;jinxin&#x27;</span>, <span class="string">&#x27;female&#x27;</span>, <span class="number">78</span>)</span><br><span class="line">stu3 = Student(<span class="string">&#x27;Egon&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = age, <span class="keyword">value</span> = male</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = sex, <span class="keyword">value</span> = <span class="number">38</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> count</span>, <span class="keyword">value</span> = <span class="number">1</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> name</span>, <span class="keyword">value</span> = jinxin</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = age, <span class="keyword">value</span> = female</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = sex, <span class="keyword">value</span> = <span class="number">78</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> count</span>, <span class="keyword">value</span> = <span class="number">1</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> name</span>, <span class="keyword">value</span> = Egon</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = age, <span class="keyword">value</span> = male</span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key = sex, <span class="keyword">value</span> = <span class="number">18</span></span><br><span class="line">running __setattr_<span class="number">_</span> meathod</span><br><span class="line">key =<span class="built_in"> count</span>, <span class="keyword">value</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="反例"><a href="#反例" class="headerlink" title="反例"></a>反例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    school = <span class="string">&#x27;Luffycity&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">        <span class="comment"># self.age = age</span></span><br><span class="line">        <span class="comment"># self.sex = sex</span></span><br><span class="line">        <span class="comment"># self.count += 1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span>(<span class="params">self, key, value</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;running __setattr__ meathod&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;key = &#123;&#125;, value = &#123;&#125;&#x27;</span>.format(key, value))</span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;%s is learning&#x27;</span> % self.name)</span><br><span class="line"></span><br><span class="line">stu1 = Student(<span class="string">&#x27;alex&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">running __setattr__ meathod</span><br><span class="line">key = <span class="type">name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">running __setattr__ meathod</span><br><span class="line">key = <span class="type">name</span>, <span class="keyword">value</span> = alex</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> last):</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">20</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    stu1 = Student(<span class="string">&#x27;alex&#x27;</span>)</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">6</span>, <span class="keyword">in</span> __init__</span><br><span class="line">    self.name = <span class="type">name</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">14</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    self.name = <span class="keyword">value</span></span><br><span class="line">  [Previous <span class="type">line</span> repeated <span class="number">991</span> more times]</span><br><span class="line">  File &quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;, <span class="type">line</span> <span class="number">12</span>, <span class="keyword">in</span> __setattr__</span><br><span class="line">    print(<span class="string">&#x27;running __setattr__ meathod&#x27;</span>)</span><br><span class="line">RecursionError: maximum recursion depth exceeded <span class="keyword">while</span> calling a Python <span class="keyword">object</span></span><br></pre></td></tr></table></figure>
+<p>这是因为无线循环调用了__setattr__方法</p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1654,22 +1748,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>torch.expand和torch.repeat</title>
-    <url>/2020/10/19/torch-expand%E5%92%8Ctorch-repeat/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>这两个方法都用作按照某一维度扩展数组，区别是<strong>扩展（expand）</strong>张量不会分配新的内存，只是在存在的张量上创建一个新的视图（view），一个<strong>大小（size）等于1的维度</strong>扩展到更大的尺寸。而**repeat()**会拷贝张量的数据。</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="torch-expand"><a href="#torch-expand" class="headerlink" title="torch.expand"></a>torch.expand</h3><p>expand后面的参数为改变后的尺寸，用[]括号包起来，注意只能大小为1的维度操作，或者没有这个维度，先通过广播创建一个大小为1的新维度，然后再expand</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.expand(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"> </span><br><span class="line">&gt;&gt; x = torch.randn(<span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x.expand(<span class="number">-1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">-1</span>)</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])  </span><br></pre></td></tr></table></figure>
-<h3 id="torch-repeat"><a href="#torch-repeat" class="headerlink" title="torch.repeat"></a>torch.repeat</h3><p>沿着特定的维度重复这个张量，和expand()不同的是，这个函数拷贝张量的数据。参数为重复次数，用()括号包起来，可对任意维度做处理。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.repeat(<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"></span><br><span class="line">&gt;&gt; x2 = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x2.repeat(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>).shape</span><br><span class="line">torch.Tensor([<span class="number">4</span>, <span class="number">3</span>, <span class="number">12</span>])</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Pytorch</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python迭代器</title>
     <url>/2020/10/03/%E2%80%9CPython%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>迭代器是一个可以记住遍历的位置的对象。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
@@ -1683,6 +1761,22 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>torch.expand和torch.repeat</title>
+    <url>/2020/10/19/torch-expand%E5%92%8Ctorch-repeat/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>这两个方法都用作按照某一维度扩展数组，区别是<strong>扩展（expand）</strong>张量不会分配新的内存，只是在存在的张量上创建一个新的视图（view），一个<strong>大小（size）等于1的维度</strong>扩展到更大的尺寸。而**repeat()**会拷贝张量的数据。</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="torch-expand"><a href="#torch-expand" class="headerlink" title="torch.expand"></a>torch.expand</h3><p>expand后面的参数为改变后的尺寸，用[]括号包起来，注意只能大小为1的维度操作，或者没有这个维度，先通过广播创建一个大小为1的新维度，然后再expand</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.expand(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"> </span><br><span class="line">&gt;&gt; x = torch.randn(<span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x.expand(<span class="number">-1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">-1</span>)</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])  </span><br></pre></td></tr></table></figure>
+<h3 id="torch-repeat"><a href="#torch-repeat" class="headerlink" title="torch.repeat"></a>torch.repeat</h3><p>沿着特定的维度重复这个张量，和expand()不同的是，这个函数拷贝张量的数据。参数为重复次数，用()括号包起来，可对任意维度做处理。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.repeat(<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"></span><br><span class="line">&gt;&gt; x2 = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x2.repeat(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>).shape</span><br><span class="line">torch.Tensor([<span class="number">4</span>, <span class="number">3</span>, <span class="number">12</span>])</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Pytorch</tag>
       </tags>
   </entry>
   <entry>
@@ -1803,39 +1897,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>多维数组的迭代</title>
-    <url>/2020/10/05/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%AD%E4%BB%A3/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>通常我们需要对一个numpy数组进行迭代操作，比如for循环，但直接对数组本身进行循环，实际上是对第一个轴进行操作，如果要对数组中的每个值进行操作，可以使用<strong>flat</strong>属性</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa:</span><br><span class="line">    print(a)</span><br><span class="line">print(<span class="string">&#x27;------------&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa.flat:</span><br><span class="line">    print(a)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">[<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">[<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">[<span class="number">6</span> <span class="number">7</span>]</span><br><span class="line">------------</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>...是个啥</title>
-    <url>/2020/10/05/%E6%98%AF%E4%B8%AA%E5%95%A5/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>三个点（ … ）表示产生完整索引元组所需的冒号。就是代表任意维度</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>例如，如果 x 是rank为5的数组（即，它具有5个轴），则：</p>
-<ul>
-<li>x[1,2,…] 相当于 x[1,2,:,:,:]</li>
-<li>x[…,3] 等效于 x[:,:,:,:,3]</li>
-<li>x[4,…,5,:] 等效于 x[4,:,:,5,:]</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数组堆叠</title>
     <url>/2020/10/05/%E6%95%B0%E7%BB%84%E5%A0%86%E5%8F%A0/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>有时候需要把两个或多个数组按照某一个axis进行堆叠</p>
@@ -1888,6 +1949,39 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>多维数组的迭代</title>
+    <url>/2020/10/05/%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%AD%E4%BB%A3/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>通常我们需要对一个numpy数组进行迭代操作，比如for循环，但直接对数组本身进行循环，实际上是对第一个轴进行操作，如果要对数组中的每个值进行操作，可以使用<strong>flat</strong>属性</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>]])</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa:</span><br><span class="line">    print(a)</span><br><span class="line">print(<span class="string">&#x27;------------&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> aa.flat:</span><br><span class="line">    print(a)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">[<span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">[<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line">[<span class="number">6</span> <span class="number">7</span>]</span><br><span class="line">------------</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>...是个啥</title>
+    <url>/2020/10/05/%E6%98%AF%E4%B8%AA%E5%95%A5/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>三个点（ … ）表示产生完整索引元组所需的冒号。就是代表任意维度</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>例如，如果 x 是rank为5的数组（即，它具有5个轴），则：</p>
+<ul>
+<li>x[1,2,…] 相当于 x[1,2,:,:,:]</li>
+<li>x[…,3] 等效于 x[:,:,:,:,3]</li>
+<li>x[4,…,5,:] 等效于 x[4,:,:,5,:]</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>矩阵乘法和对应元素相乘</title>
     <url>/2020/10/05/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%92%8C%E5%AF%B9%E5%BA%94%E5%85%83%E7%B4%A0%E7%9B%B8%E4%B9%98/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>与许多矩阵语言不同，乘积运算符*在NumPy数组中按元素进行运算。矩阵乘积可以使用@运算符（在python&gt; = 3.5中）或dot函数或方法执行：</p>
@@ -1900,19 +1994,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </categories>
       <tags>
         <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>自定义异常</title>
-    <url>/2020/10/02/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>实际开发中，有时候系统提供的异常类型不能满足开发的需求。这时候你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承。</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#1.用户自定义异常类型，只要该类继承了Exception类即可，至于类的主题内容用户自定义，可参考官方异常类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TooLongExceptin</span>(<span class="params">Exception</span>):</span></span><br><span class="line">    <span class="string">&quot;this is user&#x27;s Exception for check the length of name &quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,leng</span>):</span></span><br><span class="line">        self.leng = leng</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;姓名长度是&quot;</span>+str(self.leng)+<span class="string">&quot;，超过长度了&quot;</span>)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -1945,60 +2026,16 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>Vehicle Re-identification with Viewpoint-aware Metric Learning 论文笔记</title>
-    <url>/2020/08/27/Vehicle-Re-identification-with-Viewpoint-aware-Metric-Learning-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Ruihang Chu, Yifan Sun</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>对输入的图片用网络判断视角，对于不同视角的车辆，用不同的网络提取特征，计算样本间距离。<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
-<li>提出一种新颖的viewpoint-aware metric learning approach</li>
-<li>针对相同视角样本对和不同视角样本对提出空间内约束和跨空间约束</li>
-</ul>
+    <title>自定义异常</title>
+    <url>/2020/10/02/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>实际开发中，有时候系统提供的异常类型不能满足开发的需求。这时候你可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承。</p>
 <a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200309152511434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h3><ul>
-<li>对view predictor单独训练，在正式训练和测试的时候，固定view predictor的参数。</li>
-<li>上面的S-view branch计算相同视角图片的距离，具体为相同视角正样本对的距离$D_s(P_s^+)$和相同视角负样本对的距离$D_s(P_s^-)$，用Triplet Loss Function做约束，要求在相同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_s=max{D_s(P_s^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>下面的D-view branch计算不同视角图片的距离，具体为不同视角正样本对的距离$D_d(P_d^+)$和相同视角负样本对的距离$D_d(P_d^-)$，用Triplet Loss Function做约束，要求在不同视角下负样本相对于正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_d=max{D_d(P_d^+)-D_d(P_d^-)+\alpha,0}$</li>
-<li>在integrated distance matrix中，用跨域的Triplet Loss Function做约束，要求在相同视角下的负样本相对于不同视角下的正样本到anchor的距离大于阈值$\alpha$，损失函数为$L_{cross}=max{D_d(P_d^+)-D_s(P_s^-)+\alpha,0}$</li>
-<li>最终的损失函数为$L=L_s+L_d+L_{cross}$<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3>测试时先将query和gallery输入到view predictor中预测视角，如果是相同视角的话，就用S-view branch计算距离，如果是不同视角的话，就用D-view branch计算距离。</li>
-</ul>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200309161200552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="VehicleID"><img src="https://img-blog.csdnimg.cn/20200309161242638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="Veri-776"></p>
-]]></content>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#1.用户自定义异常类型，只要该类继承了Exception类即可，至于类的主题内容用户自定义，可参考官方异常类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TooLongExceptin</span>(<span class="params">Exception</span>):</span></span><br><span class="line">    <span class="string">&quot;this is user&#x27;s Exception for check the length of name &quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,leng</span>):</span></span><br><span class="line">        self.leng = leng</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&quot;姓名长度是&quot;</span>+str(self.leng)+<span class="string">&quot;，超过长度了&quot;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>View Confusion Feature Learning for Person Re-identification论文笔记</title>
-    <url>/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
-<li>用SIFT特征来指导模型训练。</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
-<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
-<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
-<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>ReID</tag>
-        <tag>论文笔记</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
 </search>
