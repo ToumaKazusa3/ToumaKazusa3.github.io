@@ -22,28 +22,33 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="AuthorFangyi Liu ConferenceICCV 2019 MotivationReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。 Contribution 使用view confusion learning mechanism，提取视角不变性特征。 用SIFT特征来指导模型训练。">
+  <meta name="description" content="Author Yihong Gong ConferenceTIP 2020 Motivation MTMCT分两个阶段，第一阶段是局部轨迹生成阶段，该阶段在单个摄像头内跟踪每个检测到的目标，并为其生成局部轨迹（相当于是MOT多目标跟踪任务）；第二阶段是跨摄像头轨迹匹配阶段，该阶段在所有摄像头中匹配局部轨迹来为整个跨摄像头网络中的每个目标生成其完整的轨迹。本文创新在第二阶段。 第二阶段一般采用tra">
 <meta property="og:type" content="article">
-<meta property="og:title" content="View Confusion Feature Learning for Person Re-identification论文笔记">
-<meta property="og:url" content="http://example.com/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="Multi-Target Multi-Camera Tracking by Tracklet-to-Target Assignment 论文笔记">
+<meta property="og:url" content="http://example.com/2020/10/29/Multi-Target-Multi-Camera-Tracking-by-Tracklet-to-Target-Assignment-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="AuthorFangyi Liu ConferenceICCV 2019 MotivationReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。 Contribution 使用view confusion learning mechanism，提取视角不变性特征。 用SIFT特征来指导模型训练。">
+<meta property="og:description" content="Author Yihong Gong ConferenceTIP 2020 Motivation MTMCT分两个阶段，第一阶段是局部轨迹生成阶段，该阶段在单个摄像头内跟踪每个检测到的目标，并为其生成局部轨迹（相当于是MOT多目标跟踪任务）；第二阶段是跨摄像头轨迹匹配阶段，该阶段在所有摄像头中匹配局部轨迹来为整个跨摄像头网络中的每个目标生成其完整的轨迹。本文创新在第二阶段。 第二阶段一般采用tra">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031110044720.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20200311100710707.png">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
-<meta property="article:published_time" content="2020-08-27T07:35:17.000Z">
-<meta property="article:modified_time" content="2020-09-28T14:01:54.171Z">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029043009.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029043224.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051426.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051526.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051649.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051809.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052302.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052453.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052555.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052642.png">
+<meta property="article:published_time" content="2020-10-29T09:29:49.000Z">
+<meta property="article:modified_time" content="2020-10-29T09:30:30.279Z">
 <meta property="article:author" content="Misaka Mikoto">
-<meta property="article:tag" content="ReID">
 <meta property="article:tag" content="论文笔记">
+<meta property="article:tag" content="MTMCT">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70">
+<meta name="twitter:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029043009.png">
 
 
-<link rel="canonical" href="http://example.com/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://example.com/2020/10/29/Multi-Target-Multi-Camera-Tracking-by-Tracklet-to-Target-Assignment-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
 
 <script class="page-configurations">
@@ -56,7 +61,7 @@
   };
 </script>
 
-  <title>View Confusion Feature Learning for Person Re-identification论文笔记 | Railgun</title>
+  <title>Multi-Target Multi-Camera Tracking by Tracklet-to-Target Assignment 论文笔记 | Railgun</title>
   
 
 
@@ -227,7 +232,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pre-trained-CNN-Network"><span class="nav-number">5.1.</span> <span class="nav-text">Pre-trained CNN Network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Classifier-Based-Confusion"><span class="nav-number">5.2.</span> <span class="nav-text">Classifier Based Confusion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Feature-Based-Confusion"><span class="nav-number">5.3.</span> <span class="nav-text">Feature Based Confusion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sift-Based-Confusion"><span class="nav-number">5.4.</span> <span class="nav-text">Sift Based Confusion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">6.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Algorithm"><span class="nav-number">5.1.</span> <span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9F%A9%E9%98%B5-S"><span class="nav-number">5.1.1.</span> <span class="nav-text">求解相似度矩阵$S$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%B0%E8%AE%A1%E7%9B%AE%E6%A0%87%E6%95%B0-K"><span class="nav-number">5.1.2.</span> <span class="nav-text">估计目标数$K$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%AF%8F%E4%B8%AAtracklet%E7%9A%84ID"><span class="nav-number">5.1.3.</span> <span class="nav-text">生成每个tracklet的ID</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">6.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -307,7 +312,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/29/Multi-Target-Multi-Camera-Tracking-by-Tracklet-to-Target-Assignment-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -320,7 +325,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          View Confusion Feature Learning for Person Re-identification论文笔记
+          Multi-Target Multi-Camera Tracking by Tracklet-to-Target Assignment 论文笔记
         </h1>
 
         <div class="post-meta-container">
@@ -330,16 +335,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-08-27 15:35:17" itemprop="dateCreated datePublished" datetime="2020-08-27T15:35:17+08:00">2020-08-27</time>
+      <time title="创建时间：2020-10-29 17:29:49 / 修改时间：17:30:30" itemprop="dateCreated datePublished" datetime="2020-10-29T17:29:49+08:00">2020-10-29</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-09-28 22:01:54" itemprop="dateModified" datetime="2020-09-28T22:01:54+08:00">2020-09-28</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -365,7 +364,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>661</span>
+      <span>906</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -383,21 +382,28 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Fangyi Liu</p>
-<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>ICCV 2019</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>ReID的性能受图片拍摄视角影响，所以希望提取view-invariant特征。</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
-<li>使用view confusion learning mechanism，提取视角不变性特征。</li>
-<li>用SIFT特征来指导模型训练。</li>
+        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Yihong Gong</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>TIP 2020</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>MTMCT分两个阶段，第一阶段是局部轨迹生成阶段，该阶段在单个摄像头内跟踪每个检测到的目标，并为其生成局部轨迹（相当于是MOT多目标跟踪任务）；第二阶段是跨摄像头轨迹匹配阶段，该阶段在所有摄像头中匹配局部轨迹来为整个跨摄像头网络中的每个目标生成其完整的轨迹。本文创新在第二阶段。</li>
+<li>第二阶段一般采用tracklet-to-tracklet匹配方案（类似于ReID），但单用ReID很难施加一致性约束，以确保匹配的轨迹可以被完全连接（一致性指例如，如果局部轨迹A与局部轨迹B匹配，局部轨迹B与局部轨迹C匹配，则局部轨迹A应与局部轨迹C匹配），目前有的方法有<br>稀疏性约束，时间冲突约束等，但做的不漂亮，所以本文提出了一种TRACklet-to-Target（TRACTA）的匹配方式，同时用受限非负矩阵分解（RNMF）算法来满足一致性约束。<a id="more"></a>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li>提出了一种TRACklet-to-Target（TRACTA）的匹配方式</li>
+<li>用受限非负矩阵分解（RNMF）算法来满足一致性约束<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029043009.png"></li>
 </ul>
-<a id="more"></a>
-
-<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://img-blog.csdnimg.cn/20200311093601986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="Pre-trained-CNN-Network"><a href="#Pre-trained-CNN-Network" class="headerlink" title="Pre-trained CNN Network"></a>Pre-trained CNN Network</h3><p>Pre-trained CNN Network用RAP数据集预训练，在正式训练网络时固定参数，ReID数据集的图片经过Pre-trained CNN Network后分成四类：{‘front’，‘right’，‘left’，‘back’}</p>
-<h3 id="Classifier-Based-Confusion"><a href="#Classifier-Based-Confusion" class="headerlink" title="Classifier Based Confusion"></a>Classifier Based Confusion</h3><p>我们的目的是希望经过CNN提取得到的feature与视角无关，所以将feature输入到fc层经过softmax之后应该要分到common类中。Feature Extractor试图学习更好的特征，这些特征对视角具有鲁棒性，而分类器试图识别提取的特征属于哪个视图，有一种对抗学习的感觉…</p>
-<h3 id="Feature-Based-Confusion"><a href="#Feature-Based-Confusion" class="headerlink" title="Feature Based Confusion"></a>Feature Based Confusion</h3><p>不同视角提取得到的特征应该接近，本文用了center loss：<br><img src="https://img-blog.csdnimg.cn/2020031110044720.png" alt="在这里插入图片描述"><br>其中$C_{y_i}$为为第i个ID的特征中心。</p>
-<h3 id="Sift-Based-Confusion"><a href="#Sift-Based-Confusion" class="headerlink" title="Sift Based Confusion"></a>Sift Based Confusion</h3><p>sift特征对视角变换具有鲁棒性，所以可以用sift特征来指导训练。<br><img src="https://img-blog.csdnimg.cn/20200311100710707.png" alt="在这里插入图片描述"><br>$g(x_i)$为sift特征经过BOW后的特征向量，$f(x_i)$为CNN提取的特征向量，两者在特征空间中要接近。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://img-blog.csdnimg.cn/20200311101121333.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/20200311101131822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3diM2piZTU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>框架的输入是来自M个摄像头的M个视频剪辑解帧之后的视频帧。（a）局部轨迹生成模块。（b）轨迹相似度测量模块。（c）跨摄像头轨迹匹配模块。（d）全局轨迹生成模块。</p>
+<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029043224.png"></p>
+<ul>
+<li>1-3为MOT，用来生成局部tracklet</li>
+<li>4为利用视觉相似度和运动模型来得到tracklet-to-tracklet的相似度矩阵$S$</li>
+<li>5为利用对相似度矩阵$S$求解特征值，目标数$K$就为特征值大于某一阈值的数目</li>
+<li>6-10为生成每个tracklet的ID</li>
+<li>11为关联tracklet，得到跨摄像头的trajectory</li>
+</ul>
+<h4 id="求解相似度矩阵-S"><a href="#求解相似度矩阵-S" class="headerlink" title="求解相似度矩阵$S$"></a>求解相似度矩阵$S$</h4><p>同个摄像头下：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051426.png"><br>不同摄像头，但是摄像头拍摄区域有重合：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051526.png"><br>不同摄像头，摄像头没有重合：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051649.png"></p>
+<h4 id="估计目标数-K"><a href="#估计目标数-K" class="headerlink" title="估计目标数$K$"></a>估计目标数$K$</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029051809.png"><br>$\lambda_i$为相似度矩阵$S$的特征值</p>
+<h4 id="生成每个tracklet的ID"><a href="#生成每个tracklet的ID" class="headerlink" title="生成每个tracklet的ID"></a>生成每个tracklet的ID</h4><p>求解最优化问题：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052302.png"><br>将$A$的范围放宽到所有正数，并用拉格朗日乘数法求解该最小二乘问题，可得：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052453.png"><br>梯度：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052555.png"><br>迭代求解：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201029/clipboard_20201029052642.png"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>总之性能很好。。。</p>
 
     </div>
 
@@ -415,7 +421,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="View Confusion Feature Learning for Person Re-identification论文笔记">http://example.com/2020/08/27/View-Confusion-Feature-Learning-for-Person-Re-identification论文笔记/</a>
+      <a href="http://example.com/2020/10/29/Multi-Target-Multi-Camera-Tracking-by-Tracklet-to-Target-Assignment-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="Multi-Target Multi-Camera Tracking by Tracklet-to-Target Assignment 论文笔记">http://example.com/2020/10/29/Multi-Target-Multi-Camera-Tracking-by-Tracklet-to-Target-Assignment-论文笔记/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -424,22 +430,19 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/ReID/" rel="tag"><i class="fa fa-tag"></i> ReID</a>
               <a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 论文笔记</a>
+              <a href="/tags/MTMCT/" rel="tag"><i class="fa fa-tag"></i> MTMCT</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/08/27/Vehicle-Re-identification-in-Aerial-Imagery-Dataset-and-Approach-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="prev" title="Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记">
-                  <i class="fa fa-chevron-left"></i> Vehicle Re-identification in Aerial Imager Dataset and Approach 论文笔记
+                <a href="/2020/10/26/C-%E9%87%8D%E8%BD%BD%E3%80%81%E8%A6%86%E7%9B%96%E3%80%81%E9%9A%90%E8%97%8F%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E6%89%A7%E8%A1%8C%E6%96%B9%E5%BC%8F/" rel="prev" title="C++ 重载、覆盖、隐藏的区别和执行方式">
+                  <i class="fa fa-chevron-left"></i> C++ 重载、覆盖、隐藏的区别和执行方式
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/" rel="next" title="第三方库pathlib">
-                  第三方库pathlib <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
