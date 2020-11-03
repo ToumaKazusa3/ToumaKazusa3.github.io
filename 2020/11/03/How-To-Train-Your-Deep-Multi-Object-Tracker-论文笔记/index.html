@@ -22,21 +22,27 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="核心 正则表达式元字符与语法 re模块的简单使用">
+  <meta name="description" content="AuthorYihong Xu ConferenceCVPR 2020 Motivation 用网络模拟匈牙利匹配算法，使得能够直接使用MOTP和MOTA来end-to-end的优化网络 Contribution 提出一种loss能够直接end-to-end优化MOT测试指标  用网络模拟匈牙利匹配算法  本文提出的loss可以简单的添加进现有的网络结构 Framework分成三个模块：MOT t">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python正则表达式与re模块">
-<meta property="og:url" content="http://example.com/2020/09/28/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8Ere%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:title" content="How To Train Your Deep Multi-Object Tracker 论文笔记">
+<meta property="og:url" content="http://example.com/2020/11/03/How-To-Train-Your-Deep-Multi-Object-Tracker-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="核心 正则表达式元字符与语法 re模块的简单使用">
+<meta property="og:description" content="AuthorYihong Xu ConferenceCVPR 2020 Motivation 用网络模拟匈牙利匹配算法，使得能够直接使用MOTP和MOTA来end-to-end的优化网络 Contribution 提出一种loss能够直接end-to-end优化MOT测试指标  用网络模拟匈牙利匹配算法  本文提出的loss可以简单的添加进现有的网络结构 Framework分成三个模块：MOT t">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-28T15:19:31.000Z">
-<meta property="article:modified_time" content="2020-09-28T15:34:37.241Z">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103121324.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103121526.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103121805.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103123734.png">
+<meta property="article:published_time" content="2020-11-03T04:38:53.000Z">
+<meta property="article:modified_time" content="2020-11-03T04:40:59.590Z">
 <meta property="article:author" content="Misaka Mikoto">
-<meta property="article:tag" content="Python">
+<meta property="article:tag" content="论文笔记">
+<meta property="article:tag" content="MOT">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103121324.png">
 
 
-<link rel="canonical" href="http://example.com/2020/09/28/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8Ere%E6%A8%A1%E5%9D%97/">
+<link rel="canonical" href="http://example.com/2020/11/03/How-To-Train-Your-Deep-Multi-Object-Tracker-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
 
 <script class="page-configurations">
@@ -49,7 +55,7 @@
   };
 </script>
 
-  <title>Python正则表达式与re模块 | Railgun</title>
+  <title>How To Train Your Deep Multi-Object Tracker 论文笔记 | Railgun</title>
   
 
 
@@ -220,7 +226,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83"><span class="nav-number">1.</span> <span class="nav-text">核心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%83%E5%AD%97%E7%AC%A6%E4%B8%8E%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">正则表达式元字符与语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#re%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">re模块的简单使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#re-search"><span class="nav-number">1.2.1.</span> <span class="nav-text">re.search</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#re-compile"><span class="nav-number">1.2.2.</span> <span class="nav-text">re.compile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#re-findall"><span class="nav-number">1.2.3.</span> <span class="nav-text">re.findall</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#re-split"><span class="nav-number">1.2.4.</span> <span class="nav-text">re.split</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DHN%E7%BD%91%E7%BB%9C"><span class="nav-number">5.1.</span> <span class="nav-text">DHN网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Loss%E8%AE%A1%E7%AE%97"><span class="nav-number">5.2.</span> <span class="nav-text">Loss计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">6.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -300,7 +306,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/28/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8Ere%E6%A8%A1%E5%9D%97/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/03/How-To-Train-Your-Deep-Multi-Object-Tracker-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -313,7 +319,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Python正则表达式与re模块
+          How To Train Your Deep Multi-Object Tracker 论文笔记
         </h1>
 
         <div class="post-meta-container">
@@ -325,7 +331,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-09-28 23:19:31 / 修改时间：23:34:37" itemprop="dateCreated datePublished" datetime="2020-09-28T23:19:31+08:00">2020-09-28</time>
+      <time title="创建时间：2020-11-03 12:38:53 / 修改时间：12:40:59" itemprop="dateCreated datePublished" datetime="2020-11-03T12:38:53+08:00">2020-11-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -352,7 +358,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>688</span>
+      <span>642</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -370,19 +376,43 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>正则表达式元字符与语法</li>
-<li>re模块的简单使用</li>
+        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p>Yihong Xu</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2020</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li><p>用网络模拟匈牙利匹配算法，使得能够直接使用MOTP和MOTA来end-to-end的优化网络</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2></li>
+<li><p>提出一种loss能够直接end-to-end优化MOT测试指标</p>
+</li>
+<li><p>用网络模拟匈牙利匹配算法</p>
+</li>
+<li><p>本文提出的loss可以简单的添加进现有的网络结构</p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103121324.png"><br>分成三个模块：MOT tracker，DHN网络，Loss计算</p>
+<h3 id="DHN网络"><a href="#DHN网络" class="headerlink" title="DHN网络"></a>DHN网络</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103121526.png"></p>
+</li>
+<li><p>输入的距离矩阵为Jaccard距离（1-IOU）以及中心点的欧氏距离</p>
+</li>
+<li><p>输出为soft匈牙利匹配矩阵（正常的匈牙利算法输出应该是一个one-hot向量，这里是一个相关系数）</p>
+<h3 id="Loss计算"><a href="#Loss计算" class="headerlink" title="Loss计算"></a>Loss计算</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103121805.png"></p>
+</li>
+<li><p>$D$为DHN网络输入的距离矩阵，$\tilde{A}$为DHN网络输出的相关系数矩阵</p>
+</li>
+<li><p>a)分支为计算unmatched track(FP)的分支</p>
+<ul>
+<li>首先添加一列$\delta$，这一列表示tracks未匹配到GT的相关度</li>
+<li>按行做softmax，相当于是让tracks做了一次分类，结果为这个track属于某个GT的概率</li>
+<li>将softmax之后的黄色方格的值相加就是这一帧的$FP$</li>
+<li>绿色的方格为匹配上的结果，可以生成mask</li>
 </ul>
-<a id="more"></a>
+</li>
+<li><p>b)分支为计算unmatched GT(FN)的分支，操作和a)分支相同，只不过是按照列做softmax</p>
+</li>
+<li><p>IDS为用上一帧的mask取反后与$\tilde{A}$做元素积</p>
+</li>
+<li><p>dMOTP的计算为用a)分支产生的mask对$D$矩阵做元素积，求和后对mask归一化</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201103/clipboard_20201103123734.png"></p>
+</li>
+</ul>
 
-<h3 id="正则表达式元字符与语法"><a href="#正则表达式元字符与语法" class="headerlink" title="正则表达式元字符与语法"></a>正则表达式元字符与语法</h3><p>建议google，常用的有……，常用的太多了，还是google吧</p>
-<h3 id="re模块的简单使用"><a href="#re模块的简单使用" class="headerlink" title="re模块的简单使用"></a>re模块的简单使用</h3><h4 id="re-search"><a href="#re-search" class="headerlink" title="re.search"></a>re.search</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = re.search(pattern, str)</span><br><span class="line"></span><br><span class="line">print(type(match.group()), match.group())</span><br></pre></td></tr></table></figure>
-<h4 id="re-compile"><a href="#re-compile" class="headerlink" title="re.compile"></a>re.compile</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.search(str)</span><br><span class="line"></span><br><span class="line">print(type(match.group()), match.group())</span><br></pre></td></tr></table></figure>
-<p>通过编译，返回一个对象模式，能够提高执行效率</p>
-<h4 id="re-findall"><a href="#re-findall" class="headerlink" title="re.findall"></a>re.findall</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcbccbabccccb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.findall(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>
-<p>找到所有匹配的子串</p>
-<h4 id="re-split"><a href="#re-split" class="headerlink" title="re.split"></a>re.split</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">pattern = re.compile(<span class="string">&#x27;\d+&#x27;</span>)</span><br><span class="line">str = <span class="string">&#x27;abcb1ccba3bccc5cb&#x27;</span></span><br><span class="line"></span><br><span class="line">match = pattern.split(str)</span><br><span class="line"></span><br><span class="line">print(type(match), match)</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -399,7 +429,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/09/28/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8Ere%E6%A8%A1%E5%9D%97/" title="Python正则表达式与re模块">http://example.com/2020/09/28/Python正则表达式与re模块/</a>
+      <a href="http://example.com/2020/11/03/How-To-Train-Your-Deep-Multi-Object-Tracker-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="How To Train Your Deep Multi-Object Tracker 论文笔记">http://example.com/2020/11/03/How-To-Train-Your-Deep-Multi-Object-Tracker-论文笔记/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -408,21 +438,19 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+              <a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 论文笔记</a>
+              <a href="/tags/MOT/" rel="tag"><i class="fa fa-tag"></i> MOT</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/09/28/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93pathlib/" rel="prev" title="第三方库pathlib">
-                  <i class="fa fa-chevron-left"></i> 第三方库pathlib
+                <a href="/2020/11/02/C-STL%E4%B9%8B%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="prev" title="C++ STL之优先队列">
+                  <i class="fa fa-chevron-left"></i> C++ STL之优先队列
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/09/28/Python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E9%9D%A2%E7%9A%84u-r-b%E5%90%AB%E4%B9%89/" rel="next" title="Python字符串前面的u,r,b含义">
-                  Python字符串前面的u,r,b含义 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
