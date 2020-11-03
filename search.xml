@@ -47,25 +47,6 @@
       </tags>
   </entry>
   <entry>
-    <title>C++ STL之Queue</title>
-    <url>/2020/10/26/C-STL%E4%B9%8BQueue/</url>
-    <content><![CDATA[<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><ul>
-<li>q.empty()：判断队列是否为空</li>
-<li>q.front()：返回队列头部元素</li>
-<li>q.back()：返回队列尾部元素</li>
-<li>q.pop()：弹出队列头部元素，注意返回为void，而不是头部元素</li>
-<li>q.push()：讲x添加至队尾</li>
-<li>q.size()：返回队列的存储元素个数</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>AP聚类</title>
     <url>/2020/10/19/AP%E8%81%9A%E7%B1%BB/</url>
     <content><![CDATA[<h2 id="sklearn包中的AP算法"><a href="#sklearn包中的AP算法" class="headerlink" title="sklearn包中的AP算法"></a>sklearn包中的AP算法</h2><h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">cluster</span>.<span class="title">AffinityPropagation</span>(<span class="params">*, damping=<span class="number">0.5</span>, max_iter=<span class="number">200</span>, convergence_iter=<span class="number">15</span>, copy=True, preference=None, affinity=<span class="string">&#x27;euclidean&#x27;</span>, verbose=False, random_state=<span class="string">&#x27;warn&#x27;</span></span>)</span></span><br></pre></td></tr></table></figure>
@@ -100,14 +81,15 @@
       </tags>
   </entry>
   <entry>
-    <title>C++ STL之Stack</title>
-    <url>/2020/10/26/C-STL%E4%B9%8BStack/</url>
+    <title>C++ STL之Queue</title>
+    <url>/2020/10/26/C-STL%E4%B9%8BQueue/</url>
     <content><![CDATA[<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><ul>
-<li>s.top()：取出栈顶</li>
-<li>s.empty()：判断栈是否为空</li>
-<li>s.push(x)：讲x添加至栈</li>
-<li>s.pop()：弹出栈顶，<strong>注意返回为void，而不是栈顶元素</strong></li>
-<li>s.size()：栈的存储元素个数</li>
+<li>q.empty()：判断队列是否为空</li>
+<li>q.front()：返回队列头部元素</li>
+<li>q.back()：返回队列尾部元素</li>
+<li>q.pop()：弹出队列头部元素，注意返回为void，而不是头部元素</li>
+<li>q.push()：讲x添加至队尾</li>
+<li>q.size()：返回队列的存储元素个数</li>
 </ul>
 ]]></content>
       <categories>
@@ -118,16 +100,15 @@
       </tags>
   </entry>
   <entry>
-    <title>C++ STL之优先队列</title>
-    <url>/2020/11/02/C-STL%E4%B9%8B%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</url>
+    <title>C++ STL之Stack</title>
+    <url>/2020/10/26/C-STL%E4%B9%8BStack/</url>
     <content><![CDATA[<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><ul>
-<li>big_heap.empty()：判断堆是否为空</li>
-<li>big_heap.top()：返回堆头部元素</li>
-<li>big_heap.pop()：弹出堆头部元素，注意返回为void，而不是头部元素</li>
-<li>big_heap.push()：讲x添加至堆</li>
-<li>big_heap.size()：返回堆的存储元素个数</li>
+<li>s.top()：取出栈顶</li>
+<li>s.empty()：判断栈是否为空</li>
+<li>s.push(x)：讲x添加至栈</li>
+<li>s.pop()：弹出栈顶，<strong>注意返回为void，而不是栈顶元素</strong></li>
+<li>s.size()：栈的存储元素个数</li>
 </ul>
-<h2 id="构造方式"><a href="#构造方式" class="headerlink" title="构造方式"></a>构造方式</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 小顶堆</span></span><br><span class="line">priority <span class="built_in">queue</span>&lt;<span class="keyword">int</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt;&gt;</span><br><span class="line"><span class="comment">// 大顶堆</span></span><br><span class="line">priority <span class="built_in">queue</span>&lt;<span class="keyword">int</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, less&lt;<span class="keyword">int</span>&gt;&gt;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -214,6 +195,25 @@
 <li><a href="http://c.biancheng.net/view/151.html">http://c.biancheng.net/view/151.html</a></li>
 <li><a href="https://www.xuetangx.com/learn/THU08091000247/THU08091000247/5430764/video/7472287">https://www.xuetangx.com/learn/THU08091000247/THU08091000247/5430764/video/7472287</a></li>
 </ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ STL之优先队列</title>
+    <url>/2020/11/02/C-STL%E4%B9%8B%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><ul>
+<li>big_heap.empty()：判断堆是否为空</li>
+<li>big_heap.top()：返回堆头部元素</li>
+<li>big_heap.pop()：弹出堆头部元素，注意返回为void，而不是头部元素</li>
+<li>big_heap.push()：讲x添加至堆</li>
+<li>big_heap.size()：返回堆的存储元素个数</li>
+</ul>
+<h2 id="构造方式"><a href="#构造方式" class="headerlink" title="构造方式"></a>构造方式</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 小顶堆</span></span><br><span class="line">priority <span class="built_in">queue</span>&lt;<span class="keyword">int</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt;&gt;</span><br><span class="line"><span class="comment">// 大顶堆</span></span><br><span class="line">priority <span class="built_in">queue</span>&lt;<span class="keyword">int</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, less&lt;<span class="keyword">int</span>&gt;&gt;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1045,28 +1045,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python自动给数字前面补0</title>
-    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
-    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
-<li>zfill方法</li>
-<li>格式化</li>
-</ul>
-<a id="more"></a>
-
-<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
-<p>也可以用format</p>
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python统计类实例化了多少对象</title>
     <url>/2020/10/02/Python%E7%BB%9F%E8%AE%A1%E7%B1%BB%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%BA%86%E5%A4%9A%E5%B0%91%E5%AF%B9%E8%B1%A1/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -1094,6 +1072,28 @@
 <p>在类外用</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">instanceName.instanceVar</span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python自动给数字前面补0</title>
+    <url>/2020/09/30/Python%E8%87%AA%E5%8A%A8%E7%BB%99%E6%95%B0%E5%AD%97%E5%89%8D%E9%9D%A2%E8%A1%A50/</url>
+    <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>zfill方法</li>
+<li>格式化</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="zfill方法"><a href="#zfill方法" class="headerlink" title="zfill方法"></a>zfill方法</h3><figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="attr">s</span> = n.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>有两种方式</p>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">n = <span class="number">123</span></span><br><span class="line"># <span class="number">0</span>表示补<span class="number">0</span>，<span class="number">5</span>表示补全之后占<span class="number">5</span>位</span><br><span class="line">s = &#x27;%<span class="number">05</span>d&#x27; % n</span><br><span class="line">assert s == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>
+<p>也可以用format</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="attr">n</span> = <span class="number">123</span></span><br><span class="line"><span class="comment"># 不要忘记:</span></span><br><span class="line"><span class="attr">s</span> = &#x27;&#123;:<span class="number">05</span>d&#125;&#x27;.format(n)</span><br><span class="line"><span class="keyword">assert</span> <span class="attr">s</span> == &#x27;<span class="number">00123</span>&#x27;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1380,26 +1380,6 @@
       </tags>
   </entry>
   <entry>
-    <title>defaultdict用法</title>
-    <url>/2020/09/30/defaultdict%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>当我使用普通的字典时，用法一般是dict={},添加元素的只需要dict[element] =value即，调用的时候也是如此，dict[element] = xxx,但前提是element字典里，如果不在字典里就会报错(可以用get方法设置缺省值)</p>
-<a id="more"></a>
-
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>defaultdict接受一个工厂函数作为参数，如下来构造</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">dict</span> =defaultdict( factory_function)</span><br></pre></td></tr></table></figure>
-
-<p>这个factory_function可以是list、set、str等等，作用是当key不存在时，返回的是工厂函数的默认值，比如list对应[ ]，str对应的是空字符串，set对应set( )，int对应0，如下举例：</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections import defaultdict</span><br><span class="line"></span><br><span class="line">dict1 = defaultdict(int)</span><br><span class="line">dict2 = defaultdict(set)</span><br><span class="line">dict3 = defaultdict(str)</span><br><span class="line">dict4 = defaultdict(list)</span><br><span class="line">dict1[2] =<span class="string">&#x27;two&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="builtin-name">print</span>(dict1[1])<span class="builtin-name">print</span>(dict2[1])<span class="builtin-name">print</span>(dict3[1])<span class="builtin-name">print</span>(dict4[1])</span><br></pre></td></tr></table></figure>
-<p>输出</p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">set</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>__delattr__和__del__</title>
     <url>/2020/10/02/delattr-%E5%92%8C-del/</url>
     <content><![CDATA[<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
@@ -1417,6 +1397,26 @@
 <p>输出：</p>
 <figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">running</span></span> __del__...</span><br><span class="line"><span class="function"><span class="title">can</span></span> <span class="keyword">not</span> delete instance...</span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>defaultdict用法</title>
+    <url>/2020/09/30/defaultdict%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>当我使用普通的字典时，用法一般是dict={},添加元素的只需要dict[element] =value即，调用的时候也是如此，dict[element] = xxx,但前提是element字典里，如果不在字典里就会报错(可以用get方法设置缺省值)</p>
+<a id="more"></a>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>defaultdict接受一个工厂函数作为参数，如下来构造</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">dict</span> =defaultdict( factory_function)</span><br></pre></td></tr></table></figure>
+
+<p>这个factory_function可以是list、set、str等等，作用是当key不存在时，返回的是工厂函数的默认值，比如list对应[ ]，str对应的是空字符串，set对应set( )，int对应0，如下举例：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections import defaultdict</span><br><span class="line"></span><br><span class="line">dict1 = defaultdict(int)</span><br><span class="line">dict2 = defaultdict(set)</span><br><span class="line">dict3 = defaultdict(str)</span><br><span class="line">dict4 = defaultdict(list)</span><br><span class="line">dict1[2] =<span class="string">&#x27;two&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="builtin-name">print</span>(dict1[1])<span class="builtin-name">print</span>(dict2[1])<span class="builtin-name">print</span>(dict3[1])<span class="builtin-name">print</span>(dict4[1])</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">set</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line">[]</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -1628,29 +1628,6 @@
       </tags>
   </entry>
   <entry>
-    <title>numpy广播</title>
-    <url>/2020/10/05/numpy%E5%B9%BF%E6%92%AD/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>广播(Broadcast)是 numpy 对不同形状(shape)的数组进行数值计算的方式， 对数组的算术运算通常在相应的元素上进行。</p>
-<a id="more"></a>
-<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><h3 id="规则一"><a href="#规则一" class="headerlink" title="规则一"></a>规则一</h3><p>两个数组的维数不相等，但是它们的<strong>后缘维度</strong>（trailing dimension，即从末尾开始算起的维度）的轴长相符</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">8</span>  <span class="number">6</span>  <span class="number">8</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">11</span>  <span class="number">4</span> <span class="number">18</span>]</span><br><span class="line">  [<span class="number">12</span> <span class="number">19</span> <span class="number">12</span>  <span class="number">6</span>]]</span><br><span class="line"></span><br><span class="line"> [[ <span class="number">7</span>  <span class="number">9</span>  <span class="number">4</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">19</span>  <span class="number">1</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">12</span>  <span class="number">8</span> <span class="number">10</span>  <span class="number">3</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[<span class="number">11</span>  <span class="number">6</span> <span class="number">14</span>  <span class="number">7</span>]</span><br><span class="line"> [<span class="number">10</span> <span class="number">15</span> <span class="number">12</span>  <span class="number">3</span>]</span><br><span class="line"> [ <span class="number">4</span> <span class="number">16</span>  <span class="number">1</span> <span class="number">17</span>]]</span><br><span class="line">aa + bb = </span><br><span class="line"> [[[<span class="number">19</span> <span class="number">12</span> <span class="number">22</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">26</span> <span class="number">16</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">35</span> <span class="number">13</span> <span class="number">23</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">18</span> <span class="number">15</span> <span class="number">18</span> <span class="number">10</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">34</span> <span class="number">13</span> <span class="number">17</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">24</span> <span class="number">11</span> <span class="number">20</span>]]]</span><br></pre></td></tr></table></figure>
-<p>反例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">6</span>  <span class="number">9</span>  <span class="number">5</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span>  <span class="number">2</span>  <span class="number">2</span> <span class="number">14</span>]</span><br><span class="line">  [ <span class="number">4</span>  <span class="number">9</span>  <span class="number">7</span>  <span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">19</span>  <span class="number">7</span> <span class="number">15</span> <span class="number">12</span>]</span><br><span class="line">  [ <span class="number">3</span>  <span class="number">8</span>  <span class="number">1</span>  <span class="number">8</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">11</span> <span class="number">13</span> <span class="number">17</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[ <span class="number">5</span> <span class="number">10</span> <span class="number">10</span>]</span><br><span class="line"> [ <span class="number">9</span>  <span class="number">2</span> <span class="number">18</span>]]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br><span class="line">ValueError: operands could <span class="keyword">not</span> be broadcast together with shapes (<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>) (<span class="number">2</span>,<span class="number">3</span>) </span><br></pre></td></tr></table></figure>
-<p>（2，3）与（2，3，4）后缘维度不相同</p>
-<h3 id="规则二"><a href="#规则二" class="headerlink" title="规则二"></a>规则二</h3><p>有一方的长度为1<br>比如两个数组的维度分别是(2,1,4,1)和(2,3,4,5)，则可以广播</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Numpy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>numpy中setdiff1d的用法</title>
     <url>/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/</url>
     <content><![CDATA[<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">setdiff1d(ar1, ar2, assume_unique=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
@@ -1667,6 +1644,29 @@
 </ul>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Numpy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>numpy广播</title>
+    <url>/2020/10/05/numpy%E5%B9%BF%E6%92%AD/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>广播(Broadcast)是 numpy 对不同形状(shape)的数组进行数值计算的方式， 对数组的算术运算通常在相应的元素上进行。</p>
+<a id="more"></a>
+<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><h3 id="规则一"><a href="#规则一" class="headerlink" title="规则一"></a>规则一</h3><p>两个数组的维数不相等，但是它们的<strong>后缘维度</strong>（trailing dimension，即从末尾开始算起的维度）的轴长相符</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">8</span>  <span class="number">6</span>  <span class="number">8</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">11</span>  <span class="number">4</span> <span class="number">18</span>]</span><br><span class="line">  [<span class="number">12</span> <span class="number">19</span> <span class="number">12</span>  <span class="number">6</span>]]</span><br><span class="line"></span><br><span class="line"> [[ <span class="number">7</span>  <span class="number">9</span>  <span class="number">4</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span> <span class="number">19</span>  <span class="number">1</span> <span class="number">14</span>]</span><br><span class="line">  [<span class="number">12</span>  <span class="number">8</span> <span class="number">10</span>  <span class="number">3</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[<span class="number">11</span>  <span class="number">6</span> <span class="number">14</span>  <span class="number">7</span>]</span><br><span class="line"> [<span class="number">10</span> <span class="number">15</span> <span class="number">12</span>  <span class="number">3</span>]</span><br><span class="line"> [ <span class="number">4</span> <span class="number">16</span>  <span class="number">1</span> <span class="number">17</span>]]</span><br><span class="line">aa + bb = </span><br><span class="line"> [[[<span class="number">19</span> <span class="number">12</span> <span class="number">22</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">26</span> <span class="number">16</span> <span class="number">21</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">35</span> <span class="number">13</span> <span class="number">23</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">18</span> <span class="number">15</span> <span class="number">18</span> <span class="number">10</span>]</span><br><span class="line">  [<span class="number">24</span> <span class="number">34</span> <span class="number">13</span> <span class="number">17</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">24</span> <span class="number">11</span> <span class="number">20</span>]]]</span><br></pre></td></tr></table></figure>
+<p>反例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">aa = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">bb = np.random.randint(<span class="number">0</span>,<span class="number">20</span>,(<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;aa = \n&#x27;</span>, aa)</span><br><span class="line">print(<span class="string">&#x27;bb = \n&#x27;</span>, bb)</span><br><span class="line">print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">aa = </span><br><span class="line"> [[[ <span class="number">6</span>  <span class="number">9</span>  <span class="number">5</span>  <span class="number">3</span>]</span><br><span class="line">  [<span class="number">14</span>  <span class="number">2</span>  <span class="number">2</span> <span class="number">14</span>]</span><br><span class="line">  [ <span class="number">4</span>  <span class="number">9</span>  <span class="number">7</span>  <span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">19</span>  <span class="number">7</span> <span class="number">15</span> <span class="number">12</span>]</span><br><span class="line">  [ <span class="number">3</span>  <span class="number">8</span>  <span class="number">1</span>  <span class="number">8</span>]</span><br><span class="line">  [<span class="number">16</span> <span class="number">11</span> <span class="number">13</span> <span class="number">17</span>]]]</span><br><span class="line">bb = </span><br><span class="line"> [[ <span class="number">5</span> <span class="number">10</span> <span class="number">10</span>]</span><br><span class="line"> [ <span class="number">9</span>  <span class="number">2</span> <span class="number">18</span>]]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;C:/Users/64547/PycharmProjects/py1/test.py&quot;</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(<span class="string">&#x27;aa + bb = \n&#x27;</span>, aa+bb)</span><br><span class="line">ValueError: operands could <span class="keyword">not</span> be broadcast together with shapes (<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>) (<span class="number">2</span>,<span class="number">3</span>) </span><br></pre></td></tr></table></figure>
+<p>（2，3）与（2，3，4）后缘维度不相同</p>
+<h3 id="规则二"><a href="#规则二" class="headerlink" title="规则二"></a>规则二</h3><p>有一方的长度为1<br>比如两个数组的维度分别是(2,1,4,1)和(2,3,4,5)，则可以广播</p>
 ]]></content>
       <categories>
         <category>学习</category>
@@ -1898,22 +1898,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
-    <title>torch.expand和torch.repeat</title>
-    <url>/2020/10/19/torch-expand%E5%92%8Ctorch-repeat/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>这两个方法都用作按照某一维度扩展数组，区别是<strong>扩展（expand）</strong>张量不会分配新的内存，只是在存在的张量上创建一个新的视图（view），一个<strong>大小（size）等于1的维度</strong>扩展到更大的尺寸。而**repeat()**会拷贝张量的数据。</p>
-<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="torch-expand"><a href="#torch-expand" class="headerlink" title="torch.expand"></a>torch.expand</h3><p>expand后面的参数为改变后的尺寸，用[]括号包起来，注意只能大小为1的维度操作，或者没有这个维度，先通过广播创建一个大小为1的新维度，然后再expand</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.expand(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"> </span><br><span class="line">&gt;&gt; x = torch.randn(<span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x.expand(<span class="number">-1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">-1</span>)</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])  </span><br></pre></td></tr></table></figure>
-<h3 id="torch-repeat"><a href="#torch-repeat" class="headerlink" title="torch.repeat"></a>torch.repeat</h3><p>沿着特定的维度重复这个张量，和expand()不同的是，这个函数拷贝张量的数据。参数为重复次数，用()括号包起来，可对任意维度做处理。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.repeat(<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"></span><br><span class="line">&gt;&gt; x2 = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x2.repeat(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>).shape</span><br><span class="line">torch.Tensor([<span class="number">4</span>, <span class="number">3</span>, <span class="number">12</span>])</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>Pytorch</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python迭代器</title>
     <url>/2020/10/03/%E2%80%9CPython%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
     <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>迭代器是一个可以记住遍历的位置的对象。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
@@ -1927,6 +1911,22 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>torch.expand和torch.repeat</title>
+    <url>/2020/10/19/torch-expand%E5%92%8Ctorch-repeat/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>这两个方法都用作按照某一维度扩展数组，区别是<strong>扩展（expand）</strong>张量不会分配新的内存，只是在存在的张量上创建一个新的视图（view），一个<strong>大小（size）等于1的维度</strong>扩展到更大的尺寸。而**repeat()**会拷贝张量的数据。</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="torch-expand"><a href="#torch-expand" class="headerlink" title="torch.expand"></a>torch.expand</h3><p>expand后面的参数为改变后的尺寸，用[]括号包起来，注意只能大小为1的维度操作，或者没有这个维度，先通过广播创建一个大小为1的新维度，然后再expand</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.expand(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"> </span><br><span class="line">&gt;&gt; x = torch.randn(<span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x.expand(<span class="number">-1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">-1</span>)</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])  </span><br></pre></td></tr></table></figure>
+<h3 id="torch-repeat"><a href="#torch-repeat" class="headerlink" title="torch.repeat"></a>torch.repeat</h3><p>沿着特定的维度重复这个张量，和expand()不同的是，这个函数拷贝张量的数据。参数为重复次数，用()括号包起来，可对任意维度做处理。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">&gt;&gt; x = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&gt;&gt; x.repeat(<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"></span><br><span class="line">&gt;&gt; x2 = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">&gt;&gt; x2.repeat(<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>).shape</span><br><span class="line">torch.Tensor([<span class="number">4</span>, <span class="number">3</span>, <span class="number">12</span>])</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Pytorch</tag>
       </tags>
   </entry>
   <entry>
@@ -1998,6 +1998,30 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
       </tags>
   </entry>
   <entry>
+    <title>在多台电脑上提交和更新Hexo博客</title>
+    <url>/2020/10/22/%E5%9C%A8%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E4%B8%8A%E6%8F%90%E4%BA%A4%E5%92%8C%E6%9B%B4%E6%96%B0Hexo%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h2 id="部署远程仓库"><a href="#部署远程仓库" class="headerlink" title="部署远程仓库"></a>部署远程仓库</h2><p>将本地的博客源文件同步到远程仓库，具体过程如下：</p>
+<ol>
+<li>删除第三方主题下的.git文件夹；</li>
+<li>配置.gitignore文件：<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line"><span class="meta">.DS_Store</span></span><br><span class="line">Thumbs<span class="number">.</span><span class="built_in">db</span></span><br><span class="line"><span class="built_in">db</span><span class="number">.</span>json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line"><span class="meta">public</span>/</span><br><span class="line"><span class="meta">.deploy</span>*/</span><br></pre></td></tr></table></figure></li>
+<li>创建远程仓库，建议将源文件推送到私有仓库（感谢微软爸爸，让我们免费使用私有仓库）<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201022/clipboard_20201022031632.png"></li>
+<li>将项目源文件同步到远程仓库的master分支：<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">git init  <span class="regexp">//</span>初始化本地仓库</span><br><span class="line">git add -A <span class="regexp">//</span>添加本地所有文件到仓库        </span><br><span class="line">git commit -m &amp;quot;blog源文件&amp;quot; <span class="regexp">//</span>添加commit</span><br><span class="line">git remote add origin 博客的git地址  <span class="regexp">//</span>添加远程仓库</span><br><span class="line">git push origin master <span class="regexp">//</span>将本地仓库的源文件推送到远程仓库hexo分支</span><br></pre></td></tr></table></figure>
+如果出现错误信息：<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">fata<span class="variable">l:</span> remote origin already <span class="built_in">exists</span>.</span><br></pre></td></tr></table></figure>
+则需要：<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">git remote rm origin</span></span><br></pre></td></tr></table></figure>
+再添加远程仓库即可。</li>
+</ol>
+<h2 id="更新远程和本地仓库"><a href="#更新远程和本地仓库" class="headerlink" title="更新远程和本地仓库"></a>更新远程和本地仓库</h2><p>对于本地电脑，如果是第一次使用，则输入：</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">你的仓库地址</span></span><br><span class="line"><span class="title">cd</span> 本地目录</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p>如果不是第一次操作，对于本地仓库的更新，可执行：</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">git pull</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>网站搭建</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>创建多个Github Pages</title>
     <url>/2020/10/07/%E5%88%9B%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub-Pages/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很多人会将自己的个人主页挂载在github上，这时就需要创建用户站点，用户站点的仓库名必须是<code>&lt;user&gt;.github.io</code>，做完这一步之后，很多人会和我有一样的想法——搭建多个Github Pages页面。这些页面可以用来实现不同的功能，比如放ACG，放网站导航等等。之前一直以为每个用户只能拥有一个Github Pages（这个就是上文提到的<code>&lt;user&gt;.github.io</code>仓库），现在查阅各种资料之后，发现不是这么一回事，下面讲述我搭建第二个Github Pages时遇到的各种坑~</p>
@@ -2015,30 +2039,6 @@ numpy数组是可变对象，所以函数传递时，是引用传递，在函数
 <li><a href="https://zhuanlan.zhihu.com/p/183977963">https://zhuanlan.zhihu.com/p/183977963</a></li>
 </ul>
 ]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>网站搭建</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在多台电脑上提交和更新Hexo博客</title>
-    <url>/2020/10/22/%E5%9C%A8%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E4%B8%8A%E6%8F%90%E4%BA%A4%E5%92%8C%E6%9B%B4%E6%96%B0Hexo%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h2 id="部署远程仓库"><a href="#部署远程仓库" class="headerlink" title="部署远程仓库"></a>部署远程仓库</h2><p>将本地的博客源文件同步到远程仓库，具体过程如下：</p>
-<ol>
-<li>删除第三方主题下的.git文件夹；</li>
-<li>配置.gitignore文件：<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line"><span class="meta">.DS_Store</span></span><br><span class="line">Thumbs<span class="number">.</span><span class="built_in">db</span></span><br><span class="line"><span class="built_in">db</span><span class="number">.</span>json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line"><span class="meta">public</span>/</span><br><span class="line"><span class="meta">.deploy</span>*/</span><br></pre></td></tr></table></figure></li>
-<li>创建远程仓库，建议将源文件推送到私有仓库（感谢微软爸爸，让我们免费使用私有仓库）<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/20201022/clipboard_20201022031632.png"></li>
-<li>将项目源文件同步到远程仓库的master分支：<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">git init  <span class="regexp">//</span>初始化本地仓库</span><br><span class="line">git add -A <span class="regexp">//</span>添加本地所有文件到仓库        </span><br><span class="line">git commit -m &amp;quot;blog源文件&amp;quot; <span class="regexp">//</span>添加commit</span><br><span class="line">git remote add origin 博客的git地址  <span class="regexp">//</span>添加远程仓库</span><br><span class="line">git push origin master <span class="regexp">//</span>将本地仓库的源文件推送到远程仓库hexo分支</span><br></pre></td></tr></table></figure>
-如果出现错误信息：<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">fata<span class="variable">l:</span> remote origin already <span class="built_in">exists</span>.</span><br></pre></td></tr></table></figure>
-则需要：<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">git remote rm origin</span></span><br></pre></td></tr></table></figure>
-再添加远程仓库即可。</li>
-</ol>
-<h2 id="更新远程和本地仓库"><a href="#更新远程和本地仓库" class="headerlink" title="更新远程和本地仓库"></a>更新远程和本地仓库</h2><p>对于本地电脑，如果是第一次使用，则输入：</p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">你的仓库地址</span></span><br><span class="line"><span class="title">cd</span> 本地目录</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p>如果不是第一次操作，对于本地仓库的更新，可执行：</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">git pull</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>学习</category>
       </categories>
