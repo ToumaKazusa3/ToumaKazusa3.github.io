@@ -22,21 +22,32 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":10,"width":280},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="函数原型1setdiff1d(ar1, ar2, assume_unique&#x3D;False)   作用：找到2个数组中集合元素的差异。 返回：在ar1中但不在ar2中的已排序的唯一值。 参数： ar1：array_like 输入数组。 ar2：array_like 输入比较数组。 assume_unique：bool。如果为True，则假定输入数组是唯一的，即可以加快计算速度。 默认值为False。">
+  <meta name="description" content="Author Peng Li ConferenceCVPR 2019 MotivationMTMCT任务中，行人往往会因为遮挡以及pose的改变导致appearance特征不可靠，所以这篇paper加上了人体骨骼点检测，用来判断行人的朝向，以及遮挡是否严重。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="numpy中setdiff1d的用法">
-<meta property="og:url" content="http://example.com/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/index.html">
+<meta property="og:title" content="State-aware Re-identification Feature for Multi-target Multi-camera Tracking 论文笔记">
+<meta property="og:url" content="http://example.com/2020/11/14/State-aware-Re-identification-Feature-for-Multi-target-Multi-camera-Tracking-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Railgun">
-<meta property="og:description" content="函数原型1setdiff1d(ar1, ar2, assume_unique&#x3D;False)   作用：找到2个数组中集合元素的差异。 返回：在ar1中但不在ar2中的已排序的唯一值。 参数： ar1：array_like 输入数组。 ar2：array_like 输入比较数组。 assume_unique：bool。如果为True，则假定输入数组是唯一的，即可以加快计算速度。 默认值为False。">
+<meta property="og:description" content="Author Peng Li ConferenceCVPR 2019 MotivationMTMCT任务中，行人往往会因为遮挡以及pose的改变导致appearance特征不可靠，所以这篇paper加上了人体骨骼点检测，用来判断行人的朝向，以及遮挡是否严重。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-19T00:39:34.000Z">
-<meta property="article:modified_time" content="2020-10-19T00:40:40.584Z">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_081114.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_081908.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_082851.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_083015.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_083932.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084101.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084129.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084247.png">
+<meta property="og:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084903.png">
+<meta property="article:published_time" content="2020-11-14T13:01:25.000Z">
+<meta property="article:modified_time" content="2020-11-14T13:01:51.742Z">
 <meta property="article:author" content="Misaka Mikoto">
-<meta property="article:tag" content="Numpy">
+<meta property="article:tag" content="论文笔记">
+<meta property="article:tag" content="MTMCT">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_081114.png">
 
 
-<link rel="canonical" href="http://example.com/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/">
+<link rel="canonical" href="http://example.com/2020/11/14/State-aware-Re-identification-Feature-for-Multi-target-Multi-camera-Tracking-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
 
 <script class="page-configurations">
@@ -49,7 +60,7 @@
   };
 </script>
 
-  <title>numpy中setdiff1d的用法 | Railgun</title>
+  <title>State-aware Re-identification Feature for Multi-target Multi-camera Tracking 论文笔记 | Railgun</title>
   
 
 
@@ -220,7 +231,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8E%9F%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">函数原型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Author"><span class="nav-number">1.</span> <span class="nav-text">Author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conference"><span class="nav-number">2.</span> <span class="nav-text">Conference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-number">4.</span> <span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">5.</span> <span class="nav-text">Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SCT"><span class="nav-number">5.1.</span> <span class="nav-text">SCT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Occlusion-status-estimation"><span class="nav-number">5.1.1.</span> <span class="nav-text"> Occlusion status estimation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Orientation-estimation"><span class="nav-number">5.1.2.</span> <span class="nav-text"> Orientation estimation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fused-tracking-feature"><span class="nav-number">5.1.3.</span> <span class="nav-text"> Fused tracking feature</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Single-camera-tracking"><span class="nav-number">5.1.4.</span> <span class="nav-text"> Single camera tracking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tracklet-association"><span class="nav-number">5.1.5.</span> <span class="nav-text"> Tracklet association</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MCT"><span class="nav-number">5.2.</span> <span class="nav-text">MCT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">6.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -300,7 +311,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/14/State-aware-Re-identification-Feature-for-Multi-target-Multi-camera-Tracking-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -313,7 +324,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          numpy中setdiff1d的用法
+          State-aware Re-identification Feature for Multi-target Multi-camera Tracking 论文笔记
         </h1>
 
         <div class="post-meta-container">
@@ -325,7 +336,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-10-19 08:39:34 / 修改时间：08:40:40" itemprop="dateCreated datePublished" datetime="2020-10-19T08:39:34+08:00">2020-10-19</time>
+      <time title="创建时间：2020-11-14 21:01:25 / 修改时间：21:01:51" itemprop="dateCreated datePublished" datetime="2020-11-14T21:01:25+08:00">2020-11-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -352,7 +363,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>316</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -370,20 +381,66 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setdiff1d(ar1, ar2, assume_unique=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-
+        <h2 id="Author"><a href="#Author" class="headerlink" title="Author"></a>Author</h2><p> Peng Li</p>
+<h2 id="Conference"><a href="#Conference" class="headerlink" title="Conference"></a>Conference</h2><p>CVPR 2019</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>MTMCT任务中，行人往往会因为遮挡以及pose的改变导致appearance特征不可靠，所以这篇paper加上了<strong>人体骨骼点检测</strong>，用来判断行人的朝向，以及遮挡是否严重。</p>
+<a id="more"></a>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><ul>
+<li><p>利用 human pose information来预测人的朝向，以及遮挡情况，并以此来提取robust特征</p>
+</li>
+<li><p>重新设计了数据关联方法</p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h3 id="SCT"><a href="#SCT" class="headerlink" title="SCT"></a>SCT</h3><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_081114.png"></p>
+</li>
+<li><p>先用detector将原始视频中的行人检测并crop出来</p>
+</li>
+<li><p>再用网络提取ReID特征</p>
+</li>
+<li><p>进行姿态估计（朝向和遮挡）</p>
+</li>
+<li><p>进行数据关联，此时用到了四种不同的特征temporal invalid feature, current valid feature, orientation-aware feature and cluster-based feature</p>
+</li>
+<li><p>匹配上的tracklet进行特征更新，没匹配上的detections初始化track，长期没匹配上的tracks当作是目标已经消失的</p>
+</li>
+<li><p>对tracklet进行后处理</p>
+</li>
+</ul>
+<h4 id="Occlusion-status-estimation"><a href="#Occlusion-status-estimation" class="headerlink" title=" Occlusion status estimation"></a> Occlusion status estimation</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_081908.png"></p>
+<p>$c_i$是第i个骨骼点的置信度，$\gamma_{valid}$为置信度阈值，只有置信度大的骨骼点才能被认为是有效的，当有效的骨骼点大于某个阈值时，意味着目标没有被严重遮挡，可以认为appearance是有效的，不然就被认为是invalid</p>
+<h4 id="Orientation-estimation"><a href="#Orientation-estimation" class="headerlink" title=" Orientation estimation"></a> Orientation estimation</h4><p>将特征点的置信度作为输入，输出为$o_{left}, o_{right}, o_{front}, o_{back}$四个方向的可信度（就是个分类任务–）<br>网络结构如下：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_082851.png"></p>
+<h4 id="Fused-tracking-feature"><a href="#Fused-tracking-feature" class="headerlink" title=" Fused tracking feature"></a> Fused tracking feature</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_083015.png"></p>
+<p>每一个track有五种特征 $F_{track} = \left{f_{current},f_{orientation},f_{cluster},f_{invalid},f_{avg}\right}$</p>
 <ul>
-<li>作用：找到2个数组中集合元素的差异。</li>
-<li>返回：在ar1中但不在ar2中的<strong>已排序</strong>的<strong>唯一值</strong>。</li>
-<li>参数：<ul>
-<li>ar1：array_like 输入数组。</li>
-<li>ar2：array_like 输入比较数组。</li>
-<li>assume_unique：bool。如果为True，则假定输入数组是唯一的，即可以加快计算速度。 默认值为False。<a id="more"></a>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([<span class="number">8</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">1</span>])</span><br><span class="line">b = np.array([<span class="number">7</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">3</span>])</span><br><span class="line">c = np.setdiff1d(a, b)</span><br><span class="line">print(c)<span class="comment">#[1 2 8]</span></span><br></pre></td></tr></table></figure>
-可以从最后看出返回的值<strong>从小到大排序</strong>，并且<strong>唯一</strong>。（8在a的第1位，2在a中重复了2次）</li>
+<li>$f_{current}$: 最近有效的特征</li>
+<li>$f_{orientation}$：四个朝向的平均特征,$f_{orientation} = \left{f_{left},f_{right},f_{front},f_{back}\right}$</li>
+<li>$f_{cluster}$: 用类似于聚类的算法得到的特征</li>
+<li>$f_{invalid}$: 无效帧的特征</li>
+<li>$f_{avg}$：所有有效帧的平均特征</li>
+</ul>
+<p>$f_{cluster}$中用到的类似于聚类的算法如下：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_083932.png"></p>
+<h4 id="Single-camera-tracking"><a href="#Single-camera-tracking" class="headerlink" title=" Single camera tracking"></a> Single camera tracking</h4><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084101.png"><br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084129.png"></p>
+<p>算法描述如下：<br><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084247.png"></p>
+<h4 id="Tracklet-association"><a href="#Tracklet-association" class="headerlink" title=" Tracklet association"></a> Tracklet association</h4><p>这个步骤为后处理工作</p>
+<ul>
+<li><p>物理约束</p>
+<ul>
+<li>时间冲突约束，相同时间出现的tracklet不能被关联</li>
+<li>速度约束</li>
+<li>时间约束</li>
+</ul>
+</li>
+<li><p>轨迹修正</p>
+<ul>
+<li>如果$T_{invisible}$的长度达到了$L_{rectify}$，说明特征可靠，，用$f_{cluster}$特征，并采用贪心策略，进行匹配</li>
+</ul>
+</li>
+<li><p>轨迹聚类</p>
+<ul>
+<li>用$f_{avg}$, $f_{orientation}$特征来得到距离矩阵，采用贪心策略，进行匹配</li>
 </ul>
 </li>
 </ul>
+<h3 id="MCT"><a href="#MCT" class="headerlink" title="MCT"></a>MCT</h3><p>也是使用贪心策略进行轨迹关联</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://myblog-1256619596.cos.ap-shanghai.myqcloud.com/myblog2/202011/clipboard_20201114_084903.png"></p>
 
     </div>
 
@@ -401,7 +458,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2020/10/19/numpy%E4%B8%ADsetdiff1d%E7%9A%84%E7%94%A8%E6%B3%95/" title="numpy中setdiff1d的用法">http://example.com/2020/10/19/numpy中setdiff1d的用法/</a>
+      <a href="http://example.com/2020/11/14/State-aware-Re-identification-Feature-for-Multi-target-Multi-camera-Tracking-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="State-aware Re-identification Feature for Multi-target Multi-camera Tracking 论文笔记">http://example.com/2020/11/14/State-aware-Re-identification-Feature-for-Multi-target-Multi-camera-Tracking-论文笔记/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -410,21 +467,19 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Numpy/" rel="tag"><i class="fa fa-tag"></i> Numpy</a>
+              <a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 论文笔记</a>
+              <a href="/tags/MTMCT/" rel="tag"><i class="fa fa-tag"></i> MTMCT</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/10/19/AP%E8%81%9A%E7%B1%BB/" rel="prev" title="AP聚类">
-                  <i class="fa fa-chevron-left"></i> AP聚类
+                <a href="/2020/11/14/Multi-Target-Multi-Camera-Tracking-by-Hierarchical-Clustering-Recent-Progress-on-DukeMTMC-Project-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="prev" title="Multi-Target, Multi-Camera Tracking by Hierarchical Clustering:Recent Progress on DukeMTMC Project 论文笔记">
+                  <i class="fa fa-chevron-left"></i> Multi-Target, Multi-Camera Tracking by Hierarchical Clustering:Recent Progress on DukeMTMC Project 论文笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/19/torch-expand%E5%92%8Ctorch-repeat/" rel="next" title="torch.expand和torch.repeat">
-                  torch.expand和torch.repeat <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
